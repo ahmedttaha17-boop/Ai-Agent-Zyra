@@ -1,0 +1,213 @@
+@import "tailwindcss";
+@import "tailwindcss-safe-area";
+
+@theme {
+  /* Natural sizes (owner's final call): base ~16px, no global shrink */
+  --text-xs: 12px; --text-xs--line-height: 17px;
+  --text-sm: 14px; --text-sm--line-height: 21px;
+  --text-base: 16px; --text-base--line-height: 25px;
+  --text-lg: 18px; --text-lg--line-height: 27px;
+  --text-xl: 20px; --text-xl--line-height: 29px;
+  --text-2xl: 24px; --text-2xl--line-height: 33px;
+  --text-3xl: 30px; --text-3xl--line-height: 38px;
+}
+
+:root {
+  color-scheme: light;
+  /* Owner theme (2026-11-18, final): light calm premium brand theme —
+     Warm Ivory page background, white cards, Deep Teal primary,
+     Terracotta as a sparing accent only. Zero violet-family tones anywhere. */
+  --bg: #FFF2E9;
+  --surface: #FFFFFF;
+  --surface2: #FFF8F1;
+  --text: #22312C;
+  --dim: #68766E;
+  --border: #EDDCC8;
+  --accent: #013835;
+  --accent-text: #FFF6EE;
+  --teal: #013835;
+  --teal-deep: #012623;
+  --teal-light: #0E5A52;
+  --teal-soft: #E4EFEA;
+  --teal-mist: #FBEEE1;
+  --sand: #F6E3CE;
+  --terra: #E2915A;
+  /* Semantic (muted, pills only) */
+  --danger: #D92D20;
+  --danger-soft: #FDECE9;
+  --success: #067647;
+  --success-soft: #E7F6EE;
+  --warning: #B54708;
+  --warning-soft: #FDF0E3;
+  --info: #175CD3;
+  --info-soft: #EBF1FD;
+  /* Section tokens: one Deep Teal family + terracotta highlight only */
+  --sec-command: #013835;
+  --sec-relaunch: #B45A1B;
+  --sec-inputs: #013835;
+  --sec-research: #0E5A52;
+  --sec-market: #013835;
+  --sec-creative: #0E5A52;
+  --sec-media: #013835;
+  --sec-content: #0E5A52;
+  --sec-tracking: #3E6B62;
+  --sec-finance: #013835;
+  --sec-queue: #0E5A52;
+  --sec-experiments: #013835;
+  --sec-approvals: #B45A1B;
+  --sec-integrations: #013835;
+  --sec-audit: #0E5A52;
+  --sec-ops: #013835;
+  --sec-frameworks: #0E5A52;
+  --grad-command: linear-gradient(135deg, #013835 0%, #0E5A52 100%);
+  --grad-relaunch: linear-gradient(135deg, #013835 0%, #0E5A52 100%);
+  --grad-inputs: linear-gradient(135deg, #013835 0%, #0E5A52 100%);
+  --grad-research: linear-gradient(135deg, #013835 0%, #14665C 100%);
+  --grad-market: linear-gradient(135deg, #013835 0%, #0E5A52 100%);
+  --grad-creative: linear-gradient(135deg, #013835 0%, #0E5A52 100%);
+  --grad-media: linear-gradient(135deg, #012623 0%, #013835 100%);
+  --grad-content: linear-gradient(135deg, #0E5A52 0%, #14665C 100%);
+  --grad-tracking: linear-gradient(135deg, #013835 0%, #3E6B62 100%);
+  --grad-finance: linear-gradient(135deg, #013835 0%, #0E5A52 100%);
+  --grad-queue: linear-gradient(135deg, #013835 0%, #0E5A52 100%);
+  --grad-experiments: linear-gradient(135deg, #012623 0%, #0E5A52 100%);
+  --grad-approvals: linear-gradient(135deg, #013835 0%, #0E5A52 100%);
+  --grad-integrations: linear-gradient(135deg, #013835 0%, #0E5A52 100%);
+  --grad-audit: linear-gradient(135deg, #013835 0%, #0E5A52 100%);
+  --grad-ops: linear-gradient(135deg, #013835 0%, #0E5A52 100%);
+  --grad-frameworks: linear-gradient(135deg, #013835 0%, #0E5A52 100%);
+  --grad-accent: linear-gradient(135deg, #013835 0%, #14665C 100%);
+  --grad-success: linear-gradient(135deg, #067647 0%, #12B76A 100%);
+  --grad-sidebar: linear-gradient(180deg, #013835 0%, #01302D 55%, #012623 100%);
+  --radius: 12px;
+  --shadow-card: 0 1px 2px rgba(101,67,33,0.06), 0 6px 18px rgba(101,67,33,0.06);
+  --shadow-lift: 0 2px 4px rgba(101,67,33,0.08), 0 12px 26px rgba(101,67,33,0.12);
+  --space-surface: var(--surface);
+  --space-surface-alt: var(--surface2);
+  --space-muted: var(--dim);
+  --space-border: var(--border);
+  --space-accent: var(--accent);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: light;
+    /* The app ships light-only per the owner's explicit order — same
+       light brand tokens regardless of the device color scheme. */
+    --bg: #FFF2E9;
+    --surface: #FFFFFF;
+    --surface2: #FFF8F1;
+    --text: #22312C;
+    --dim: #68766E;
+    --border: #EDDCC8;
+    --accent: #013835;
+    --teal-soft: #E4EFEA;
+    --teal-mist: #FBEEE1;
+    --sand: #F6E3CE;
+    --danger-soft: #FDECE9;
+    --success-soft: #E7F6EE;
+    --warning-soft: #FDF0E3;
+    --info-soft: #EBF1FD;
+    --shadow-card: 0 1px 2px rgba(101,67,33,0.06), 0 6px 18px rgba(101,67,33,0.06);
+    --shadow-lift: 0 2px 4px rgba(101,67,33,0.08), 0 12px 26px rgba(101,67,33,0.12);
+  }
+}
+html, body { overflow-x: clip; }
+body {
+  font-family: 'Cairo', system-ui, sans-serif;
+  color: var(--text);
+  background: linear-gradient(180deg, var(--bg) 0%, #FFF8F1 60%, var(--bg) 100%);
+  background-attachment: fixed;
+}
+h1,h2,h3,.font-display { font-family: 'Cairo', sans-serif; }
+/* Weight hierarchy (owner, 2026-11-19): Bold 700 for main headings only;
+   everything else renders Regular 400 so the eye reads rank from weight. */
+h1,h2,h3 { font-weight: 700; }
+.font-cairo { font-family: 'Cairo', sans-serif; }
+@layer base {
+  button, [role="button"], select, summary, input:not([type="checkbox"], [type="radio"]) { min-height: 2rem; }
+  button { transition: transform .15s ease, background-color .15s ease, box-shadow .15s ease, opacity .15s ease; }
+  button:hover { opacity: .94; }
+  button:active { transform: scale(.985); }
+  .rounded-2xl { box-shadow: var(--shadow-card); }
+  input, textarea, select { transition: border-color .15s ease, box-shadow .15s ease; background: var(--surface2); color: var(--text); }
+  input:focus-visible, textarea:focus-visible, select:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  img, svg { max-width: 100%; }
+}
+
+/* Bare single-column stacks: a `grid` with no grid-cols-* class gets an
+   implicit `auto` column sized to the widest item's max-content — a flex row
+   with long (truncated) text then blows out past its card and overlaps its
+   neighbours (the dashboard discoveries/rail rows did exactly this). Force a
+   definite minmax(0,1fr) track for every such stack so items are constrained
+   and truncation works. Grids that declare any grid-cols-* (incl. responsive
+   variants) are excluded and keep their Tailwind template. */
+@layer utilities {
+  .grid:not([class*="grid-cols-"]) { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ---------- App-shell / dashboard utilities ---------- */
+/* Dashboard two-column grid (hand-written: Tailwind's arbitrary
+   grid-cols-[minmax(0,1fr)_300px] generates an invalid fused track list
+   "minmax(0,1fr)300px" in this build, which silently drops the template
+   and lets the main column size to content and overlap the rail). */
+.dash-grid { display: grid; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 1280px) {
+  .dash-grid { grid-template-columns: minmax(0, 1fr) 300px; }
+}
+/* Sidebar nav item (Deep Teal sidebar, per the owner's reference): ivory text;
+   active = filled Warm Ivory pill with Deep Teal text, as in the reference */
+.nav-item { position: relative; display: flex; align-items: center; gap: 10px; width: 100%; padding: 9px 12px; border-radius: 10px; font-weight: 700; font-size: .875rem; color: #FFF6EE; background: rgba(255,255,255,0.05); text-align: right; white-space: nowrap; flex-shrink: 0; transition: transform .15s ease, box-shadow .15s ease, background-color .15s ease; }
+.nav-item:hover { background: rgba(255,255,255,0.13); opacity: 1; }
+.nav-item .nav-chip { width: 28px; height: 28px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; color: #FFF6EE; }
+.nav-item .nav-chip svg { width: 16px; height: 16px; }
+.nav-item.active { background: #FFF6EE; color: #013835; box-shadow: 0 4px 14px rgba(0,0,0,0.25); }
+.nav-item.active .nav-chip { color: #013835; }
+
+/* KPI / stat cards: gradient top strip + colored chip + hover lift */
+.kpi-card { position: relative; overflow: hidden; transition: transform .18s ease, box-shadow .18s ease; text-align: right; }
+.kpi-card::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 4px; background: var(--kpi-grad, var(--grad-accent)); opacity: .9; }
+.kpi-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lift); }
+.kpi-chip { width: 34px; height: 34px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; color: #FFF6EE; background: var(--kpi-grad, var(--grad-accent)); box-shadow: 0 4px 12px rgba(101,67,33,0.18); flex-shrink: 0; }
+.kpi-chip svg { width: 18px; height: 18px; }
+
+/* Generic content card hover (used on list cards) */
+.lift { transition: transform .18s ease, box-shadow .18s ease; }
+.lift:hover { transform: translateY(-2px); box-shadow: var(--shadow-lift); }
+
+/* Gradient progress track/fill (width animates via CSS transition) */
+.progress-track { border-radius: 999px; background: var(--border); overflow: hidden; }
+.progress-fill { border-radius: 999px; transition: width .6s cubic-bezier(.22,.8,.32,1); }
+
+/* Section header band: surface header card — teal icon chip, quiet type */
+.sec-band { border-radius: 14px; padding: 10px 14px; color: var(--text); background: var(--surface); border: 1px solid var(--border); display: flex; align-items: center; gap: 10px; box-shadow: var(--shadow-card); margin-bottom: 12px; }
+.sec-band h2 { font-size: 1rem; font-weight: 700; line-height: 1.3; }
+.sec-band p { font-size: .72rem; color: var(--dim); }
+.sec-band .sec-icon { width: 34px; height: 34px; border-radius: 10px; background: var(--teal); color: #FFF6EE; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.sec-band .sec-icon svg { width: 18px; height: 18px; }
+
+/* Status pills */
+.pill { display: inline-flex; align-items: center; gap: 6px; font-size: .7rem; font-weight: 400; padding: 2px 9px; border-radius: 999px; white-space: nowrap; }
+.pill::before { content: ""; width: 7px; height: 7px; border-radius: 999px; background: currentColor; flex-shrink: 0; }
+.pill-live { background: var(--success-soft); color: var(--success); }
+.pill-draft { background: var(--warning-soft); color: var(--warning); }
+.pill-pending { background: var(--info-soft); color: var(--info); }
+.pill-locked { background: var(--surface2); color: var(--dim); }
+.pill-danger { background: var(--danger-soft); color: var(--danger); }
+
+/* Tab content entrance (subtle, respects reduced motion) */
+@keyframes tabIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.tab-enter { animation: tabIn .28s ease both; }
+
+/* Loading shimmer bar */
+@keyframes shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+.skeleton-bar { height: 6px; border-radius: 999px; background: linear-gradient(90deg, var(--surface2) 25%, var(--sand) 50%, var(--surface2) 75%); background-size: 200% 100%; animation: shimmer 1.2s linear infinite; }
+
+/* Primary action glow */
+.btn-glow { box-shadow: 0 6px 16px rgba(1,56,53,.28); }
+.btn-glow:hover { box-shadow: 0 8px 20px rgba(1,56,53,.38); }
+
+@media (prefers-reduced-motion: reduce) {
+  .tab-enter, .skeleton-bar { animation: none; }
+  .kpi-card, .lift, .progress-fill { transition: none; }
+  .kpi-card:hover, .lift:hover { transform: none; }
+}

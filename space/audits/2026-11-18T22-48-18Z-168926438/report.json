@@ -1,0 +1,383 @@
+{
+  "ok": true,
+  "url": "https://artifact-capture.invalid/spaces/v2/hatch-audit-9b96779d-c02f-49c2-b3d9-bf2392eb47ee/",
+  "duration_ms": 6644.056796,
+  "output_dir": "/home/hatch/workspace/ts-spaces/zyra-marketing-intelligence-agent/audits/2026-11-18T22-48-18Z-168926438",
+  "nav_status": 200,
+  "viewports": {
+    "desktop": {
+      "width": 1440,
+      "height": 900,
+      "screenshot_path": "/home/hatch/workspace/ts-spaces/zyra-marketing-intelligence-agent/audits/2026-11-18T22-48-18Z-168926438/screenshot.png",
+      "fullpage_screenshot_path": "/home/hatch/workspace/ts-spaces/zyra-marketing-intelligence-agent/audits/2026-11-18T22-48-18Z-168926438/screenshot-full.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "screenshot_path": "/home/hatch/workspace/ts-spaces/zyra-marketing-intelligence-agent/audits/2026-11-18T22-48-18Z-168926438/screenshot-mobile.png"
+    }
+  },
+  "targets": null,
+  "mobile_layout": {
+    "viewport_width": 390,
+    "scroll_width": 390,
+    "overflow_px": 0,
+    "widest_selector": null,
+    "verdict": "pass"
+  },
+  "horizontal_scrollers": [],
+  "unreachable_controls": {
+    "desktop": [],
+    "mobile": []
+  },
+  "clipped": {
+    "desktop": [],
+    "mobile": [
+      {
+        "tag": "p",
+        "text": "ZYRA OS v3.3",
+        "kind": "past_viewport",
+        "overflow_px": 196,
+        "bbox": [
+          483,
+          17,
+          103,
+          21
+        ]
+      },
+      {
+        "tag": "span",
+        "text": "OS",
+        "kind": "past_viewport",
+        "overflow_px": 168,
+        "bbox": [
+          533,
+          18,
+          25,
+          19
+        ]
+      },
+      {
+        "tag": "span",
+        "text": "v3.3",
+        "kind": "past_viewport",
+        "overflow_px": 196,
+        "bbox": [
+          563,
+          22,
+          23,
+          14
+        ]
+      },
+      {
+        "tag": "p",
+        "text": "قسم الذكاء التسويقي",
+        "kind": "past_viewport",
+        "overflow_px": 196,
+        "bbox": [
+          483,
+          40,
+          103,
+          17
+        ]
+      },
+      {
+        "tag": "button",
+        "text": "✕",
+        "kind": "past_viewport",
+        "overflow_px": 47,
+        "bbox": [
+          405,
+          21,
+          32,
+          33
+        ]
+      },
+      {
+        "tag": "p",
+        "text": "وكيل ذكاء التسويق — AI يفسّر • الكود يحسب • إنت تقرر",
+        "kind": "past_viewport",
+        "overflow_px": 254,
+        "bbox": [
+          405,
+          70,
+          239,
+          33
+        ]
+      },
+      {
+        "tag": "span",
+        "text": "تفكير زيرا وقراراتنا",
+        "kind": "past_viewport",
+        "overflow_px": 204,
+        "bbox": [
+          486,
+          132,
+          108,
+          21
+        ]
+      },
+      {
+        "tag": "span",
+        "text": "لوحة القيادة",
+        "kind": "past_viewport",
+        "overflow_px": 204,
+        "bbox": [
+          525,
+          184,
+          69,
+          21
+        ]
+      },
+      {
+        "tag": "span",
+        "text": "الريلونش",
+        "kind": "past_viewport",
+        "overflow_px": 204,
+        "bbox": [
+          541,
+          236,
+          53,
+          21
+        ]
+      },
+      {
+        "tag": "span",
+        "text": "الحملات والميديا باير",
+        "kind": "past_viewport",
+        "overflow_px": 204,
+        "bbox": [
+          477,
+          288,
+          117,
+          21
+        ]
+      },
+      {
+        "tag": "span",
+        "text": "المحتوى والكرييتف",
+        "kind": "past_viewport",
+        "overflow_px": 204,
+        "bbox": [
+          485,
+          340,
+          109,
+          21
+        ]
+      },
+      {
+        "tag": "span",
+        "text": "الأورجانيك",
+        "kind": "past_viewport",
+        "overflow_px": 204,
+        "bbox": [
+          536,
+          392,
+          58,
+          21
+        ]
+      },
+      {
+        "tag": "span",
+        "text": "السوق والمنافسين",
+        "kind": "past_viewport",
+        "overflow_px": 204,
+        "bbox": [
+          486,
+          444,
+          108,
+          21
+        ]
+      },
+      {
+        "tag": "span",
+        "text": "التشغيل والتعلّم",
+        "kind": "past_viewport",
+        "overflow_px": 204,
+        "bbox": [
+          504,
+          496,
+          90,
+          21
+        ]
+      },
+      {
+        "tag": "span",
+        "text": "المالية والتدقيق",
+        "kind": "past_viewport",
+        "overflow_px": 204,
+        "bbox": [
+          505,
+          548,
+          89,
+          21
+        ]
+      },
+      {
+        "tag": "span",
+        "text": "اسأل زيرا الذكية",
+        "kind": "past_viewport",
+        "overflow_px": 215,
+        "bbox": [
+          511,
+          623,
+          94,
+          21
+        ]
+      },
+      {
+        "tag": "span",
+        "text": "حلل، ابحث، اقترح، ونفّذ بعد موافقتك",
+        "kind": "past_viewport",
+        "overflow_px": 241,
+        "bbox": [
+          418,
+          648,
+          213,
+          17
+        ]
+      },
+      {
+        "tag": "span",
+        "text": "النظام والإعدادات",
+        "kind": "past_viewport",
+        "overflow_px": 204,
+        "bbox": [
+          492,
+          698,
+          102,
+          21
+        ]
+      },
+      {
+        "tag": "span",
+        "text": "حالة النظام · 33%",
+        "kind": "past_viewport",
+        "overflow_px": 204,
+        "bbox": [
+          489,
+          752,
+          105,
+          21
+        ]
+      },
+      {
+        "tag": "button",
+        "text": "↻ فحص يومي للمصادر",
+        "kind": "past_viewport",
+        "overflow_px": 254,
+        "bbox": [
+          405,
+          798,
+          239,
+          39
+        ]
+      }
+    ]
+  },
+  "images": {
+    "total": 2,
+    "broken": [],
+    "duplicate": [
+      {
+        "src": "https://artifact-capture.invalid/spaces/v2/hatch-audit-9b96779d-c02f-49c2-b3d9-bf2392eb47ee/assets/zyra-logo-7ywvdqqq.png",
+        "count": 2
+      }
+    ],
+    "unstable": [],
+    "failed_requests": [],
+    "external_blocked": {
+      "count": 0,
+      "sample": []
+    },
+    "sample_urls": [
+      "https://artifact-capture.invalid/spaces/v2/hatch-audit-9b96779d-c02f-49c2-b3d9-bf2392eb47ee/assets/zyra-logo-7ywvdqqq.png"
+    ],
+    "verdict": "pass"
+  },
+  "text_issues": [],
+  "console_errors": [],
+  "console_warnings": [],
+  "external_fetch_failures": 2,
+  "external_fetch_failure_samples": [
+    "console.error: Failed to load resource: net::ERR_SOCKS_CONNECTION_FAILED (https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap)",
+    "console.error: Failed to load resource: net::ERR_SOCKS_CONNECTION_FAILED (https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap)"
+  ],
+  "blocked_requests": [],
+  "external_requests": [
+    {
+      "url": "https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap",
+      "method": "GET",
+      "resource_type": "stylesheet"
+    }
+  ],
+  "external_requests_dropped": 0,
+  "external_requests_dropped_data_bearing": 0,
+  "transport_ledger_active": true,
+  "egress_lockdown": true,
+  "transport_connections": [
+    {
+      "host": "artifact-capture.invalid",
+      "port": 443,
+      "connects": 2,
+      "bytes_up": 4028,
+      "bytes_down": 2484
+    },
+    {
+      "host": "fonts.googleapis.com",
+      "port": 443,
+      "connects": 2,
+      "bytes_up": 0,
+      "bytes_down": 0,
+      "policy_denied": true
+    }
+  ],
+  "transport_udp_attempts": 0,
+  "transport_overflow": 0,
+  "unexplained_transport_hosts": [],
+  "broken_assets": [],
+  "blocked_affordances": [],
+  "interactive_nodes": 25,
+  "aria_snapshot": "- complementary:\n  - img \"ZYRA — Seeds of Beauty\"\n  - paragraph: ZYRA OS v3.3\n  - paragraph: قسم الذكاء التسويقي\n  - paragraph: وكيل ذكاء التسويق — AI يفسّر • الكود يحسب • إنت تقرر\n  - navigation \"أقسام النظام\":\n    - button \"Zyra Thinking & Decisions\": تفكير زيرا وقراراتنا\n    - button \"Dashboard\": لوحة القيادة\n    - button \"Relaunch\": الريلونش\n    - button \"Campaigns & Media Buyer\": الحملات والميديا باير\n    - button \"Content & Creative\": المحتوى والكرييتف\n    - button \"Organic — Social Media\": الأورجانيك\n    - button \"Market & Competitors\": السوق والمنافسين\n    - button \"Operations & Learning\": التشغيل والتعلّم\n    - button \"Finance & Audit\": المالية والتدقيق\n  - button \"اسأل زيرا الذكية\": اسأل زيرا الذكية حلل، ابحث، اقترح، ونفّذ بعد موافقتك\n  - button \"System & Settings\": النظام والإعدادات\n  - button \"حالة النظام — فتح لوحة حالة النظام\": حالة النظام · 33%\n  - button \"تشغيل الفحص اليومي\": ↻ فحص يومي للمصادر\n  - button \"طي القائمة الجانبية\": طي القائمة\n- main:\n  - heading \"تفكير زيرا وقراراتنا\" [level=2]\n  - paragraph: Zyra Thinking & Decisions\n  - heading \"✍️ تخطيط — اكتب اللي إنت عايزه بخط إيدك\" [level=3]\n  - paragraph: أهداف، أفكار، توجيهات، خطط — بتتسجل مؤرخة هنا، وتقدر تربط أي عنصر بمدخلة تفكير أو تحوّله لمهمة متابعة.\n  - textbox \"عنوان عنصر التخطيط\"\n  - combobox \"نوع عنصر التخطيط\":\n    - option \"هدف\"\n    - option \"فكرة\"\n    - option \"توجيه\"\n    - option \"خطة\" [selected]\n  - combobox \"ربط بمدخلة تفكير\":\n    - option \"من غير ربط بتفكير\" [selected]\n  - textbox \"نص عنصر التخطيط\"\n  - button \"حفظ عنصر التخطيط\": احفظ في التخطيط\n  - paragraph: لسه مفيش عناصر تخطيط مكتوبة — أول سطر تكتبه فوق هيظهر هنا مؤرخاً.\n  - text: \"🔁 لوب التحليل: أي كرييتف أو إعلان منافس جديد بيتسجل بيظهر هنا فوراً كمستحق تحليل، وتحاليله بتغذي التفكير اللي تحت.\"\n  - button \"فتح تحليل الكرييتف\": \"كرييتف بانتظار التحليل: 0\"\n  - button \"فتح تحليل إعلانات المنافسين\": \"إعلانات منافسين بانتظار التحليل: 10\"\n  - button \"تشغيل لوب التحليل على كل العناصر المنتظرة\": \"▶ شغّل اللوب: حلّل كل المنتظر\"\n  - heading \"🧠 تفكير زيرا وقراراتنا\" [level=3]\n  - button \"توليد تفكير جديد من بيانات النظام الحالية\": ✦ فكّري من البيانات الحالية\n  - paragraph: زيرا بتفكر بصوت عالي من المعطيات المسجلة فعلياً بس (منتجات، مالية، منافسون، ريلونش، مدخلات أساسية، تحليلات) — كل فكرة بمعطياتها واستنتاجها وقرار مقترح. إنت تعتمد أو ترفض، والمعتمد بيتحول لمهمة متابعة. مفيش تنفيذ من غير قرارك.\n  - paragraph: لسه مفيش مدخلات تفكير — دوس «فكّري من البيانات الحالية» وزيرا هتكتب أول تفكيرها من بيانات النظام المسجلة.",
+  "document_text": {
+    "path": "/home/hatch/workspace/ts-spaces/zyra-marketing-intelligence-agent/audits/2026-11-18T22-48-18Z-168926438/document-text.txt",
+    "chars": 1767,
+    "truncated": false
+  },
+  "audit_session_id": "97f745fa-5887-4a5c-b651-5d47eeb85f0a",
+  "readiness": {
+    "desktop": {
+      "settled": true,
+      "settle_ms": 1470,
+      "in_flight": 0,
+      "network_idle": true,
+      "retried": false
+    },
+    "mobile": {
+      "settled": true,
+      "settle_ms": 1444,
+      "in_flight": 0,
+      "network_idle": true,
+      "retried": false
+    }
+  },
+  "color_scheme": {
+    "declared": "light",
+    "media_dependent": null,
+    "dark_frame": false
+  },
+  "mobile_ms": 2881.4457340000004,
+  "cold_launch_ms": 2890.422998,
+  "desktop_ms": 2999.0113929999998,
+  "browser_launches": 1,
+  "audit_path": "shared-concurrent",
+  "diagnostics": {
+    "audit_path": "shared-concurrent",
+    "concurrent_ran": true,
+    "concurrent_desktop_retry": false,
+    "concurrent_mobile_retry": false,
+    "shared_launch_failed": false,
+    "nav_retries": 0,
+    "settle_retries": 0
+  }
+}

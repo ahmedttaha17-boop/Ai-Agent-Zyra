@@ -1,0 +1,2280 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>الكورس الشامل (النسخة الكاملة بدون اختصار): إطلاق الإعلانات بالـ AI + الأوديتنج الكامل للبزنس والأكونت</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;600;700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #F6F8F9;
+      --surface: #FFFFFF;
+      --surface-soft: #FBF9F6;
+      --surface-tint: #EFF5F4;
+      --primary: #013835;
+      --primary-light: #0B5551;
+      --accent: #E2915A;
+      --accent-soft: #FFF2E9;
+      --text: #1E293B;
+      --text-muted: #475569;
+      --border: #E2E8F0;
+      --success: #15803D;
+      --success-bg: #ECFDF5;
+      --warn: #B45309;
+      --warn-bg: #FFFBEB;
+      --danger: #B91C1C;
+      --danger-bg: #FEF2F2;
+      --radius: 16px;
+      --shadow: 0 4px 20px rgba(1, 56, 53, 0.06);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Tajawal', 'Cairo', system-ui, -apple-system, sans-serif;
+      font-size: 16.5px;
+      line-height: 1.85;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Cairo', 'Tajawal', system-ui, sans-serif;
+      color: var(--primary);
+      margin-top: 0;
+      line-height: 1.4;
+    }
+
+    a { color: var(--primary-light); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .en {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      direction: ltr;
+      unicode-bidi: isolate;
+      display: inline-block;
+      font-weight: 600;
+      color: var(--primary);
+      background: #EDF4F3;
+      padding: 0.04rem 0.42rem;
+      border-radius: 6px;
+      font-size: 0.91em;
+    }
+
+    /* Floating Menu Toggle (NO Fixed Top Header Bar) */
+    .drawer-toggle {
+      position: fixed;
+      top: 18px;
+      right: 18px;
+      z-index: 1001;
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      border: 1px solid rgba(1, 56, 53, 0.14);
+      background: var(--surface);
+      color: var(--primary);
+      font-size: 22px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(1, 56, 53, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+    }
+    .drawer-toggle:hover {
+      background: var(--primary);
+      color: #FFFFFF;
+      transform: translateY(-1px);
+    }
+
+    /* Right-side Collapsible Drawer */
+    .drawer-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.35);
+      z-index: 1002;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+      backdrop-filter: blur(2px);
+    }
+    .drawer-overlay.open { opacity: 1; pointer-events: auto; }
+
+    .drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 330px;
+      max-width: 86vw;
+      height: 100vh;
+      background: var(--surface);
+      z-index: 1003;
+      box-shadow: -8px 0 30px rgba(1, 56, 53, 0.14);
+      transform: translateX(105%);
+      transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .drawer.open { transform: translateX(0); }
+
+    .drawer-header {
+      padding: 20px 20px 14px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .drawer-title {
+      font-family: 'Cairo', sans-serif;
+      font-weight: 800;
+      font-size: 16px;
+      color: var(--primary);
+    }
+    .drawer-close {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 18px;
+      cursor: pointer;
+    }
+    .drawer-close:hover { background: var(--accent-soft); color: var(--primary); }
+
+    .drawer-progress {
+      padding: 12px 20px;
+      background: var(--surface-tint);
+      border-bottom: 1px solid var(--border);
+    }
+    .drawer-progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+    .progress-track {
+      height: 7px;
+      background: #D7E5E3;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      border-radius: 999px;
+      transition: width 0.15s ease;
+    }
+
+    .drawer-nav {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px 14px 28px;
+    }
+    .nav-group-label {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--accent);
+      padding: 12px 10px 4px;
+    }
+    .drawer-link {
+      display: block;
+      padding: 8px 12px;
+      margin: 2px 0;
+      border-radius: 10px;
+      color: var(--text);
+      font-size: 13.8px;
+      font-weight: 500;
+      transition: background 0.18s ease, color 0.18s ease;
+    }
+    .drawer-link:hover {
+      background: var(--surface-tint);
+      color: var(--primary);
+      text-decoration: none;
+    }
+    .drawer-link.active {
+      background: var(--primary);
+      color: #FFFFFF;
+      font-weight: 700;
+    }
+
+    /* Main Container */
+    .page-wrap {
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 36px 22px 84px;
+    }
+
+    /* Hero */
+    .hero {
+      background: linear-gradient(135deg, #FFFFFF 0%, #FBF6F1 100%);
+      border: 1px solid var(--border);
+      border-top: 5px solid var(--primary);
+      border-radius: 22px;
+      padding: 40px 34px;
+      box-shadow: var(--shadow);
+      margin-bottom: 34px;
+    }
+    .hero-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 13px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      background: var(--surface-tint);
+      color: var(--primary);
+    }
+    .badge.accent { background: var(--accent-soft); color: #8A4315; }
+    .hero h1 {
+      font-size: clamp(26px, 4vw, 38px);
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+    .hero-sub {
+      font-size: 17px;
+      color: var(--text-muted);
+      margin: 0 0 24px;
+      max-width: 860px;
+    }
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+    .stat-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px 16px;
+    }
+    .stat-val {
+      font-family: 'Cairo', sans-serif;
+      font-size: 21px;
+      font-weight: 800;
+      color: var(--primary);
+    }
+    .stat-lbl { font-size: 13.5px; color: var(--text-muted); }
+    .source-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding-top: 18px;
+      border-top: 1px dashed var(--border);
+      font-size: 14px;
+    }
+    .source-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border-radius: 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--primary);
+      font-weight: 700;
+    }
+    .source-pill:hover { border-color: var(--primary); text-decoration: none; }
+
+    /* Part Banner */
+    .part-banner {
+      margin: 44px 0 22px;
+      padding: 22px 26px;
+      border-radius: 18px;
+      background: var(--primary);
+      color: #FFFFFF;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .part-banner h2 { color: #FFFFFF; margin: 0; font-size: 23px; }
+    .part-banner p { margin: 4px 0 0; color: #D1E4E2; font-size: 15px; }
+    .part-tag {
+      background: var(--accent);
+      color: var(--primary);
+      font-weight: 800;
+      font-size: 13px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    /* Module Cards */
+    .module {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 30px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow);
+    }
+    .module-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 18px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    .mod-num {
+      flex-shrink: 0;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: var(--accent-soft);
+      color: var(--primary);
+      border: 1px solid rgba(226, 145, 90, 0.45);
+      font-family: 'Cairo', sans-serif;
+      font-weight: 800;
+      font-size: 17px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .module-header h3 { margin: 0 0 4px; font-size: 22px; font-weight: 800; }
+    .module-sub { margin: 0; font-size: 14.5px; color: var(--text-muted); }
+
+    h4.section-h4 {
+      margin: 22px 0 10px;
+      font-size: 17.5px;
+      color: var(--primary);
+      border-right: 3px solid var(--accent);
+      padding-right: 10px;
+    }
+
+    /* Callouts */
+    .callout {
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin: 18px 0;
+      border-right: 4px solid var(--primary);
+      background: var(--surface-tint);
+    }
+    .callout.accent { border-right-color: var(--accent); background: var(--accent-soft); }
+    .callout.warn { border-right-color: var(--warn); background: var(--warn-bg); }
+    .callout.danger { border-right-color: var(--danger); background: var(--danger-bg); }
+    .callout.success { border-right-color: var(--success); background: var(--success-bg); }
+    .callout-title {
+      font-family: 'Cairo', sans-serif;
+      font-weight: 800;
+      font-size: 15.5px;
+      margin-bottom: 6px;
+      color: var(--primary);
+    }
+
+    /* Quote Block */
+    .script-quote {
+      background: #FFFDF9;
+      border: 1px solid #EBDAC8;
+      border-right: 4px solid var(--accent);
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin: 10px 0;
+      font-size: 15.5px;
+      color: #1E293B;
+    }
+    .script-quote strong { color: var(--primary); display: block; margin-bottom: 4px; }
+
+    /* Grids & Cards */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 16px;
+      margin: 16px 0;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 14px;
+      margin: 16px 0;
+    }
+    .sub-card {
+      background: var(--surface-soft);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+    }
+    .sub-card h4 { font-size: 16.5px; margin-bottom: 8px; color: var(--primary); }
+    .sub-card p, .sub-card ul { margin: 0; font-size: 15px; color: var(--text); }
+    .sub-card ul { padding-right: 20px; }
+    .sub-card ul li { margin-bottom: 6px; }
+
+    /* Tables */
+    .table-wrap {
+      overflow-x: auto;
+      margin: 18px 0;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 580px;
+      font-size: 15px;
+    }
+    th {
+      background: var(--surface-tint);
+      color: var(--primary);
+      font-family: 'Cairo', sans-serif;
+      font-weight: 800;
+      text-align: right;
+      padding: 12px 14px;
+      border-bottom: 2px solid var(--border);
+    }
+    td {
+      padding: 11px 14px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #FAFDFC; }
+
+    /* Lists */
+    ul.clean-list, ol.step-list { padding-right: 22px; margin: 12px 0; }
+    ul.clean-list li, ol.step-list li { margin-bottom: 9px; }
+
+    /* Prompt Box with Copy */
+    .prompt-box {
+      background: #F8FAFC;
+      border: 1px solid #CBD5E1;
+      border-radius: 12px;
+      margin: 16px 0;
+      overflow: hidden;
+    }
+    .prompt-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 16px;
+      background: #EEF2F6;
+      border-bottom: 1px solid #CBD5E1;
+      flex-wrap: wrap;
+    }
+    .prompt-label {
+      font-family: 'Cairo', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--primary);
+    }
+    .copy-btn {
+      background: var(--accent);
+      color: var(--primary);
+      border: none;
+      border-radius: 8px;
+      padding: 6px 14px;
+      font-family: 'Cairo', sans-serif;
+      font-weight: 800;
+      font-size: 13px;
+      cursor: pointer;
+      transition: filter 0.15s ease;
+    }
+    .copy-btn:hover { filter: brightness(0.95); }
+    .prompt-body {
+      padding: 14px 16px;
+      font-size: 14.8px;
+      white-space: pre-wrap;
+      color: #0F172A;
+      margin: 0;
+      font-family: 'Tajawal', sans-serif;
+      max-height: 420px;
+      overflow-y: auto;
+    }
+    .prompt-body.ltr-code {
+      direction: ltr;
+      text-align: left;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 13.5px;
+      line-height: 1.6;
+    }
+
+    /* Interactive Calculators & Scorecard */
+    .calc-panel {
+      background: linear-gradient(180deg, #FBFDFC 0%, #F2F7F6 100%);
+      border: 1.5px solid #C6DCD9;
+      border-radius: 16px;
+      padding: 22px;
+      margin: 20px 0;
+    }
+    .calc-panel h4 { margin: 0 0 14px; font-size: 18px; color: var(--primary); }
+    .calc-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(185px, 1fr));
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+    .field label {
+      display: block;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+    .field input[type="number"] {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #CBD5E1;
+      border-radius: 10px;
+      font-size: 15.5px;
+      font-family: 'Cairo', sans-serif;
+      font-weight: 700;
+      color: var(--text);
+      background: #FFFFFF;
+    }
+    .field input[type="range"] {
+      width: 100%;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+    .field input:focus { outline: 2px solid var(--accent); border-color: var(--accent); }
+    .calc-results {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 12px;
+    }
+    .res-box {
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+    }
+    .res-lbl { font-size: 12.5px; color: var(--text-muted); font-weight: 600; }
+    .res-val {
+      font-family: 'Cairo', sans-serif;
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--primary);
+      margin-top: 2px;
+    }
+    .decision-banner {
+      margin-top: 14px;
+      padding: 14px 18px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 15.2px;
+      border: 1px solid transparent;
+    }
+    .decision-banner.kill { background: var(--danger-bg); color: var(--danger); border-color: #FECACA; }
+    .decision-banner.keep { background: var(--warn-bg); color: var(--warn); border-color: #FDE68A; }
+    .decision-banner.win { background: var(--success-bg); color: var(--success); border-color: #BBF7D0; }
+
+    /* Interactive Checklist */
+    .checklist-box {
+      background: var(--surface-soft);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px 20px;
+      margin: 16px 0;
+    }
+    .checklist-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+    .check-item:hover { background: #FFFFFF; }
+    .check-item input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      margin-top: 4px;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+    .check-item.done span { text-decoration: line-through; color: var(--text-muted); }
+
+    /* Scorecard rows */
+    .score-row {
+      display: grid;
+      grid-template-columns: 1fr 140px 58px;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin-bottom: 8px;
+    }
+    .score-row label { margin: 0; font-weight: 700; font-size: 14.5px; color: var(--primary); }
+    .score-num { font-family: 'Cairo', sans-serif; font-weight: 800; color: var(--primary); text-align: left; }
+
+    /* Quiz */
+    .quiz-card {
+      background: var(--surface-soft);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px 20px;
+      margin-bottom: 14px;
+    }
+    .quiz-q {
+      font-family: 'Cairo', sans-serif;
+      font-weight: 800;
+      font-size: 16px;
+      color: var(--primary);
+      margin-bottom: 12px;
+    }
+    .quiz-opts { display: grid; gap: 8px; }
+    .quiz-option {
+      text-align: right;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #FFFFFF;
+      color: var(--text);
+      font-family: 'Tajawal', sans-serif;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+    .quiz-option:hover:not(:disabled) { border-color: var(--primary); background: var(--surface-tint); }
+    .quiz-option.correct { background: var(--success-bg); border-color: var(--success); color: var(--success); font-weight: 700; }
+    .quiz-option.wrong { background: var(--danger-bg); border-color: var(--danger); color: var(--danger); }
+    .quiz-exp {
+      margin-top: 10px;
+      font-size: 14.5px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      background: #FFFFFF;
+      border-right: 3px solid var(--primary);
+      display: none;
+    }
+    .quiz-exp.show { display: block; }
+    .quiz-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 16px;
+      padding: 14px 18px;
+      background: var(--surface-tint);
+      border-radius: 12px;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: var(--primary);
+      border: none;
+      border-radius: 10px;
+      padding: 9px 18px;
+      font-family: 'Cairo', sans-serif;
+      font-weight: 800;
+      font-size: 14.5px;
+      cursor: pointer;
+    }
+    .btn-primary:hover { filter: brightness(0.95); }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+      z-index: 1200;
+      background: var(--primary);
+      color: #FFFFFF;
+      padding: 11px 18px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 14.5px;
+      box-shadow: 0 8px 24px rgba(1, 56, 53, 0.25);
+      opacity: 0;
+      transform: translateY(14px);
+      pointer-events: none;
+      transition: opacity 0.22s ease, transform 0.22s ease;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+
+    footer {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 14px;
+      margin-top: 40px;
+      padding-top: 22px;
+      border-top: 1px solid var(--border);
+    }
+
+    @media (max-width: 640px) {
+      .page-wrap { padding: 24px 14px 72px; }
+      .hero { padding: 26px 20px; }
+      .module { padding: 22px 18px; }
+      .part-banner { padding: 18px; }
+      .score-row { grid-template-columns: 1fr; gap: 6px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Toggle Button (No Fixed Top Header) -->
+  <button id="drawerToggle" class="drawer-toggle" aria-label="فتح قائمة الكورس" aria-expanded="false">☰</button>
+
+  <!-- Overlay -->
+  <div id="drawerOverlay" class="drawer-overlay"></div>
+
+  <!-- Collapsible Right-Side Drawer -->
+  <aside id="courseDrawer" class="drawer" aria-label="فهرس الكورس">
+    <div class="drawer-header">
+      <div class="drawer-title">فهرس الكورس الشامل (النسخة الكاملة)</div>
+      <button id="drawerClose" class="drawer-close" aria-label="إغلاق القائمة">✕</button>
+    </div>
+    <div class="drawer-progress">
+      <div class="drawer-progress-label">
+        <span>تقدمك في القراءة</span>
+        <span id="progressText">0%</span>
+      </div>
+      <div class="progress-track">
+        <div id="progressFill" class="progress-fill"></div>
+      </div>
+    </div>
+    <nav class="drawer-nav" id="drawerNav">
+      <div class="nav-group-label">التأسيس من الصفر</div>
+      <a class="drawer-link" href="#sec-glossary">0. قاموس المصطلحات والمعادلات من الصفر</a>
+
+      <div class="nav-group-label">الجزء الأول: إطلاق الإعلانات بالـ AI (أحمد محمود)</div>
+      <a class="drawer-link" href="#sec-mindset">1. المايندسيت بعد Meta Andromeda</a>
+      <a class="drawer-link" href="#sec-stack">2. ترسانة أدوات الـ AI (Extension vs MCP vs Muse)</a>
+      <a class="drawer-link" href="#sec-research">3. ريسيرش المنافسين (Ad Library — كيس VGR)</a>
+      <a class="drawer-link" href="#sec-creatives">4. هندسة البرومبتات والكريتيفز الثابتة (7 + 8)</a>
+      <a class="drawer-link" href="#sec-landing">5. اللاندينج بيدج + Gap Audit + حاسبة الـ CR</a>
+      <a class="drawer-link" href="#sec-video">6. فيديوهات AI و UGC (الـ 4 سكريبتات + QA)</a>
+      <a class="drawer-link" href="#sec-launch">7. الـ Ad Copy وإطلاق الحملة + Pixel/CAPI + Checklist</a>
+      <a class="drawer-link" href="#sec-testing">8. التستينج + 2× CPP + سر الـ Flex و Page Posts</a>
+      <a class="drawer-link" href="#sec-ai-audit">9. مراجعة الحساب بالـ AI وحلقة مضاعفة الوينر</a>
+
+      <div class="nav-group-label">الجزء الثاني: الأوديتنج الشامل (م. محمود)</div>
+      <a class="drawer-link" href="#sec-audit-core">10. فلسفة الأوديتنج + بريف المالك + Offline-to-Online</a>
+      <a class="drawer-link" href="#sec-audit-perf">11. أوديت البرفورمنس والأكونت + 3–7 شرائح</a>
+      <a class="drawer-link" href="#sec-audit-prod">12. أوديت المنتجات + CRO الـ 7 صفحات + حاسبة الفانل</a>
+      <a class="drawer-link" href="#sec-audit-ops">13. السوشيال والأوبريشن والـ LTV + Scorecard تفاعلي</a>
+
+      <div class="nav-group-label">التطبيق والـ AI Agent والاختبار</div>
+      <a class="drawer-link" href="#sec-zyra">14. التطبيق العملي الكامل على Zyra Care</a>
+      <a class="drawer-link" href="#sec-mistakes">15. الأخطاء القاتلة + نسخ Skill &amp; Framework كامل</a>
+      <a class="drawer-link" href="#sec-quiz">16. اختبار فهم سريع (6 أسئلة)</a>
+    </nav>
+  </aside>
+
+  <main class="page-wrap">
+
+    <!-- HERO SECTION -->
+    <section class="hero" id="top">
+      <div class="hero-badges">
+        <span class="badge">النسخة الموسّعة الكاملة — تفريغ تفصيلي بدون اختصار</span>
+        <span class="badge accent">سيشن الإعلانات بالـ AI + سيشن الأوديتنج الشامل + AI Agent Skill</span>
+      </div>
+      <h1>الكورس المتكامل: إطلاق إعلان كامل بالـ AI من الصفر + الأوديتنج الشامل لأي بزنس وأكونت</h1>
+      <p class="hero-sub">
+        تفريغ تفصيلي كامل لكل دقيقة، مثال، رقم، كيس ستادي، سؤال Q&amp;A، وبرومبت من <strong>سيشن أحمد محمود (93 دقيقة)</strong> و<strong>سيشن الأوديتنج الشامل لمهندس محمود (مجتمع المنصورة)</strong> — مشروح بالعامية المصرية مع شرح كل مصطلح ومعادلة من الصفر، ومزوّد بـ <strong>10 برومبتات جاهزة للنسخ</strong>، <strong>3 حاسبات تفاعلية</strong>، <strong>شيت تقييم أوديتنج (Scorecard)</strong>، <strong>تطبيق عملي كامل على Zyra Care</strong>، و<strong>ملف Skill &amp; Framework جاهز للنسخ لأي AI Agent</strong>.
+      </p>
+
+      <div class="hero-stats">
+        <div class="stat-box">
+          <div class="stat-val">16 وحدة</div>
+          <div class="stat-lbl">تفريغ كامل بدون أي حذف</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-val">10 برومبتات</div>
+          <div class="stat-lbl">جاهزة للنسخ بضغطة واحدة</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-val">4 أدوات</div>
+          <div class="stat-lbl">3 حاسبات + Audit Scorecard</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-val">Skill كامل</div>
+          <div class="stat-lbl">مفعّل وجاهز للنسخ لأي Agent</div>
+        </div>
+      </div>
+
+      <div class="source-strip">
+        <a class="source-pill" href="https://www.youtube.com/watch?v=YosjRDRXHIM" target="_blank" rel="noopener noreferrer">
+          ▶ مصدر السيشن 1: أحمد محمود (YouTube — 1:33:23)
+        </a>
+        <a class="source-pill" href="https://drive.google.com/file/d/14YBzDDq_0orHn64c1J_e5GHZtjY6Xiuv/view?usp=drivesdk" target="_blank" rel="noopener noreferrer">
+          ▶ مصدر السيشن 2: م. محمود — الأوديتنج الشامل (Google Drive)
+        </a>
+      </div>
+    </section>
+
+    <!-- MODULE 0: GLOSSARY -->
+    <section class="module" id="sec-glossary">
+      <div class="module-header">
+        <div class="mod-num">00</div>
+        <div>
+          <h3>قاموس المصطلحات والمعادلات من الصفر (افترض إنك لسه بتبدأ)</h3>
+          <p class="module-sub">كل مصطلح ومعادلة اتقالت في السيشنين مشروحة بالبلدي مع المعادلة الرياضية بتاعتها.</p>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>المصطلح</th>
+              <th>المعنى بالبلدي</th>
+              <th>المعادلة / القاعدة العملية</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="en">Meta Andromeda</span></td>
+              <td>محرك الذكاء الاصطناعي الجديد في ميتا؛ خلّى <strong>الكريتيف نفسه</strong> هو أداة الاستهداف الأساسية بدل الـ <span class="en">Interests</span>.</td>
+              <td>شغلك = <strong>90% كريتيفز وتستينج + 10% داشبورد</strong>.</td>
+            </tr>
+            <tr>
+              <td><span class="en">Ad Library</span></td>
+              <td>مكتبة إعلانات ميتا المجانية لرؤية إعلانات المنافسين الشغالة حالياً في مصر.</td>
+              <td>ابحث بالكلمة المفتاحية ورتّب بالأعلى <span class="en">Impressions</span> / الأطول عمراً.</td>
+            </tr>
+            <tr>
+              <td><span class="en">MCP</span></td>
+              <td><span class="en">Model Context Protocol</span> — ربط مباشر يخلي Claude يكلم Ads Manager أو TikTok من الشات بدون ضغط بالماوس.</td>
+              <td>للمنصات اللي لسه مفيهاش MCP (زي EasyOrders) استخدم <strong>Claude Browser Extension</strong>.</td>
+            </tr>
+            <tr>
+              <td><span class="en">CR / CRO</span></td>
+              <td><span class="en">Conversion Rate</span> (معدل التحويل) و <span class="en">Optimization</span> (تحسينه).</td>
+              <td><span class="en">CR = (Purchases ÷ Visitors) × 100</span> — زيادة 0.5% من 1% لـ 1.5% = <strong>+50% أوردرات مجاناً</strong>.</td>
+            </tr>
+            <tr>
+              <td><span class="en">UGC</span></td>
+              <td><span class="en">User-Generated Content</span> — فيديو طبيعي متصور كأنه بموبايل عادي في البيت بدون مونتاج ثقيل.</td>
+              <td>أعلى فورمات بيقنع العميل المصري؛ بيتعمل بـ <strong>Muse</strong> مع مراجعة QA بشرية.</td>
+            </tr>
+            <tr>
+              <td><span class="en">CPM / CTR / CPC</span></td>
+              <td><strong>CPM:</strong> تكلفة 1000 ظهور. <strong>CTR:</strong> نسبة الضغط على الإعلان. <strong>CPC:</strong> تكلفة الضغطة.</td>
+              <td><span class="en">Low CTR + High CPM + 0 Purchases = KILL Creative</span>.</td>
+            </tr>
+            <tr>
+              <td><span class="en">CPP / CPA / CPO</span></td>
+              <td>تكلفة الأوردر الواحد من الإعلانات (<span class="en">Cost Per Purchase / Order</span>).</td>
+              <td><span class="en">CPP = Ad Spend ÷ Purchases</span> — ميزانية التست = <strong>2× Target CPP</strong>.</td>
+            </tr>
+            <tr>
+              <td><span class="en">AOV</span></td>
+              <td>متوسط قيمة السلة أو الأوردر (<span class="en">Average Order Value</span>).</td>
+              <td><span class="en">AOV = Total Revenue ÷ Total Orders</span> — لو وقع، الـ ROAS بينزل حتى لو الـ CPO ثابت!</td>
+            </tr>
+            <tr>
+              <td><span class="en">ROAS &amp; Break-Even ROAS</span></td>
+              <td><strong>ROAS:</strong> العائد على الصرف. <strong>Break-Even:</strong> أقل ROAS محتاجه عشان لا تكسب ولا تخسر.</td>
+              <td><span class="en">Break-Even ROAS = Selling Price ÷ (Selling Price - Non-Ad Costs)</span>.</td>
+            </tr>
+            <tr>
+              <td><span class="en">ABO / Flexible Ads</span></td>
+              <td><strong>ABO:</strong> ميزانية على مستوى الـ Ad Set. <strong>Flex:</strong> إعلان واحد بيشيل لحد 10 صور/فيديوهات وميتا بتجرب Single و Carousel لوحدها.</td>
+              <td>ABO بـ 500 ج/يوم + Flex فيه 10 صور لمنتج واحد = أسرع تست لمنتج جديد.</td>
+            </tr>
+            <tr>
+              <td><span class="en">Pixel &amp; CAPI</span></td>
+              <td>كود التتبع + <span class="en">Conversions API (Access Token)</span> لنقل أحداث الموقع لميتا بدقة.</td>
+              <td>ميتا بترفض إنشاء <span class="en">Ad Set</span> تحويلات بدون Pixel مربوط — وأي أوديت بدون تتبع سليم باطل.</td>
+            </tr>
+            <tr>
+              <td><span class="en">Frequency</span></td>
+              <td>متوسط عدد المرات اللي نفس الشخص شاف فيها إعلانك.</td>
+              <td>لو وصل <strong>6–8 مرات</strong> والـ CR بيقع ← إجهاد جمهور (محتاج Trust Content + Cold Audience).</td>
+            </tr>
+            <tr>
+              <td><span class="en">Bounce Rate</span></td>
+              <td>نسبة الزوار اللي دخلوا الموقع وخرجوا فوراً من غير أي تفاعل (من <span class="en">Google Analytics</span>).</td>
+              <td>فوق <strong>60–70%</strong> = مشكلة سرعة أو تسعير أو عدم تطابق بين الإعلان والصفحة.</td>
+            </tr>
+            <tr>
+              <td><span class="en">LTV &amp; Retention</span></td>
+              <td><strong>LTV:</strong> إجمالي ما يدفعه العميل طول علاقته ببراندك. <strong>Retention:</strong> نسبة العملاء العائدين للشراء.</td>
+              <td><span class="en">LTV = AOV × Repeat Purchases</span> (مثلاً 3 مرات × 1,000 ج = 3,000 ج LTV).</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- PART 1 BANNER -->
+    <div class="part-banner">
+      <div>
+        <h2>الجزء الأول: تشغيل وإطلاق الإعلان الكامل بالـ AI من الصفر</h2>
+        <p>التفريغ الكامل لسيشن أحمد محمود (93 دقيقة) — كل خطوة، كل برومبت، كل سكريبت، وكل سؤال في الـ Q&amp;A.</p>
+      </div>
+      <span class="part-tag">6 مراحل تنفيذية</span>
+    </div>
+
+    <!-- MODULE 1 -->
+    <section class="module" id="sec-mindset">
+      <div class="module-header">
+        <div class="mod-num">01</div>
+        <div>
+          <h3>المايندسيت الجديد بعد <span class="en">Meta Andromeda</span></h3>
+          <p class="module-sub">ليه معظم الميديا بايرز بيستخدموا الـ AI غلط كـ "شات بس"، وإزاي تحوّله لمصنع كريتيفز وإطلاق كامل.</p>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="sub-card">
+          <h4>تحول اللعبة: من Interests إلى Creative Velocity</h4>
+          <p>
+            السيشن موجهة للميديا بايرز اللي لسه ما استخدموش الـ AI أو بيستخدموه مجرد شات يسألوا فيه سؤالين وخلاص. بعد تحديث <span class="en">Meta Andromeda</span>، الـ <span class="en">Interests</span> فقدت معظم قوتها، وبقى الميديا باينج <strong>10% داشبورد و 90% كريتيفز وتستينج</strong> عشان توصل للعميل الصح بالزاوية الصح.
+          </p>
+        </div>
+        <div class="sub-card">
+          <h4>إزاي تكسر حاجز الـ 100 أوردر يومياً؟</h4>
+          <p>
+            لو معاك منتج واقف عند <strong>100 أوردر/يوم</strong> وعايز توصله لـ <strong>150–200 أوردر/يوم</strong>، السر الوحيد هو إن <strong>التستينج ما يقفش يوم واحد</strong>. بدل ما تستنى مصمم يطلعلك صورتين في الأسبوع، الـ AI بيخليك تنتج من <strong>10 لـ 50 كريتيف يومياً</strong> وتدخلهم التست باستمرار.
+          </p>
+        </div>
+      </div>
+
+      <div class="callout warn">
+        <div class="callout-title">⚠️ قاعدة السيشن الذهبية: "مش بقولك شغّله ونام!"</div>
+        الـ AI أداة بتسرّع شغلك وتضاعف إنتاجك، لكن <strong>المراجعة البشرية (Human QA) مستمرة</strong>:
+        <ul class="clean-list" style="margin-bottom:0;">
+          <li>راجع الـ <span class="en">Ad Copy</span> واتأكد إنها تدخل دماغ العميل المصري كأن إنسان حقيقي بيكلمه، مش "منقوشة بالـ AI ومليانة إيموجيز".</li>
+          <li>راجع كل صورة وفيديو قبل الصرف (مثلاً ماكينة ممسوكة مقلوب أو صوت مش ماشي مع الشفايف).</li>
+          <li>خلي الـ AI يقترحلك زوايا ممكن دماغك ما تروحلهاش (زي زاوية الهدية للبنات في منتج رجالي!) وإنت اللي تفلتر وتعتمد.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- MODULE 2 -->
+    <section class="module" id="sec-stack">
+      <div class="module-header">
+        <div class="mod-num">02</div>
+        <div>
+          <h3>ترسانة أدوات الـ AI وكيفية ربطها وتشغيلها عملياً</h3>
+          <p class="module-sub">إزاي تسطّب Claude Browser Extension بدون أي كود، وإيه الفرق بينها وبين MCP و ChatGPT و Muse.</p>
+        </div>
+      </div>
+
+      <h4 class="section-h4">إزاي كلود بيتحكم في المتصفح لوحده (بدون ربط API ولا EasyOrders MCP)؟</h4>
+      <p>
+        أحمد محمود وضّح نقطة سأل عليها كتير من الحاضرين: <strong>إحنا ما عملناش أي ربط برمجي بين Claude و EasyOrders!</strong> الموضوع كله بيتم عبر <strong>إضافة المتصفح الرسمية (<span class="en">Claude Browser Extension</span>)</strong> على متصفح <strong>Google Chrome</strong> أو <strong>Brave</strong>:
+      </p>
+      <ol class="step-list">
+        <li>بتشترك في <strong>Claude المدفوع</strong> (المجاني لا يدعم التحكم الكامل).</li>
+        <li>بتسطّب إضافة المتصفح وتفتحها من فوق على شكل <strong>نافذة جانبية (<span class="en">Side Panel</span>)</strong>.</li>
+        <li>أي صفحة مفتوحة قدامك (Meta Ad Library، EasyOrders، Shopify، Meta Ads Manager) — كلود بيقرأها وبيحرّك الماوس بتاعه لوحده، يكتب الوصف، يرفع الصور، ويظبط الإعلانات وإنت شايل إيدك من على الماوس!</li>
+        <li><strong>المستوى المتقدم (<span class="en">MCP</span>):</strong> تقدر تربط الـ <span class="en">MCP</span> مباشرة مع <strong>Meta Ads</strong> أو <strong>TikTok</strong> عشان تنشئ حملات من الشات مباشرة (منصة EasyOrders لسه ما نزلتش MCP رسمي، فبنشتغل عليها بالـ Extension).</li>
+      </ol>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>الأداة</th>
+              <th>الوظيفة الأساسية</th>
+              <th>السرعة والجودة</th>
+              <th>التكلفة والملاحظات العملية</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong><span class="en">Claude (Paid)</span> + Extension</strong></td>
+              <td>العقل المدبر + ريسيرش المنافسين + كتابة البرومبتات + بناء اللاندينج بيدج + كتابة الأد كوبي + إطلاق الحملات + الأوديت.</td>
+              <td>أعلى دقة في التحليل وكتابة البرومبتات والتحكم في المتصفح.</td>
+              <td>مدفوع؛ بيرفض يخمن أسعار أو ميزانيات من دماغه وبيقف يسألك في أي قرار مالي.</td>
+            </tr>
+            <tr>
+              <td><strong><span class="en">ChatGPT</span> (Image Gen)</strong></td>
+              <td>صور المتجر الرئيسية + الـ Infographics + الكريتيفز الثابتة الأعلى جودة.</td>
+              <td><strong>أعلى جودة بصرية</strong> ونصوص عربية نظيفة، لكنه أبطأ في التوليد.</td>
+              <td>مثالي للصور الرئيسية في الجاليري وأهم 3–4 كريتيفز؛ مش بيولّد فيديوهات UGC.</td>
+            </tr>
+            <tr>
+              <td><strong><span class="en">Muse</span> (ميوز)</strong></td>
+              <td>فيديوهات AI/UGC باللهجة المصرية + فويس أوفر + مونتاج + صور Static سريعة.</td>
+              <td><strong>أسرع بكتير</strong> من ChatGPT، لكن جودة صوره أقل درجة وفيديوهاته تحتاج مراجعة QA.</td>
+              <td>أرخص بكثير (عروض توكنز ضخمة — حوالي 31 مليار توكن يعملوا ~6,000 فيديو)؛ يقدر كمان يشتغل زي كلود كـ Agent.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- MODULE 3 -->
+    <section class="module" id="sec-research">
+      <div class="module-header">
+        <div class="mod-num">03</div>
+        <div>
+          <h3>المرحلة 1: ريسيرش المنافسين من <span class="en">Meta Ad Library</span> (كيس ستادي VGR V-071)</h3>
+          <p class="module-sub">التطبيق الحي خطوة بخطوة على منتج ماكينة الحلاقة الكهربائية VGR V-071 من منصة Affiliate.</p>
+        </div>
+      </div>
+
+      <div class="callout">
+        <div class="callout-title">📦 أرقام المنتج في الكيس ستادي الحية</div>
+        المنتج: <strong>ماكينة حلاقة كهربائية VGR V-071</strong> (بطارية حتى 120 دقيقة، شحن USB/Type-C، شفرة T-Blade، سلكي ولاسلكي، أمشاط تحديد).<br />
+        <strong>سعر التكلفة (Affiliate):</strong> 430 ج &nbsp;|&nbsp; <strong>سعر البيع المختار:</strong> 850 ج &nbsp;|&nbsp; <strong>السعر المشطوب:</strong> 1,050 ج &nbsp;|&nbsp; <strong>سعر موقع VGR الرسمي:</strong> 550 ج &nbsp;|&nbsp; <strong>منافس مباشر (Hamza Store):</strong> 650 ج + شحن مجاني + معاينة قبل الاستلام.
+      </div>
+
+      <ol class="step-list">
+        <li><strong>البحث في <span class="en">Meta Ad Library</span>:</strong> افتح Ad Library، اختار مصر، ابحث بكلمة المنتج ("حلاقة" / "VGR") — ظهر حوالي <strong>290 إعلان نشط</strong>.</li>
+        <li><strong>الترتيب بالأعلى <span class="en">Impressions</span>:</strong> كلود من نفسه حدّد الإعلانات الأعلى مشاهدات لأنها شغالة بقالها فترة طويلة (يعني مربحة وبتكسب).</li>
+        <li><strong>استخراج المنافسين الكبار + المنافسين المطابقين:</strong>
+          <ul class="clean-list">
+            <li>المنافسين الكبار في النيش: <strong>Baya3 (بياع)</strong>، <strong>UniShop</strong>، <strong>VGR Pro</strong>، <strong>TrimWise</strong>، <strong>Bahr (بحر)</strong>.</li>
+            <li>المنافسين اللي بيبيعوا <strong>نفس الموديل بالظبط (5 منافسين)</strong>: منهم <strong>Hamza Store</strong> (عرض 650 ج + شحن مجاني + معاينة قبل الاستلام).</li>
+          </ul>
+        </li>
+        <li><strong>كشف عيب الوصف العام (<span class="en">Supplier Copy Trap</span>):</strong> لما بعتنا وصف الأفلييت لكلود، كشف فوراً إن كوبي Hamza Store شبه وصفنا بالحرف ("شكلكم واخدينه من نفس المصدر، والكلام عام جداً") — وكتب لنا وصف احترافي مختلف بالكامل.</li>
+        <li><strong>استخراج وتخصيص الزوايا (<span class="en">Angles</span>):</strong> كلود لقى الكبار راكبين على <strong>زاوية الأماكن الحساسة</strong> وقال: "لو ماكينتك بتنفع للجسم دي الزاوية اللي تبدأ بيها" — ولما بعتناله تفاصيل منتجنا (تحديد دقن وسوالف)، فلتر الزوايا وطلعلك الأنسب لمنتجك (الحلاق في البيت، توفير الفلوس، السفر، وزاوية الهدية للبنات).</li>
+      </ol>
+
+      <div class="prompt-box">
+        <div class="prompt-head">
+          <span class="prompt-label">برومبت 1 — تحليل المنافسين في Meta Ad Library</span>
+          <button class="copy-btn" data-copy-target="prompt-research">نسخ البرومبت</button>
+        </div>
+        <pre class="prompt-body" id="prompt-research">عندي منتج عبارة عن [اكتب اسم المنتج ومواصفاته الكاملة].
+عايزك تحللي المنافسين المفتوحين قدامك في Meta Ad Library (ركز على الإعلانات الأعلى Impressions والأطول استمراراً في مصر).
+طلّعلي:
+1) المنافسين اللي بيبيعوا نفس المنتج بالظبط وأسعارهم وعروضهم (شحن، معاينة، ضمان).
+2) الزوايا الإعلانية (Angles) والـ Hooks اللي الكبار راكبين عليها.
+3) الغلطات ونقاط الضعف في الوصف والـ Copy بتاعهم عشان أتجنبها.
+4) دي تفاصيل منتجي الحقيقية: [الصق المواصفات] — قولي إيه أنسب الزوايا اللي تنفع لمنتجي بالظبط واكتبلي وصف احترافي قوي يبيع بدل وصف المورد العام.</pre>
+      </div>
+    </section>
+
+    <!-- MODULE 4 -->
+    <section class="module" id="sec-creatives">
+      <div class="module-header">
+        <div class="mod-num">04</div>
+        <div>
+          <h3>المرحلة 2: هندسة البرومبتات وإنتاج الصور والكريتيفز الثابتة</h3>
+          <p class="module-sub">إزاي تخلي Claude يكتبلك 7 برومبتات لصور المتجر + 8 برومبتات لكريتيفز الإعلانات وتنفذهم بالتوازي.</p>
+        </div>
+      </div>
+
+      <p>
+        الغلطة اللي بيقع فيها أغلب الناس إنهم يكتبوا برومبت سطرين لـ ChatGPT فيطلعلهم صورة شكلها AI ورخيصة. في السيشن، كلود بياخد كل تفاصيل المنتج ويكتبلك <strong>برومبتات هندسية مفصّلة</strong> لفئتين مستقلتين:
+      </p>
+
+      <div class="grid-2">
+        <div class="sub-card">
+          <h4>الفئة أ: صور المتجر الرئيسية والجاليري (7 برومبتات)</h4>
+          <ul>
+            <li><strong>الصورة 1 (Hero White BG):</strong> صورة رئيسية نظيفة للمنتج على خلفية بيضاء عشان تتحط صورة أساسية للمنتج.</li>
+            <li><strong>الصور 2–5 (Infographic Gallery):</strong> صور تشرح المميزات بالكتابة العربية السليمة على الصورة (بطارية 120 دقيقة، شحن USB/Type-C، سلكي ولاسلكي، شفرة T-Blade، مقاومة الاستخدام).</li>
+            <li><strong>الصور 6–7 (Offer &amp; Box):</strong> صورة "عرض التوفير" + صورة "هيوصلك إيه في العلبة".</li>
+          </ul>
+        </div>
+        <div class="sub-card">
+          <h4>الفئة ب: كريتيفز الإعلانات الثابتة (8+ برومبتات)</h4>
+          <ul>
+            <li><strong>Pain-Point:</strong> "مش محتاج تروح للحلاق كل مرة — ظبط دقنك بنفسك في 5 دقايق".</li>
+            <li><strong>Before &amp; After:</strong> مقارنة بصرية واضحة لشكل الدقن قبل وبعد التحديد.</li>
+            <li><strong>Travel / Portability:</strong> استخدام الماكينة في السفر والتنقل في أي مكان.</li>
+            <li><strong>Financial Comparison:</strong> مقارنة مصاريف الحلاق السنوية بسعر الماكينة.</li>
+            <li><strong>Gift Angle:</strong> موجهة للبنات (هدية شيك وعملية لخطيبك أو جوزك).</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout accent">
+        <div class="callout-title">🎨 تثبيت الـ Brand Identity + تريك التوازي (ChatGPT + Muse)</div>
+        لو شغال على براند مش Affiliate، ابعت لكلود <strong>اللوجو + أكواد ألوان البراند + الخطوط</strong> عشان كل صورة تطلع بهوية واحدة (في السيشن كلود قرأ اللون الأخضر من لوجو المتجر لوحده والتزم بيه في صور الجاليري!). وشغّل <strong>ChatGPT</strong> (للصور الرئيسية والـ Infographics الأعلى جودة) و <strong>Muse</strong> (لزوايا السفر والـ Before/After السريعة) في نفس الوقت عشان تضاعف إنتاجك.
+      </div>
+
+      <div class="prompt-box">
+        <div class="prompt-head">
+          <span class="prompt-label">برومبت 2 — توليد برومبتات صور المتجر (7) وكريتيفز الإعلانات (8)</span>
+          <button class="copy-btn" data-copy-target="prompt-statics">نسخ البرومبت</button>
+        </div>
+        <pre class="prompt-body" id="prompt-statics">عايزك تساعدني نطلع صور وكريتيفز نقدر نستخدمها في المتجر والإعلانات.
+دي تفاصيل المنتج بتاعي: [المواصفات + العرض + السعر].
+ودي هوية البراند (Brand Identity): الألوان [أكواد الألوان]، اللوجو مرفق، السوق المستهدف مصر.
+محتاج منك تكتبلي مجموعتين من البرومبتات الجاهزة عشان أبعتها مع صورة المنتج لـ ChatGPT و Muse:
+1) 7 برومبتات لصور رئيسية وجاليري للمتجر (صورة خلفية بيضاء + صور Infographic للمميزات + صورة عرض التوفير + محتويات العلبة).
+2) 8 برومبتات لكريتيفز إعلانات Static بزوايا مختلفة (Pain Point، Before & After، السفر، حسبة التوفير، زاوية الهدية).
+حدّد النص العربي اللي هيتكتب جوه كل صورة بدقة وبلهجة مصرية طبيعية.</pre>
+      </div>
+    </section>
+
+    <!-- MODULE 5 -->
+    <section class="module" id="sec-landing">
+      <div class="module-header">
+        <div class="mod-num">05</div>
+        <div>
+          <h3>المرحلة 3: بناء الـ <span class="en">Landing Page</span> + <span class="en">Gap Audit</span> + حاسبة الـ <span class="en">CR</span></h3>
+          <p class="module-sub">إزاي كلود بنى الصفحة كاملة على EasyOrders، وإزاي طابقها مع ريفرنس منافس شغال بقاله 6 شهور.</p>
+        </div>
+      </div>
+
+      <h4 class="section-h4">الخطوة أ: البناء التلقائي من الصفر (وإيه اللي كلود بيسألك فيه؟)</h4>
+      <p>
+        كلود فتح EasyOrders لوحده، أضاف المنتج، كتب الوصف والأسئلة الشائعة، بس <strong>وقف وسألك في 4 حاجات حساسة</strong> عشان ما يألفش من دماغه: (1) سعر البيع والمشطوب (850 ج / 1,050 ج)، (2) هل فيه Bundle ولا قطعة واحدة بس؟ (3) تأكيد المتجر المفتوح، (4) رفع الصورة الرئيسية لأن المتجر لا يحفظ المنتج بدون صورة!
+      </p>
+
+      <h4 class="section-h4">التشريح الكامل للـ 7 أقسام اللي بتحول الزائر لمشتري:</h4>
+      <ol class="step-list">
+        <li><strong>تضخيم المشكلة (<span class="en">Problem Agitation</span>):</strong> "لسه بتستنى دورك عند الحلاق؟ دقنك بتبوظ بعد يومين، بتدفع فلوس تحديد كل أسبوع، مستني في طابور يوم الخميس".</li>
+        <li><strong>الحل المباشر:</strong> "الحلاق الشخصي بتاعك في البيت — تحديد احترافي في 5 دقايق".</li>
+        <li><strong>جدول الحسبة المالية ("احسبها معايا"):</strong> 24 مشوار حلاق في السنة + وقت الانتظار والمواصلات + دقن حلوة يومين بس vs تحديد كل يوم في 5 دقايق في البيت.</li>
+        <li><strong>الاستخدامات والمواصفات + Before &amp; After:</strong> رسم وتحديد خط الدقن، الشنب والسوالف، الرقبة، بطارية 120 دقيقة، Type-C، شفرة T-Blade.</li>
+        <li><strong>مصفوفة إزالة الخوف (<span class="en">Trust &amp; Risk Reversal</span>):</strong> معاينة قبل الاستلام + الدفع عند الاستلام + شحن مجاني + ضمان سنة ضد عيوب الصناعة.</li>
+        <li><strong>الأسئلة الشائعة من رسائل العملاء (<span class="en">Objection FAQ</span>):</strong>
+          <ul class="clean-list">
+            <li><em>"أنا أول مرة أحلق لنفسي هعرف؟"</em> ← أيوة، ابدأ بالمشط الـ 3 ملي وانزل واحدة واحدة، وشفرة T بتخلي التحكم سهل حتى للمبتدئ.</li>
+            <li><em>"ينفع أستخدمها وهي في الشاحن؟"</em> ← أيوة، بتشتغل بالسلك أو بدون سلك.</li>
+            <li><em>"لو ظهر فيها عيب؟"</em> ← عندك ضمان سنة ضد عيوب الصناعة.</li>
+            <li><em>"الأوردر بيوصل إمتى؟"</em> ← هنكلمك نأكد الأوردر وبعدها بيوصلك لحد باب البيت والشحن مجاني.</li>
+            <li><strong>نصيحة ذهبية:</strong> لو شغال على منتج بالفعل وبتجيلك أسئلة في الرسائل/الـ DMs، خدها وابعتها لكلود يحولها FAQ في اللاندينج بيدج!</li>
+          </ul>
+        </li>
+        <li><strong>محتويات العلبة ("هيوصلك إيه في العلبة") + زر طلب واضح ("إتمام الطلب / أضف للسلة").</strong></li>
+      </ol>
+
+      <h4 class="section-h4">الخطوة ب: مقارنة الريفرنس والـ <span class="en">Gap Audit</span> (مثال صفحة "بياع")</h4>
+      <p>
+        لو اللاندينج الأولى شكلها تقليدي، اطلب من كلود يطلعلك لينكات لاندينج بيدج لمنافسين شغالين بقالهم <strong>6 شهور+</strong> (لأن اللي شغال 6 شهور طبيعي بيحقق <span class="en">CR</span> عالي). ابعت اللينك لكلود وقوله: <em>"نفّذ نفس هيكل التحويل ده على منتجي وهويتي"</em>. في السيشن، لما راجعنا الصفحة لقينا إنها لسه مش زي الريفرنس، وكلود كشف الفجوة بدقة: <strong>"المنافس عنده صور جاليري Infographic (عرض التوفير + المميزات) بينما إنت عندك صورة واحدة سادة — ده أكبر فرق بين الصفحتين!"</strong> فكتب 4 برومبتات Infographic، نفذناهم في ChatGPT و Muse، ورفعهم كلود وظبط الصفحة.
+      </p>
+
+      <div class="callout warn">
+        <div class="callout-title">💡 ملاحظة مهمة من الـ Q&amp;A عن المنصة (Shopify vs EasyOrders) والـ A/B Testing</div>
+        الطريقة بتشتغل على <strong>Shopify أو EasyOrders أو أي CMS</strong>. جودة العملاء ونسب التسليم (اللي ممكن تنزل لـ 30% في منتجات أفلييت محروقة) بتعتمد على المنتج والعرض وجودة التأكيد مش المنصة لوحدها. واعمل دايماً <strong><span class="en">A/B Testing</span></strong> بين صفحتين هبوط: لو صفحة جابت أوردرين زيادة لكل 10 أوردرات = ربح صافي بدون جنيه إعلانات زيادة!
+      </div>
+
+      <div class="prompt-box">
+        <div class="prompt-head">
+          <span class="prompt-label">برومبت 3 — بناء لاندينج بيدج + Gap Audit مع ريفرنس منافس</span>
+          <button class="copy-btn" data-copy-target="prompt-lp">نسخ البرومبت</button>
+        </div>
+        <pre class="prompt-body" id="prompt-lp">افتح المتجر واضيف المنتج ده وابنيلي Landing Page من الصفر تطلع أعلى Conversion Rate (تغطي: المشكلة، الحل، جدول "احسبها معايا"، المواصفات، الضمانات، FAQ من اعتراضات العملاء، ومحتويات العلبة).
+السعر: [السعر] والمشطوب: [السعر المشطوب] — [قطعة واحدة / Bundle].
+بعد ما تخلص، قارن صفحتي بلينك صفحة المنافس دي [ضع اللينك] واعمل Gap Audit: قولي إيه اللي ناقص عندي في الهيكل أو صور الجاليري (Infographics) واكتبلي برومبتات الصور الناقصة عشان نرفعها ونعدل الصفحة بهوية براندي.</pre>
+      </div>
+
+      <!-- INTERACTIVE CALCULATOR 1: CR IMPACT -->
+      <div class="calc-panel" id="cr-calculator">
+        <h4>🧮 حاسبة أثر تحسين الـ <span class="en">Conversion Rate</span> (بدون صرف جنيه إعلانات زيادة!)</h4>
+        <div class="calc-grid">
+          <div class="field">
+            <label for="crVisitors">عدد الزوار اليومي للموقع</label>
+            <input type="number" id="crVisitors" value="1000" min="1" step="50" />
+          </div>
+          <div class="field">
+            <label for="crCurrent">معدل التحويل الحالي (%)</label>
+            <input type="number" id="crCurrent" value="1.0" min="0.1" max="100" step="0.1" />
+          </div>
+          <div class="field">
+            <label for="crNew">معدل التحويل بعد التحسين (%)</label>
+            <input type="number" id="crNew" value="1.5" min="0.1" max="100" step="0.1" />
+          </div>
+          <div class="field">
+            <label for="crAov">متوسط قيمة الأوردر AOV (جنيه)</label>
+            <input type="number" id="crAov" value="699" min="1" step="10" />
+          </div>
+        </div>
+        <div class="calc-results">
+          <div class="res-box">
+            <div class="res-lbl">الأوردرات الحالية / يوم</div>
+            <div class="res-val" id="resOldOrders">10</div>
+          </div>
+          <div class="res-box">
+            <div class="res-lbl">الأوردرات الجديدة / يوم</div>
+            <div class="res-val" id="resNewOrders">15</div>
+          </div>
+          <div class="res-box">
+            <div class="res-lbl">الزيادة المجانية / شهر</div>
+            <div class="res-val" id="resExtraMonth">+150 أوردر</div>
+          </div>
+          <div class="res-box">
+            <div class="res-lbl">مبيعات إضافية / شهر (بصفر إعلانات)</div>
+            <div class="res-val" id="resExtraRev">104,850 ج</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MODULE 6 -->
+    <section class="module" id="sec-video">
+      <div class="module-header">
+        <div class="mod-num">06</div>
+        <div>
+          <h3>المرحلة 4: إنتاج فيديوهات الـ AI و الـ <span class="en">UGC</span> الواقعي بـ <span class="en">Muse</span></h3>
+          <p class="module-sub">الـ 4 سكريبتات الحقيقية اللي اتولّدت في السيشن + بروتوكول إصلاح عيوب الصوت وحركة الشفايف.</p>
+        </div>
+      </div>
+
+      <p>أهم مبدأ قاله كلود في السيشن: <strong>فيديوهات الـ UGC اللي تبان متصورة بموبايل عادي بدون إنتاج ولا مونتاج تقيل هي أكتر شكل بيقتنع بيه العميل المصري</strong>. دي الـ 4 فيديوهات اللي اتعملت عملياً في السيشن:</p>
+
+      <div class="script-quote">
+        <strong>1) فيديو Problem-Solution مباشر:</strong>
+        "دقنك باظت ومش فاضي تروح للحلاق؟ مع ماكينة VGR V-071 هتظبط دقنك بنفسك في البيت في دقايق. شفرة T بتديك خط مظبوط من أول مرة، ولاسلكية يعني حرية في الحركة. اطلبها دلوقتي والدفع عند الاستلام."
+      </div>
+      <div class="script-quote">
+        <strong>2) فيديو Close-Up Feature Demo (تركيز على الميزة):</strong>
+        "شوف الخط ده! شفرة T بتحدد الدقن والسوالف والرقبة بدقة الحلاقين — VGR V-071، الدقة اللي بتدور عليها."
+      </div>
+      <div class="script-quote">
+        <strong>3) فيديو UGC مصري واقعي (Face-to-Camera):</strong>
+        "بص كده دقني كانت عاملة إزاي! دي الماكينة بتاعة VGR، يعني لاسلكية وفيها الشفرة دي على شكل T — تعال أوريك! شايف الخط؟ بقيت أظبط دقني لوحدي بدل ما أستنى الدور عند الحلاق."
+      </div>
+      <div class="script-quote">
+        <strong>4) فيديو Unboxing (فتح علبة):</strong>
+        "تعالوا نفتح العلبة دي — دي الماكينة، تقيلة شوية ومسكتها حلوة في الإيد. دي الأمشاط، ودي وصلة الشحن USB يعني بتتشحن من شاحن الموبايل العادي، ودي الشفرة شكلها T..."
+      </div>
+
+      <div class="callout warn">
+        <div class="callout-title">🛠️ بروتوكول المراجعة البشرية وعلاج العيوب (Video QA Protocol)</div>
+        <ul class="clean-list" style="margin-bottom:0;">
+          <li><strong>مسكة المنتج مقلوبة:</strong> في أول فيديو الماكينة كانت ممسوكة بالمقلوب ← ارجع عدّل البرومبت واكتب صراحة اتجاه الشفرة ومسكة اليد.</li>
+          <li><strong>حركة الشفايف مش متطابقة (<span class="en">Lip-sync drift</span>):</strong> لو الوش واقعي (مش بلاستيك) بس الصوت سابق/متأخر ← خد اللقطات البصرية كـ B-roll وسجل/ولّد <strong>Voiceover منفصل</strong> وركبهم في المونتاج.</li>
+          <li><strong>صوت المنتج عامل دوشة:</strong> في فيديو الـ Unboxing صوت الماكينة كان عالي ومزعج ← اكتم صوت الكليب الأصلي وركّب Voiceover نظيف فوقه، وبعدين دخّل الفيديوهات التست والوينر يكمل.</li>
+        </ul>
+      </div>
+
+      <div class="prompt-box">
+        <div class="prompt-head">
+          <span class="prompt-label">برومبت 4 — توليد برومبتات فيديوهات UGC مصرية لـ Muse</span>
+          <button class="copy-btn" data-copy-target="prompt-video">نسخ البرومبت</button>
+        </div>
+        <pre class="prompt-body" id="prompt-video">اكتبلي 4 برومبتات لفيديوهات على Muse لمنتجي [اسم المنتج ومواصفاته] بأسلوب UGC مصري واقعي تماماً:
+- تصوير موبايل طبيعي بإضاءة منزلية (بدون مونتاج تقيل ولا شكل إعلان تلفزيوني ولا وش بلاستيك).
+- 4 فورمات: (1) Problem-Solution سريع، (2) Close-Up على أقوى ميزة، (3) شهادة عميل مصري قبل/بعد، (4) Unboxing بيوري جودة الخامة ومحتويات العلبة.
+- اكتب السكريبت بالعامية المصرية القصيرة مع وصف دقيق لوضعية مسكة المنتج عشان ما يطلعش مقلوب.</pre>
+      </div>
+    </section>
+
+    <!-- MODULE 7 -->
+    <section class="module" id="sec-launch">
+      <div class="module-header">
+        <div class="mod-num">07</div>
+        <div>
+          <h3>المرحلة 5: كتابة الـ <span class="en">Ad Copy</span> + ربط <span class="en">Pixel/CAPI</span> + إطلاق الحملة تلقائياً</h3>
+          <p class="module-sub">إزاي كلود بيفتح Ads Manager ويرفع الصور والكوبي واللينك لوحده، وإيه الـ 5 عوائق اللي بتوقفه.</p>
+        </div>
+      </div>
+
+      <p>
+        في نفس شات كلود (عشان عارف كل تفاصيل المنتج والمنافسين)، اطلب منه <strong>3 لـ 5 <span class="en">Ad Copies</span></strong> عشان تجيب أعلى <span class="en">CTR</span> و <span class="en">CR</span>. كل نسخة بتطلع كاملة: <span class="en">Primary Text</span> + <span class="en">Headline</span> + <span class="en">Description</span> عبر زوايا: (1) <strong>الألم والانتظار</strong>، (2) <strong>Short &amp; Punchy</strong>، (3) <strong>حسبة الفلوس السنوية</strong>، (4) <strong>زاوية الهدية</strong>.
+      </p>
+
+      <div class="prompt-box">
+        <div class="prompt-head">
+          <span class="prompt-label">برومبت 5 — 5 Ad Copies + إطلاق الحملة تلقائياً على Meta Ads Manager</span>
+          <button class="copy-btn" data-copy-target="prompt-launch">نسخ البرومبت</button>
+        </div>
+        <pre class="prompt-body" id="prompt-launch">إنت عرفت كل تفاصيل المنتج والمنافسين.
+أولاً: اكتبلي 5 Ad Copies (Primary Text + Headline + Description) بلهجة مصرية طبيعية بدون إيموجيز مبالغ فيها، موزعين على زوايا: (الألم، Short & Punchy، حسبة التوفير، الثقة والضمان، زاوية الهدية).
+ثانياً: افتح Meta Ads Manager على الحساب الإعلاني [اسم الحساب]، اختار صفحة [اسم الصفحة]، اعمل حملة Sales بميزانية [الميزانية اليومية] للـ Ad Set، اربطها بـ Pixel المتجر، ارفع الكريتيفز والـ Ad Copies ولينك اللاندينج بيدج، وسيبها Draft عشان أراجعها قبل الـ Publish.</pre>
+      </div>
+
+      <h4 class="section-h4">خطوات حل عطل البيكسل يدوياً (كما حدث لايف في السيشن):</h4>
+      <p>لو الحساب الإعلاني جديد ومفيش Pixel مربوط، ميتا بترفض إنشاء الـ <span class="en">Ad Set</span>. الحل السريع في دقيقتين:</p>
+      <ol class="step-list">
+        <li>افتح <span class="en">Events Manager</span> ← أنشئ <span class="en">Pixel</span> جديد باسم المنتج/المتجر ← اختار <span class="en">Set up manually</span>.</li>
+        <li>انسخ الـ <strong>Pixel ID</strong> + ولّد <strong><span class="en">Conversions API Access Token</span></strong>.</li>
+        <li>افتح إعدادات التتبع (<span class="en">Tracking</span>) في متجرك (Shopify / EasyOrders) ← الصق الـ Pixel ID والـ Access Token واحفظ ← ارجع قول لكلود: "ربطتلك البيكسل، كمّل".</li>
+      </ol>
+
+      <!-- INTERACTIVE PRE-FLIGHT CHECKLIST -->
+      <div class="checklist-box" id="preflightBox">
+        <div class="checklist-head">
+          <h4 style="margin:0;">✅ قائمة فحص ما قبل الإطلاق (Pre-Flight Launch Gate)</h4>
+          <span class="badge" id="preflightStatus">0 / 5 جاهز</span>
+        </div>
+        <label class="check-item"><input type="checkbox" class="preflight-check" /><span><strong>1. وسيلة الدفع (<span class="en">Payment Method</span>):</strong> مربوطة على الحساب الإعلاني (بدونها الحملة تفضل Draft فقط).</span></label>
+        <label class="check-item"><input type="checkbox" class="preflight-check" /><span><strong>2. البيكسل والـ CAPI (<span class="en">Meta Pixel + Access Token</span>):</strong> متكريت ومربوط وشغال في إعدادات المتجر.</span></label>
+        <label class="check-item"><input type="checkbox" class="preflight-check" /><span><strong>3. تحديد الميزانية صراحةً (<span class="en">Explicit Budget</span>):</strong> كلود بيرفض يخمن ميزانية — حدد الرقم بنفسك (مثلاً 300 ج/يوم).</span></label>
+        <label class="check-item"><input type="checkbox" class="preflight-check" /><span><strong>4. تحديد الصفحة (<span class="en">Facebook Page</span>):</strong> حدد اسم الصفحة الرسمية اللي هينزل عليها الإعلانات.</span></label>
+        <label class="check-item"><input type="checkbox" class="preflight-check" /><span><strong>5. مراجعة الكوبي البشرية:</strong> إزالة أي صياغة AI مصطنعة أو إيموجيز زائدة قبل الـ Publish.</span></label>
+      </div>
+    </section>
+
+    <!-- MODULE 8 -->
+    <section class="module" id="sec-testing">
+      <div class="module-header">
+        <div class="mod-num">08</div>
+        <div>
+          <h3>المرحلة 6: استراتيجيات التستينج + قاعدة <span class="en">2× CPP</span> + سر الـ <span class="en">Flexible Ads</span></h3>
+          <p class="module-sub">الفرق بين تستينج الكريتيف وتستينج المنتج (أفلييت / SKU جديد)، وسر استخراج الوينر من Page Posts.</p>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>البند</th>
+              <th>النظام 1: تستينج كريتيفز (براند / منتج شغال)</th>
+              <th>النظام 2: تستينج منتج سريع (سيولة محدودة / SKU جديد)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>الهيكل</strong></td>
+              <td><span class="en">1 Ad Set = 3 Ads</span></td>
+              <td>حملة <span class="en">ABO</span> ← <strong>1 Flexible Ad (<span class="en">Flex</span>)</strong> جواه <strong>10 صور كريتيفز</strong>.</td>
+            </tr>
+            <tr>
+              <td><strong>الميزانية اليومية</strong></td>
+              <td><strong>2× Target CPP</strong> (مثلاً لو CPP = 300 ج ← حط 600 ج/يوم).</td>
+              <td>حوالي <strong>500 ج/يوم</strong> للـ Ad Set.</td>
+            </tr>
+            <tr>
+              <td><strong>مدة التقييم</strong></td>
+              <td><strong>3 أيام</strong> كحد أقصى (مع إيقاف مبكر).</td>
+              <td>إشارة سريعة لمعرفة هل المنتج جايب CPP منطقي (مثلاً 40–50 ج في الأفلييت) ولا محروق.</td>
+            </tr>
+            <tr>
+              <td><strong>قاعدة الإيقاف (<span class="en">Kill Rule</span>)</strong></td>
+              <td>لو إعلان واحد صرف <strong>2× CPP</strong> (مثلاً 600–700 ج) وجاب <strong>0 مبيعات</strong> ← اقفله فوراً وسيب الإعلانين التانيين يكملوا!</td>
+              <td>لا تخلط منتجين في نفس الـ Flex أبداً (رابط واحد ومنتج واحد لكل Ad Set — لمنتج تاني اعمل <span class="en">Duplicate</span> للـ Ad Set).</td>
+            </tr>
+            <tr>
+              <td><strong>استخراج الوينر والتوسع</strong></td>
+              <td>خد الوينر وولّد منه 5 برومبتات جديدة.</td>
+              <td><strong>سر الـ Flex:</strong> الـ Breakdown مش بيظهر الوينر! ادخل على <strong><span class="en">Page Posts / Ad Posts</span></strong> جوه Ads Manager وشوف البوست الأعلى تفاعلاً ومبيعات ← بعدين افصل الوينرز 3 في كل Ad Set (بـ 300 ج/يوم).</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout">
+        <div class="callout-title">🤔 ليه <span class="en">Flexible Ad</span> أفضل من <span class="en">Single Image</span> بـ 10 صور؟ (من الـ Q&amp;A)</div>
+        في الـ Single Image تقدر تشوف الـ Breakdown عادي، لكن الـ <strong>Flex أفضل</strong> لأنه بيجرب الـ 10 صور كـ <strong>Single Image</strong> وكـ <strong>Carousel</strong> تلقائياً ويديك أسرع نتيجة بأقل سيولة! وملاحظة مهمة عن منتجات الـ Affiliate: لو المنتج مش Winner وحصري، أغلبه بيبقى محروق فحتى لو جاب مبيعات ممكن يحرقك في <strong>نسب التسليم</strong>.
+      </div>
+
+      <!-- INTERACTIVE CALCULATOR 2: 2x CPP TESTING -->
+      <div class="calc-panel" id="cpp-calculator">
+        <h4>🧮 حاسبة ميزانية التستينج وقرار الإيقاف (<span class="en">2× CPP Rule</span>)</h4>
+        <div class="calc-grid">
+          <div class="field">
+            <label for="cppTarget">الـ Target CPP بتاعك (جنيه)</label>
+            <input type="number" id="cppTarget" value="193" min="1" step="5" />
+          </div>
+          <div class="field">
+            <label for="adSpend">صرف الإعلان الحالي (جنيه)</label>
+            <input type="number" id="adSpend" value="400" min="0" step="10" />
+          </div>
+          <div class="field">
+            <label for="adPurchases">عدد المبيعات (Purchases)</label>
+            <input type="number" id="adPurchases" value="0" min="0" step="1" />
+          </div>
+        </div>
+        <div class="calc-results">
+          <div class="res-box">
+            <div class="res-lbl">ميزانية الـ Ad Set اليومية (2× CPP)</div>
+            <div class="res-val" id="resDailyBudget">386 ج</div>
+          </div>
+          <div class="res-box">
+            <div class="res-lbl">أقصى صرف للتست (3 أيام)</div>
+            <div class="res-val" id="resThreeDay">1,158 ج</div>
+          </div>
+          <div class="res-box">
+            <div class="res-lbl">الـ CPP الفعلي للإعلان</div>
+            <div class="res-val" id="resActualCpp">لا توجد مبيعات</div>
+          </div>
+        </div>
+        <div class="decision-banner kill" id="cppDecision">
+          🔴 قرار فوري (KILL): الإعلان صرف أكتر من ضعف الـ CPP (386 ج) وجاب 0 مبيعات — اقفله فوراً وسيب باقي إعلانات الـ Ad Set تشتغل.
+        </div>
+      </div>
+    </section>
+
+    <!-- MODULE 9 -->
+    <section class="module" id="sec-ai-audit">
+      <div class="module-header">
+        <div class="mod-num">09</div>
+        <div>
+          <h3>مراجعة الحساب بالـ AI (<span class="en">AI Account Audit</span>) وحلقة مضاعفة الوينر</h3>
+          <p class="module-sub">إزاي تدي كلود الـ Benchmarks بتاعتك عشان يحلل آخر 7 أو 30 يوم ويولّدلك 5 بدائل لأي كريتيف وينر.</p>
+        </div>
+      </div>
+
+      <p>ابعت لكلود أرقام الـ <span class="en">Benchmarks</span> الخاصة ببراندك (مثال من السيشن: <strong>CPC = 1.5 ج، CPM = 90 ج، CTR = 3%، Target CPP</strong>) واطلب منه تحليل الحساب آخر 7 أو 30 يوم:</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>إشارة الأرقام</th>
+              <th>التشخيص</th>
+              <th>القرار التنفيذي</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="en">CPM</span> عالي لوحده</td>
+              <td>منافسة سوق/مزاد</td>
+              <td>مفيش طريقة مباشرة لخفض الـ CPM — راقب الـ CTR والـ CPP قبل ما تحكم.</td>
+            </tr>
+            <tr>
+              <td><span class="en">CTR</span> واطي + <span class="en">CPM</span> عالي + 0 مبيعات</td>
+              <td>الكريتيف ضعيف ومش بيشد الانتباه</td>
+              <td><strong>اقفله فوراً (KILL)</strong> وانقل الميزانية لغيره.</td>
+            </tr>
+            <tr>
+              <td>كريتيف <span class="en">Winner</span> (مثلاً Before &amp; After)</td>
+              <td>الزاوية والفورمات ضاربين مع الجمهور</td>
+              <td><strong>Winner Iteration Loop:</strong> اطلب من كلود <strong>5 برومبتات جديدة</strong> بنفس روح الوينر ← نفذهم في ChatGPT/Muse ← دخلهم تست جديد ← كرر الحلقة!</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="prompt-box">
+        <div class="prompt-head">
+          <span class="prompt-label">برومبت 6 — مراجعة الحساب آخر 7/30 يوم ومضاعفة الوينر ×5</span>
+          <button class="copy-btn" data-copy-target="prompt-ai-audit">نسخ البرومبت</button>
+        </div>
+        <pre class="prompt-body" id="prompt-ai-audit">دي أرقام الـ Benchmarks الخاصة ببراند [اسم البراند]:
+- Target CPP: [الرقم] ج | CPC: [الرقم] ج | CPM: [الرقم] ج | CTR: [الرقم]%.
+حلّل الحساب الإعلاني آخر [7 / 30] يوم وطلّعلي:
+1) كل الـ Ad Sets والإعلانات الأقل من التارجت وسبب ضعفها (CPM عالي ولا CTR واطي ولا مشكلة Landing Page).
+2) قائمة الإعلانات اللي لازم تتقفل فوراً (KILL).
+3) قائمة الـ Winner Creatives، واكتبلي 5 برومبتات جديدة لكل Winner عشان أبعتها لـ ChatGPT و Muse وأعمل Iterations جديدة للتست.</pre>
+      </div>
+    </section>
+
+    <!-- PART 2 BANNER -->
+    <div class="part-banner">
+      <div>
+        <h2>الجزء الثاني: الأوديتنج الشامل للبزنس والأكونت (<span class="en">Full-Funnel Audit</span>)</h2>
+        <p>التفريغ الكامل لسيشن م. محمود (مجتمع المنصورة) — نظام الـ 8 ركائز، كل الكيس ستاديز الحقيقية، شيت التقييم، و CRO الـ 7 صفحات.</p>
+      </div>
+      <span class="part-tag">8 ركائز تشخيصية</span>
+    </div>
+
+    <!-- MODULE 10 -->
+    <section class="module" id="sec-audit-core">
+      <div class="module-header">
+        <div class="mod-num">10</div>
+        <div>
+          <h3>فلسفة الأوديتنج (البوصلة) + الركيزة 1: بريف المالك + حالة <span class="en">Offline-to-Online</span></h3>
+          <p class="module-sub">ليه حتى البراند الكسبان بيخسر أضعاف ربحه بدون أوديت؟ وإزاي تدخل أول ميتنج مع صاحب البزنس؟</p>
+        </div>
+      </div>
+
+      <div class="callout success">
+        <div class="callout-title">🧭 كيس ستادي حقيقية: براند الفاشن في عُمان (كسبان لكنه خسران 3×–4× ربحه!)</div>
+        براند ملابس أطفال في السوق العماني كان الـ <span class="en">Break-Even ROAS</span> بتاعه <strong>3.5×</strong> وهو محقق على الداشبورد <strong>6× ROAS</strong> والراجل مبسوط! لما م. محمود عمل أوديت على كل قسم، لقى إن نسبة التحويل من <span class="en">Content View → Add to Cart</span> كانت <strong>2% بس</strong> (والمتوسط في الفاشن 5–6%) — يعني فيه <strong>4% واقعين</strong>! السبب؟ صفحة المنتج <strong>مفيهاش جدول مقاسات (<span class="en">Size Chart</span>)</strong>! حل تفصيلة واحدة زي دي يضاعف المبيعات <strong>3 لـ 4 أضعاف</strong>!
+      </div>
+
+      <h4 class="section-h4">الفرق بين الميديا باير الجونيور والمحترف في أول ميتنج:</h4>
+      <div class="grid-2">
+        <div class="sub-card">
+          <h4>❌ الجونيور (الشغل بالأهواء)</h4>
+          <p>أول ما يكلمه صاحب بزنس يقوله: "يلا بينا نتيست ونشوف وهنسكيل ونكسر الدنيا!" — بيحرق فلوس التست عشوائي وبيتوتر لما حملة تضرب منه.</p>
+        </div>
+        <div class="sub-card">
+          <h4>✅ المحترف (الـ Data-Driven)</h4>
+          <p>بيطلب كول بريف + Access على الحسابات والمتجر، ويطلعله <strong>تقرير أوديت مفصل</strong> بالمشاكل والفرص بالأرقام (منتجات بتبيع لوحدها، فجوة شحن، ضعف تأكيد، كريتيف وينر) ← بيكسب ثقة العميل وأعلى راتب/أتعاب وأعصاب هادية!</p>
+        </div>
+      </div>
+
+      <h4 class="section-h4">الركيزة 1 — أسئلة بريف صاحب البزنس (Meeting 1 Questionnaire):</h4>
+      <ol class="step-list">
+        <li><strong>أصل المنتج والـ <span class="en">USP</span>:</strong> هل المنتج طالع من ريسيرش ومشكلة حقيقية (مثال: منتج تساقط شعر طبيعي بديل الـ <span class="en">Minoxidil</span> اللي بيطلع شعر في الوش ويسبب تساقط بعد التوقف) ولا تقليد وخلاص؟</li>
+        <li><strong>التسعير والـ <span class="en">COGS</span> والـ <span class="en">Break-Even ROAS</span>:</strong> اعرف التكاليف الحقيقية والهامش بنفسك. مثال: متوسط Break-Even في الـ Cosmetics من <strong>2.5 إلى 3.0×</strong> — لو المالك قالك الـ Break-Even بتاعي 5× ← فيه مشكلة حسابات أو تسعير فادحة!</li>
+        <li><strong>متوسط السعر، القنوات الشغالة، وعمر البراند:</strong> شغال بقاله قد إيه وعلى أنهي منصات؟</li>
+        <li><strong>أفضل فترة تاريخية vs فترة الدروب:</strong> إمتى كان الكيرف طالع وإمتى وقع عشان نقارن بينهم؟</li>
+        <li><strong>المنافسون وميزتك التنافسية:</strong> مين منافسينك وإيه الفاليو المختلفة اللي بتقدمها لو المنتج متشابه؟</li>
+        <li><strong>الشكاوى والتقييمات السلبية:</strong> العملاء بيشتكوا من إيه في الجودة أو التوصيل أو الرسائل؟</li>
+        <li><strong>فحص عقلية صاحب البزنس (<span class="en">Mindset Check</span>):</strong> هل متقبل إن المشكلة ممكن تكون في المنتج/التسعير/التغليف، ولا رابط كل حاجة بالإعلانات وبيعمل ضغط عصبي قاتل؟</li>
+      </ol>
+
+      <div class="callout accent">
+        <div class="callout-title">🆕 حالة خاصة (سؤال مصطفى في السيشن): عميل جديد Offline-to-Online بدون حساب إعلاني سابق!</div>
+        لو العميل منتشر أوفلاين بقاله سنين ولسه بيبدأ أونلاين من الصفر: (1) حدد الـ <strong>Break-Even ROAS</strong> بدقة من أرقامه، (2) استعين بـ <strong>خبرتك في نفس الـ Industry</strong> (زي Cosmetics 2.5–3.0×) و<strong>بيانات المنافسين</strong> في السوق، (3) اسحب من صاحب البزنس <strong>داتا الأوفلاين</strong> (أكثر المنتجات مبيعاً، أسئلة العملاء، متوسط الفاتورة)، (4) أطلق التست المنظم لبناء داتا حقيقية تبني عليها!
+      </div>
+
+      <p><strong>قاعدة ترتيب الأولويات عند وجود مشاكل كثيرة:</strong> ابدأ دائماً بالمشكلة اللي تحقق <strong>أسرع نتيجة ومبيعات ملموسة</strong> عشان صاحب البزنس يحس بالأمان ويديك مساحة تتحرك وتحل باقي المشاكل.</p>
+    </section>
+
+    <!-- MODULE 11 -->
+    <section class="module" id="sec-audit-perf">
+      <div class="module-header">
+        <div class="mod-num">11</div>
+        <div>
+          <h3>الركيزة 2 و 3: أوديت البرفورمنس والأد أكونت + <span class="en">Andromeda Segmentation</span> + قاعدة الـ 3–7 شرائح</h3>
+          <p class="module-sub">إزاي تقرأ الداشبورد زي المحققين، وتوفر مئات الآلاف في ميزانية الكونتنت والـ Media Buying.</p>
+        </div>
+      </div>
+
+      <h4 class="section-h4">الركيزة 2 — أوديت البرفورمنس العام (<span class="en">Best Period vs. Drop Period</span>):</h4>
+      <ul class="clean-list">
+        <li><strong>شرط المقارنة العادلة:</strong> اجمع أرقام المتجر مع Ads Manager في شيت واحد (<span class="en">ROAS, CPO, AOV, CR, CTR, CPM, Frequency</span>) وقارن فترتين متكافئتين — <strong>ممنوع مقارنة شهر Black Friday أو عروض بشهر عادي!</strong></li>
+        <li><strong>كيس تشخيص الـ AOV:</strong> الـ ROAS نزل من <strong>10× إلى 5×</strong> بينما الـ CPO ثابت عند <strong>200 ج</strong> ← السبب إن المنتج الغالي خلص فنزل الـ AOV من <strong>2,000 ج لـ 1,000 ج</strong> (الحل في المنتجات والـ Bundles مش في تغيير الإعلان!).</li>
+        <li><strong>كيس الداشبورد الحقيقية المعروضة في السيشن:</strong> الـ AOV طلع من <strong>3,000 لـ 6,000 ج</strong>، لكن الـ CR وقع، الـ Frequency طلع من <strong>6 لـ 8</strong>، الـ CPM نط من <strong>115 لـ 190 ج</strong>، والـ CPO انفجر من <strong>500 لـ 900 ج</strong> ← التشخيص: إجهاد جمهور (نفس الشخص شاف الإعلان 8 مرات ومش بيشتري) + نقص ثقة (<span class="en">Trust Content</span>) + حاجة لضخ <span class="en">Cold Audience</span> جديد.</li>
+      </ul>
+
+      <h4 class="section-h4">الركيزة 3 — أوديت الحساب الإعلاني (<span class="en">Ad Account Audit</span>):</h4>
+      <ol class="step-list">
+        <li><strong>التتبع أولاً (<span class="en">Tracking &amp; Pixel</span>):</strong> "ما بُني على باطل فهو باطل" — تأكد من ربط البيكسل والـ CAPI تلقائياً مع Shopify/المتجر قبل قراءة أي رقم.</li>
+        <li><strong>إعداد <span class="en">Audience Segmentation</span> (متطلب Meta Andromeda):</strong> ادخل على <span class="en">Advertising Settings → Audience Segments</span> وعرّف لميتا:
+          <ul class="clean-list">
+            <li><span class="en">Engaged Customers</span>: زوار الموقع آخر <strong>180 يوم</strong>.</li>
+            <li><span class="en">Existing Customers</span>: المشترين آخر <strong>90 إلى 730 يوم</strong>.</li>
+            <li>بعدها اعمل <span class="en">Breakdown by Audience Segments</span> عشان تكشف هل ميتا بتصرف على عملاء جدد ولا بتحرق ميزانيتك على نفس الناس القديمة!</li>
+          </ul>
+        </li>
+        <li><strong>فحص الهيكل والـ Bidding والـ Exclusions:</strong> راجع نوع المزايدة (<span class="en">Highest Volume</span> vs <span class="en">Bid/CPA/ROAS Cap</span>) والـ <span class="en">Overlap</span>. وافتكر: <strong>مفيش حاجة اسمها "ميتا ما بتجيبش مبيعات"!</strong> ميتا بتوصل خلطتك (المنتج + العرض + الكريتيف) للناس — لو مش جايب مبيعات راجع: هل عملت Exclusions خنقت الجمهور؟ هل الميزانية قليلة جداً؟ هل الكريتيف ضعيف؟</li>
+        <li><strong>كيس توفير 300,000 ج/شهر في أوديت الكونتنت:</strong> براند بيصرف 4 مليون ج/شهر إعلانات (بيبيع 15–16 مليون) وكان بيصرف <strong>600,000 ج/شهر</strong> على بلوجرز وكونتنت نصهم بيطلع وحش. لما أخصائي كوبي/برفورمنس عمل أوديت على <strong>نقطة خروج المشاهد في الفيديو</strong> وعدّل منتصف الفيديوهات اللي بتوقع ورجعها وينرز، وفّر على البراند <strong>300,000 ج شهرياً</strong> بنفس القدرة البيعية وأعلى!</li>
+      </ol>
+
+      <div class="callout accent">
+        <div class="callout-title">🚀 قاعدة الـ 3 إلى 7 شرائح (<span class="en">Micro-Segments Scaling Rule</span>)</div>
+        البراند اللي بيخاطب شريحة واحدة بيخبط في سقف ومش بيعرف يعمل Scaling، والبراند اللي بيخاطب الـ Mass Market كلامه بيكون باهت! قسّم جمهورك لـ <strong>3 إلى 7 شرائح صغيرة</strong> ولكل شريحة متحدث وزاوية شبهها:<br />
+        <strong>مثال السيشن (المكملات الغذائية):</strong> (1) بتوع الجيم ← محتوى طاقة وأداء بدني. (2) الأمهات ← دكتور بيكلمهم بأسلوب طبي مطمئن. (3) شغالين أونلاين من البيت ← شخص شبههم باين عليه الإرهاق ونقص التعرض للشمس والفيتامينات!
+      </div>
+    </section>
+
+    <!-- MODULE 12 -->
+    <section class="module" id="sec-audit-prod">
+      <div class="module-header">
+        <div class="mod-num">12</div>
+        <div>
+          <h3>الركيزة 4 و 5: أوديت المنتجات والمخزون + <span class="en">CRO</span> الـ 7 صفحات + حاسبة الفانل</h3>
+          <p class="module-sub">إزاي تكتشف الوينرز المخفيين وتصفي الراكد وتفحص كل صفحة في متجرك من الهوم لحد تأكيد الأوردر.</p>
+        </div>
+      </div>
+
+      <h4 class="section-h4">الركيزة 4 — أوديت المنتجات والمخزون (<span class="en">Product &amp; Inventory Matrix</span>):</h4>
+      <ul class="clean-list">
+        <li><strong>تقسيم المنتجات (Best / Mid / Worst) + <span class="en">Units per Order</span>:</strong> قارن أفضل فترة بأضعف فترة عشان تشوف هل الدروب سببه نفاد ستوك منتج وينر؟</li>
+        <li><strong>كيس الوينر المخفي (<span class="en">Hidden Organic Winner</span>):</strong> براند كان بيصرف ميزانية إعلاناته على الـ <span class="en">Two-Pieces</span> وهي أقل مبيعاً، بينما الـ <span class="en">Sets</span> بتبيع لوحدها أورجانيك! تحويل الميزانية للمنتج اللي بيتحرك لوحده شال البزنس شهور.</li>
+        <li><strong>قاعدة الـ 4–5 منتجات وينر:</strong> للوصول لـ 2,000–3,000 أوردر/شهر بدون انهيار، لازم عندك 4–5 منتجات وينر يشيلوا بعض لو واحد خلص أو اتحرق.</li>
+        <li><strong>البندلز وتصفية البضاعة الراكدة (<span class="en">Dead Stock</span>):</strong> لو منتجك بـ 200 ج والـ CPO وصل 100 ج (ROAS 2×)، اعمل <span class="en">Bundle / Kit</span> بـ 350 ج ترفع الـ ROAS وتصفّي معاها الراكد — أو اعمل <span class="en">Flash Sale</span> بخصم 60% في البلاك فرايداي عشان تحول الفلوس المركونة لستوك من الوينر!</li>
+      </ul>
+
+      <h4 class="section-h4">الركيزة 5 — <span class="en">CRO Checklist</span> للـ 7 صفحات (من شيت م. محمود):</h4>
+      <div class="grid-3">
+        <div class="sub-card">
+          <h4>1) Home &amp; Category</h4>
+          <p>سرعة التحميل، وضوح الـ UI/UX، سهولة الفلترة، إبراز الـ Best Sellers والعروض فوراً.</p>
+        </div>
+        <div class="sub-card">
+          <h4>2) Product &amp; Landing Page</h4>
+          <p>صور حقيقية وفيديوهات، وصف مبني على الفاليو، وضوح السعر، جدول مقاسات/استخدام، Reviews، ضمانات واضحة، ووضوح أزرار <span class="en">Buy Now / Add to Cart</span>.</p>
+        </div>
+        <div class="sub-card">
+          <h4>3) Cart, Checkout &amp; Confirmation</h4>
+          <p>عدم مفاجأة العميل بشحن عالي، فورم قصيرة، <strong>تريك زر واتساب</strong> أو <strong>مكالمة الـ Abandoned Checkouts</strong> لمعرفة سبب عدم الشراء، وتأكيد واضح للأوردر.</p>
+        </div>
+      </div>
+
+      <p><strong>أدوات القياس الإلزامية:</strong> <strong><span class="en">Microsoft Clarity</span></strong> (Heatmaps وتسجيلات جلسات) + <strong><span class="en">Google Analytics</span></strong> (راقب <span class="en">Bounce Rate</span> فوق 60–70%، <span class="en">Session Duration</span>، و <span class="en">Pages per Session</span>).</p>
+
+      <!-- INTERACTIVE CALCULATOR 3: FUNNEL & BREAK-EVEN DIAGNOSTIC -->
+      <div class="calc-panel" id="funnel-calculator">
+        <h4>🧮 حاسبة تشخيص فجوات الفانل والـ <span class="en">Break-Even ROAS</span></h4>
+        <div class="calc-grid">
+          <div class="field">
+            <label for="fClicks">Link Clicks (النقرات)</label>
+            <input type="number" id="fClicks" value="1000" min="1" step="50" />
+          </div>
+          <div class="field">
+            <label for="fViews">Page / Content Views</label>
+            <input type="number" id="fViews" value="650" min="0" step="10" />
+          </div>
+          <div class="field">
+            <label for="fAtc">Add to Cart (إضافة للسلة)</label>
+            <input type="number" id="fAtc" value="20" min="0" step="1" />
+          </div>
+          <div class="field">
+            <label for="fPurch">Purchases (المبيعات)</label>
+            <input type="number" id="fPurch" value="8" min="0" step="1" />
+          </div>
+          <div class="field">
+            <label for="fPrice">سعر البيع / AOV (جنيه)</label>
+            <input type="number" id="fPrice" value="699" min="1" step="10" />
+          </div>
+          <div class="field">
+            <label for="fCogs">إجمالي التكلفة قبل الإعلان (COGS+شحن)</label>
+            <input type="number" id="fCogs" value="350" min="0" step="10" />
+          </div>
+        </div>
+        <div class="calc-results">
+          <div class="res-box">
+            <div class="res-lbl">معدل الوصول (Clicks → Views)</div>
+            <div class="res-val" id="resLoadRate">65.0%</div>
+          </div>
+          <div class="res-box">
+            <div class="res-lbl">معدل السلة (Views → ATC)</div>
+            <div class="res-val" id="resAtcRate">3.1%</div>
+          </div>
+          <div class="res-box">
+            <div class="res-lbl">إتمام الشراء (ATC → Purchase)</div>
+            <div class="res-val" id="resCloseRate">40.0%</div>
+          </div>
+          <div class="res-box">
+            <div class="res-lbl">الـ Break-Even ROAS</div>
+            <div class="res-val" id="resBeRoas">2.00×</div>
+          </div>
+        </div>
+        <div class="decision-banner keep" id="funnelDiagnosis">
+          🔎 التشخيص: راجع الأرقام أعلاه لمعرفة نقطة الاختناق الأهم في الفانل.
+        </div>
+      </div>
+    </section>
+
+    <!-- MODULE 13 -->
+    <section class="module" id="sec-audit-ops">
+      <div class="module-header">
+        <div class="mod-num">13</div>
+        <div>
+          <h3>الركائز 6 و 7 و 8: السوشيال + الأوبريشن والتغليف + الريتنشن والـ <span class="en">LTV</span> + شيت التقييم التفاعلي</h3>
+          <p class="module-sub">كيس براند الكوزمتكس (400k ← 200k)، كيس الـ 30 مليون، وأداة تقييم البزنس التفاعلية من 100%.</p>
+        </div>
+      </div>
+
+      <div class="grid-3">
+        <div class="sub-card">
+          <h4>6) السوشيال وتطابق الوعد</h4>
+          <ul>
+            <li>راجع كومنتات الإعلانات ورسائل خدمة العملاء والريفيوهات السلبية.</li>
+            <li><strong>فخ عدم التطابق:</strong> الإعلان يقول "ضمان 3 سنين" أو "نتيجة في يومين" والموقع مفهوش الكلام ده ← بيدمر التحويل!</li>
+            <li>حوّل أسئلة العملاء في الـ DMs لمحتوى وصفحة منتج.</li>
+          </ul>
+        </div>
+        <div class="sub-card">
+          <h4>7) الأوبريشن، التأكيد، والتغليف</h4>
+          <ul>
+            <li>التأخير في التأكيد 2–3 أيام أو واتساب بس بدون مكالمة بيوقع التأكيد <strong>20–40%</strong>.</li>
+            <li><strong>قوة الـ CS Upsell:</strong> موظف مدرب يحول أوردر 300 ج لبندل <strong>900 ج</strong> (بخصم 30%) بمكالمة واحدة؛ بينما موظف غير مدرب (اللي قال لعميل "اعملنا بلوك") بيخسف بالبراند الأرض!</li>
+            <li><strong>كيس السعة التشغيلية:</strong> براندات ضاع منها شهور بـ <strong>30 مليون ج</strong> لأن المخزن كان بيجهز 100 أوردر/يوم ومقدرش يستحمل 1,000 أوردر/يوم!</li>
+            <li><strong>كيس التغليف (<span class="en">Packaging</span>):</strong> براند كوزمتكس مصري وقع من <strong>400k لـ 200k ج</strong> وسط منافسين بنفس التركيبة — لما غيّر العلب لعلب أسطوانية شيك قابلة لإعادة الاستخدام (البنات بتشيل فيها التوك)، المبيعات انفجرت!</li>
+          </ul>
+        </div>
+        <div class="sub-card">
+          <h4>8) الريتنشن والـ <span class="en">LTV</span></h4>
+          <ul>
+            <li>مثال حساب الـ LTV: عميل اشترى 3 مرات × 1,000 ج = <strong>3,000 ج LTV</strong>.</li>
+            <li>قسّم عملاءك (اشترى مرة vs مرتين+) واديهم <strong>Early Access</strong> قبل البلاك فرايداي وعروض VIP وبرامج ولاء.</li>
+            <li>لو الـ <span class="en">Retention</span> وصل <strong>60%+</strong> تقدر تحقق ربحية ضخمة من عملاءك مع موازنة الـ <span class="en">Acquisition</span> (إعلانات، Referrals، Influencers بأكواد خصم).</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- INTERACTIVE 8-PILLAR AUDIT SCORECARD -->
+      <div class="calc-panel" id="audit-scorecard">
+        <h4>📊 شيت تقييم الأوديتنج التفاعلي (8-Pillar Audit Scorecard — نموذج شيت م. محمود)</h4>
+        <p style="margin:0 0 14px; font-size:14.5px; color:var(--text-muted);">قيّم كل ركيزة في بزنسك من 0% إلى 100% عشان تعرف الدرجة الإجمالية وأولوية التدخل الفوري:</p>
+        <div class="score-row"><label for="sc1">1. وضوح البريف والتسعير والـ Break-Even ROAS</label><input type="range" id="sc1" class="audit-slider" min="0" max="100" value="80" /><span class="score-num" id="sv1">80%</span></div>
+        <div class="score-row"><label for="sc2">2. تتبع البرفورمنس ومقارنة الفترات (ROAS / AOV / CPO)</label><input type="range" id="sc2" class="audit-slider" min="0" max="100" value="70" /><span class="score-num" id="sv2">70%</span></div>
+        <div class="score-row"><label for="sc3">3. الأد أكونت (Pixel/CAPI + Audience Segmentation + 3–7 Segments)</label><input type="range" id="sc3" class="audit-slider" min="0" max="100" value="55" /><span class="score-num" id="sv3">55%</span></div>
+        <div class="score-row"><label for="sc4">4. مصفوفة المنتجات والمخزون (4–5 Winners + Bundles)</label><input type="range" id="sc4" class="audit-slider" min="0" max="100" value="75" /><span class="score-num" id="sv4">75%</span></div>
+        <div class="score-row"><label for="sc5">5. الموقع والـ CRO (الـ 7 صفحات + Clarity + GA4)</label><input type="range" id="sc5" class="audit-slider" min="0" max="100" value="60" /><span class="score-num" id="sv5">60%</span></div>
+        <div class="score-row"><label for="sc6">6. السوشيال ميديا وتطابق الوعود والـ Feedback</label><input type="range" id="sc6" class="audit-slider" min="0" max="100" value="70" /><span class="score-num" id="sv6">70%</span></div>
+        <div class="score-row"><label for="sc7">7. الأوبريشن والتأكيد وخدمة العملاء (Upsell + Capacity)</label><input type="range" id="sc7" class="audit-slider" min="0" max="100" value="65" /><span class="score-num" id="sv7">65%</span></div>
+        <div class="score-row"><label for="sc8">8. الريتنشن والـ LTV (تكرار الشراء وعروض VIP)</label><input type="range" id="sc8" class="audit-slider" min="0" max="100" value="45" /><span class="score-num" id="sv8">45%</span></div>
+
+        <div class="calc-results" style="margin-top:14px;">
+          <div class="res-box">
+            <div class="res-lbl">التقييم العام للبزنس</div>
+            <div class="res-val" id="resAuditTotal">65%</div>
+          </div>
+          <div class="res-box">
+            <div class="res-lbl">أضعف ركيزة (الأولوية #1)</div>
+            <div class="res-val" id="resAuditWeak" style="font-size:16px;">الريتنشن والـ LTV</div>
+          </div>
+        </div>
+        <div class="decision-banner keep" id="auditSummary">
+          🎯 ابدأ بإصلاح أضعف ركيزة تؤثر مباشرة على أسرع عائد مالي قبل ضخ ميزانية Scaling جديدة.
+        </div>
+      </div>
+
+      <div class="prompt-box">
+        <div class="prompt-head">
+          <span class="prompt-label">برومبت 7 — إجراء أوديتنج شامل للـ 8 ركائز لأي بزنس</span>
+          <button class="copy-btn" data-copy-target="prompt-full-audit">نسخ البرومبت</button>
+        </div>
+        <pre class="prompt-body" id="prompt-full-audit">اعمل أوديتنج شامل بالـ 8 ركائز لبراند [اسم البراند] بناءً على البيانات دي:
+- سعر البيع والـ COGS والشحن: [الأرقام]
+- أرقام أفضل فترة vs أضعف فترة (ROAS, CPO, AOV, CR, CTR, CPM, Frequency): [الأرقام]
+- بيانات الفانل (Link Clicks, Views, ATC, Checkout, Purchases): [الأرقام]
+- حالة التتبع والـ Audience Segmentation والأوبريشن ونسبة التأكيد والتسليم: [التفاصيل]
+طلّعلي: (1) الـ Break-Even ROAS الحقيقي، (2) فجوة الفانل الرئيسية، (3) تقييم كل ركيزة من 100%، (4) خطة إصلاح مرتبة حسب أسرع عائد مالي ممكن.</pre>
+      </div>
+    </section>
+
+    <!-- PART 3 BANNER -->
+    <div class="part-banner">
+      <div>
+        <h2>الجزء الثالث: التطبيق العملي الكامل على <span class="en" style="background:rgba(255,255,255,0.16); color:#FFF;">Zyra Care</span> + نسخ الـ AI Agent Skill</h2>
+        <p>إسقاط كل قواعد السيشنين مباشرة على روتينات Zyra Care + الكود الكامل للـ Skill &amp; Framework جاهز للنسخ.</p>
+      </div>
+      <span class="part-tag">تطبيق واقعي 100%</span>
+    </div>
+
+    <!-- MODULE 14: ZYRA CARE APPLICATION -->
+    <section class="module" id="sec-zyra">
+      <div class="module-header">
+        <div class="mod-num">14</div>
+        <div>
+          <h3>التطبيق العملي المباشر على <span class="en">Zyra Care</span></h3>
+          <p class="module-sub">دمج خط الـ AI (سيشن 1) + الـ 8 ركائز للأوديتنج (سيشن 2) على روتينات زيرا بالأرقام الحقيقية.</p>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>الروتين (Zyra Care)</th>
+              <th>السعر بعد <span class="en">100OFF</span></th>
+              <th>Max CPP (خصم 100ج / +شحن مجاني)</th>
+              <th>ميزانية التست (2× CPP) لـ 3 إعلانات</th>
+              <th>الـ Hook المعتمد + قواعد الامتثال</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>R04 — KP Routine</strong><br />(25% Urea + Scrub + Shea)</td>
+              <td>799 ← <strong>699 ج</strong></td>
+              <td>193 ج / <strong>139 ج</strong></td>
+              <td>386 ج / <strong>278 ج يومياً</strong></td>
+              <td>"دراعك لما تلمسيه زي الرملة؟" — ممنوع "علاج" أو "Lactic Acid" أو "من أول أسبوع" (استخدم "مع الاستمرار").</td>
+            </tr>
+            <tr>
+              <td><strong>R03 — Cellulite Routine</strong><br />(Caffeine Scrub + Cream + Soap)</td>
+              <td>799 ← <strong>699 ج</strong></td>
+              <td>218 ج / <strong>164 ج</strong></td>
+              <td>436 ج / <strong>328 ج يومياً</strong></td>
+              <td>"مظهر السيلوليت والملمس المتعرّج" — ألوان <span class="en">#013835</span> / <span class="en">#FFF2E9</span> / CTA <span class="en">#E2915A</span>.</td>
+            </tr>
+            <tr>
+              <td><strong>R06 — Signature Scent</strong><br />(Loofah + Makhmariya + Splash)</td>
+              <td>599 ← <strong>499 ج</strong></td>
+              <td>129 ج / <strong>75 ج</strong></td>
+              <td>258 ج / <strong>150 ج يومياً</strong></td>
+              <td>"عايزة الكل يسألك راشة إيه؟" — عرض موحد: "خصم 100 جنيه + شحن مجاني 🚚" + ضمان 14 يوم حتى لو اتفتح.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="grid-2">
+        <div class="sub-card">
+          <h4>تطبيق سيشن 1 (إطلاق AI) على Zyra Care</h4>
+          <ul>
+            <li><strong>ثبّت الـ Brand Identity في كل برومبت:</strong> Deep Teal (<span class="en">#013835</span>) + Cream (<span class="en">#FFF2E9</span>) + Terracotta (<span class="en">#E2915A</span>) مع نص Deep Teal على الـ CTA، وخلفيات رخام بيج أو كتان أو ملح سيوة (ممنوع الذهبي والبحر والوجوه الـ AI).</li>
+            <li><strong>تطبيق قاعدة 3–7 شرائح على R04 (KP):</strong> (1) عروسة بتجهز، (2) بنت بتتكسف من لبس النص كم، (3) جربت سكرابات ومرطبات كتير ومفيش نتيجة.</li>
+            <li><strong>فيديوهات UGC:</strong> تصوير موبايل طبيعي يوضح الروتين الـ 3 خطوات + ضمان 14 يوم حتى لو اتفتح (ممنوع الوعود الزمنية).</li>
+          </ul>
+        </div>
+        <div class="sub-card">
+          <h4>تطبيق سيشن 2 (الأوديتنج) على Zyra Care</h4>
+          <ul>
+            <li><strong>أوديت COD والأوبريشن:</strong> معيار التحصيل الصافي <strong>72%</strong> (90% تأكيد × 80% تسليم)؛ خصم 100 ج يخفض Max CPP بـ 72 ج، وخصم 100 ج + شحن مجاني 75 ج يخفضه بـ 126 ج (طبّق الخصم على الروتينات فقط!).</li>
+            <li><strong>Audience Segmentation:</strong> عرّف عميلات زيرا الـ 180 يوم (Engaged) و 90 يوم (Existing) لفصل صرف الـ Cold عن حملة الريتارجتنج (48 ساعة).</li>
+            <li><strong>أوديت المنتجات والـ CRO:</strong> حافظ على 4–5 روتينات شغالة (R03, R04, R05/R08/R09, R06, R07) وراقب Microsoft Clarity وتأكيد المكالمات السريعة.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- MODULE 15: MISTAKES + PORTABLE AI AGENT SKILL & FRAMEWORK -->
+    <section class="module" id="sec-mistakes">
+      <div class="module-header">
+        <div class="mod-num">15</div>
+        <div>
+          <h3>الأخطاء القاتلة + ملف الـ <span class="en">AI Agent Skill &amp; Framework</span> الكامل (قابل للنسخ)</h3>
+          <p class="module-sub">الـ Skill مفعّل بالفعل هنا باسم <span class="en">ai-media-launch-and-audit</span> وتقدر تنسخه كاملاً لأي Agent خارجي (Claude / ChatGPT / Cursor).</p>
+        </div>
+      </div>
+
+      <div class="callout danger">
+        <div class="callout-title">🚫 6 أخطاء قاتلة تحرق الميزانية</div>
+        <ol class="step-list" style="margin-bottom:0;">
+          <li><strong>الاعتماد الأعمى على الـ AI بدون Human QA:</strong> كوبي مليانة إيموجيز أو منتج مقلوب في فيديو AI يدمر ثقة العميل.</li>
+          <li><strong>مقارنة شهر موسم بشهر عادي:</strong> قياس شهر عادي على أرقام Black Friday يعطي تشخيصاً خاطئاً 100%.</li>
+          <li><strong>تجاهل الـ Tracking والـ Audience Segmentation:</strong> قراءة داشبورد بدون Pixel سليم أو بدون فصل Engaged/Existing قرار أعمى.</li>
+          <li><strong>خلط منتجين في نفس الـ Flexible Ad:</strong> لازم كل Ad Set / Flex يودي على منتج واحد ورابط واحد فقط.</li>
+          <li><strong>توسيع الميزانية على منتج واحد أو شريحة واحدة:</strong> لازم 4–5 منتجات وينر + 3–7 شرائح جمهور.</li>
+          <li><strong>الـ Scaling قبل فحص سعة الأوبريشن والتأكيد:</strong> مضاعفة الأوردرات مع مخزن غير جاهز تخسرك إعلانات وسمعة معاً.</li>
+        </ol>
+      </div>
+
+      <div class="prompt-box">
+        <div class="prompt-head">
+          <span class="prompt-label">🤖 ملف SKILL.md الكامل — ai-media-launch-and-audit (انسخه لأي AI Agent)</span>
+          <button class="copy-btn" data-copy-target="prompt-skill-md">نسخ الـ Skill &amp; Framework كاملاً</button>
+        </div>
+        <pre class="prompt-body ltr-code" id="prompt-skill-md">---
+name: ai-media-launch-and-audit
+description: End-to-end AI performance marketing execution and full-funnel business auditing framework. Use whenever the user asks to audit an e-commerce business or Meta ad account, diagnose ROAS/CPP/CR drops, launch an offline-to-online brand, research competitors on Meta Ad Library, generate static or UGC creative prompts, build or benchmark a high-converting landing page, set up Meta Ads testing structures (2x CPP or ABO Flexible Ads), or iterate on winning creatives.
+---
+# AI Media Launch and Audit Framework
+
+Closed-loop operating system combining Mode A (8-Pillar Business and Performance Audit), Mode 0 (Offline-to-Online / New Business Launch), and Mode B (6-Stage AI Ad Launch and Creative Velocity Pipeline).
+
+## Core Principles
+- Ground every decision in unit economics and verified data, never gut feeling.
+- Under Meta Andromeda, allocate 90% effort to creative testing/angles and 10% to dashboard management.
+- Rank audit fixes by fastest measurable revenue impact first.
+- Enforce mandatory Human QA on every AI-generated copy, static image, and UGC video before spend.
+
+## Mode 0: New Business / Offline-to-Online Protocol (No Ad History)
+1. Compute true Break-Even ROAS from COGS, shipping, and margin.
+2. Benchmark against industry norms (e.g. cosmetics 2.5x-3.0x Break-Even) and Meta Ad Library competitors.
+3. Extract offline buyer data (top SKUs, average basket, common objections) to seed angles and FAQs.
+4. Launch structured rapid tests (Mode B Stage 6) to build first-party data.
+
+## Mode A: 8-Pillar Full-Funnel Business and Performance Audit
+1. Owner Brief &amp; Unit Economics: Product origin/USP, true COGS &amp; Break-Even ROAS, best vs drop period, negative reviews, owner mindset check.
+2. Macro Performance Parity: Compare matched non-seasonal periods (ROAS, CPO, AOV, CR, CTR, CPM, Frequency). Never compare seasonal promo months to normal months.
+3. Ad Account Tech &amp; Scaling: Verify Pixel/CAPI first; configure Andromeda Audience Segmentation (180d Engaged, 90-730d Existing) for spend breakdown; apply 3-to-7 Micro-Segments Scaling Rule; audit video drop-off points to revive near-winners.
+4. Product &amp; Inventory Matrix: Find Hidden Organic Winners; maintain 4-5 Hero SKUs; bundle slow movers to lift AOV; liquidate dead stock via seasonal flash sales.
+5. 7-Page CRO &amp; Funnel Diagnostics: Audit Home, Category, Product, Landing, Cart, Initiate Checkout, Order Confirmation via Clarity + GA4 (flag Bounce Rate &gt; 60-70%).
+   - Clicks -&gt; Views &lt; 70%: fix speed, redirects, Pixel.
+   - Views -&gt; ATC &lt; 5%: add real photos, infographics/size charts, reviews, guarantees.
+   - ATC -&gt; Purchase &lt; 25%: fix shipping surprise, simplify form, call abandoned checkouts or add WhatsApp button.
+6. Social &amp; Message Parity: Audit comments/DMs; enforce strict promise parity between ads and landing page.
+7. Operations, Confirmation, CS &amp; Packaging: Audit confirmation speed (2-3 day delay drops delivery 20-40%), train CS upselling, verify fulfillment capacity before scaling, evaluate packaging differentiation.
+8. Retention &amp; LTV: Calculate LTV (AOV x Repeat Purchases); segment 1x vs 2x+ buyers with VIP/Early Access offers.
+- Output an 8-Pillar Weighted Scorecard (0-100% per pillar) and prioritize the fastest revenue lever first.
+
+## Mode B: 6-Stage AI Ad Launch and Creative Velocity Pipeline
+1. Meta Ad Library Research: Prioritize highest-impression/longest-running ads; extract top 5 direct competitors, offer stacks, winning angles, and supplier-copy weaknesses.
+2. Prompt Engineering &amp; Parallel Statics: Lock Brand Identity (hex palette, logo, compliance). Generate 7 Store Gallery prompts (white BG + feature infographics + offer/box) and 8+ Paid Ad prompts (Pain-Point, Before/After, Financial Math, Portability, Gift). Run ChatGPT (high polish) + Muse (speed) in parallel.
+3. High-CR Landing Page &amp; Gap Audit: Build 7 conversion blocks (Problem, Solution, Cost Math Table, Specs, Risk Reversal, DM-sourced FAQ, What is in the Box + CTA). Benchmark against a 6+ month competitor LP for Gap Audit (especially infographic gallery) and A/B test (+0.5% CR from 1.0% to 1.5% = +50% orders at 0 extra ad spend).
+4. AI UGC Video &amp; Human QA: Produce 4 native smartphone-style formats (Problem-Solution, Close-Up Demo, Egyptian UGC, Unboxing). Run QA for product grip, lip-sync drift, and noisy audio (replace audio with clean separate voiceover when needed).
+5. Multi-Angle Ad Copy &amp; Pre-Flight Gate: Write 3-5 human-sounding Egyptian Arabic copies (Primary Text, Headline, Description). Verify all 5 Pre-Flight checks: Payment Method, Pixel+CAPI, Explicit User Budget, Target Page, Human Copy QA.
+6. Testing &amp; AI Audit Loop:
+   - Proven SKU: 1 Ad Set = 3 Ads @ 2x Target CPP/day for up to 3 days. Early Kill Rule: kill any single ad spending &gt;= 2x Target CPP with 0 purchases.
+   - Rapid New SKU: ABO @ 500 EGP/day with 1 Flexible Ad (10 statics, 1 single product URL). Extract Flex winners via Ads Manager -&gt; Page Posts / Ad Posts, then isolate winners into 3-ad sets.
+   - Audit last 7-30 days against brand benchmarks; kill Low CTR + High CPM + 0 Purchases; generate 5 new prompts modeled on every confirmed Winner.</pre>
+      </div>
+    </section>
+
+    <!-- MODULE 16: INTERACTIVE SELF-QUIZ -->
+    <section class="module" id="sec-quiz">
+      <div class="module-header">
+        <div class="mod-num">16</div>
+        <div>
+          <h3>اختبار فهم سريع (6 أسئلة عملية من السيشنين)</h3>
+          <p class="module-sub">اختبر استيعابك لأهم القواعد قبل ما تطبقها على أكونتك.</p>
+        </div>
+      </div>
+
+      <div id="quizContainer">
+        <div class="quiz-card" data-q="0" data-ans="1" data-exp="بعد تحديث Meta Andromeda، الكريتيف هو اللي بيوصل للجمهور الصح: 90% من شغلك إنتاج وتستينج كريتيفز و10% بس Dashboard.">
+          <div class="quiz-q">1. بعد تحديث Meta Andromeda، إيه التوزيع الحقيقي لشغل الميديا باير؟</div>
+          <div class="quiz-opts">
+            <button class="quiz-option" data-idx="0">90% استهداف Interests و 10% كريتيفز</button>
+            <button class="quiz-option" data-idx="1">90% إنتاج وتستينج كريتيفز و 10% Dashboard</button>
+            <button class="quiz-option" data-idx="2">50% تعديل الميزانية كل ساعة و 50% لاندينج بيدج</button>
+          </div>
+          <div class="quiz-exp"></div>
+        </div>
+
+        <div class="quiz-card" data-q="1" data-ans="2" data-exp="حسب قاعدة الـ Early Kill في السيشن: لو إعلان صرف ضعف الـ Target CPP (مثلاً 400 ج لـ CPP=200 ج) وجاب 0 مبيعات، اقفله فوراً وسيب الإعلانين التانيين ياخدوا فرصتهم.">
+          <div class="quiz-q">2. عندك Ad Set فيها 3 إعلانات والـ Target CPP = 200 جنيه؛ واحد منهم صرف 420 جنيه وجاب 0 مبيعات. تعمل إيه؟</div>
+          <div class="quiz-opts">
+            <button class="quiz-option" data-idx="0">أسيبه يكمل 3 أيام لحد ما يصرف 1200 جنيه</button>
+            <button class="quiz-option" data-idx="1">أقفل الـ Ad Set كلها فوراً</button>
+            <button class="quiz-option" data-idx="2">أقفل الإعلان ده لوحده فوراً وأسيب الإعلانين التانيين شغالين</button>
+          </div>
+          <div class="quiz-exp"></div>
+        </div>
+
+        <div class="quiz-card" data-q="2" data-ans="0" data-exp="الـ Breakdown مش بيظهر الوينر جوه الـ Flexible Ad — الطريقة الصح هي الدخول على Page Posts / Ad Posts في Ads Manager ومعرفة أنهي بوست واخد أعلى تفاعل ومبيعات.">
+          <div class="quiz-q">3. إزاي تعرف الكريتيف الوينر جوه إعلان Flexible Ad (فيه 10 صور)؟</div>
+          <div class="quiz-opts">
+            <button class="quiz-option" data-idx="0">من جوه Page Posts / Ad Posts في Ads Manager نشوف البوست الأعلى تفاعلاً ومبيعات</button>
+            <button class="quiz-option" data-idx="1">من زر Breakdown → By Dynamic Creative Element</button>
+            <button class="quiz-option" data-idx="2">مستحيل تعرف الوينر في الـ Flexible Ad</button>
+          </div>
+          <div class="quiz-exp"></div>
+        </div>
+
+        <div class="quiz-card" data-q="3" data-ans="1" data-exp="زيادة الـ CR بـ +0.5% من 1% لـ 1.5% بتزود الأوردرات من 10 لـ 15 لكل 1000 زائر — يعني +50% مبيعات إضافية بصفر جنيه إعلانات زيادة!">
+          <div class="quiz-q">4. لو حسّنت الـ Conversion Rate من 1.0% إلى 1.5% على نفس الترافيك، الأوردرات هتزيد بنسبة كام؟</div>
+          <div class="quiz-opts">
+            <button class="quiz-option" data-idx="0">0.5% فقط</button>
+            <button class="quiz-option" data-idx="1">50% زيادة في الأوردرات بصفر إعلانات زيادة</button>
+            <button class="quiz-option" data-idx="2">15% زيادة في الأوردرات</button>
+          </div>
+          <div class="quiz-exp"></div>
+        </div>
+
+        <div class="quiz-card" data-q="4" data-ans="2" data-exp="لو الـ CPO ثابت عند 200 ج بس الـ ROAS نزل للنص، يبقى الـ AOV (متوسط قيمة الأوردر) هو اللي نزل للنص (مثلاً بسبب نفاد المنتج الأعلى سعراً).">
+          <div class="quiz-q">5. في أوديت البرفورمنس، الـ ROAS نزل من 10× إلى 5× بينما تكلفة الأوردر (CPO) ثابتة عند 200 جنيه. إيه السبب الأرجح؟</div>
+          <div class="quiz-opts">
+            <button class="quiz-option" data-idx="0">الـ CPM زاد للضعف</button>
+            <button class="quiz-option" data-idx="1">البيكسل وقف تماماً</button>
+            <button class="quiz-option" data-idx="2">الـ AOV (متوسط قيمة الأوردر) نزل للنص بسبب توقف منتج غالي أو تغير البندلز</button>
+          </div>
+          <div class="quiz-exp"></div>
+        </div>
+
+        <div class="quiz-card" data-q="5" data-ans="0" data-exp="القاعدة الذهبية في ترتيب أولويات الأوديت: ابدأ دائماً بالمشكلة اللي تحقق أسرع نتيجة ومبيعات ملموسة لبناء الثقة والأمان مع صاحب البزنس، ثم عالج باقي المشاكل.">
+          <div class="quiz-q">6. لو لقيت 8 مشاكل مختلفة أثناء أوديت لبزنس جديد، ترتب أولويات الحل إزاي؟</div>
+          <div class="quiz-opts">
+            <button class="quiz-option" data-idx="0">أبدأ بالمشكلة اللي تجيب أسرع نتيجة ومبيعات ملموسة للعميل</button>
+            <button class="quiz-option" data-idx="1">أغير اللوجو والهوية البصرية الأول</button>
+            <button class="quiz-option" data-idx="2">أوقف كل الإعلانات شهر لحد ما كل المشاكل تتحل</button>
+          </div>
+          <div class="quiz-exp"></div>
+        </div>
+      </div>
+
+      <div class="quiz-footer">
+        <div style="font-weight:800; color:var(--primary);" id="quizScore">النتيجة: 0 / 6</div>
+        <button class="btn-primary" id="quizReset">إعادة الاختبار</button>
+      </div>
+    </section>
+
+    <footer>
+      تم إعداد وتفريغ هذا المرجع التعليمي التفاعلي الكامل من:
+      <a href="https://www.youtube.com/watch?v=YosjRDRXHIM" target="_blank" rel="noopener noreferrer">سيشن الإعلان الكامل بالـ AI (أحمد محمود)</a>
+      &nbsp;|&nbsp;
+      <a href="https://drive.google.com/file/d/14YBzDDq_0orHn64c1J_e5GHZtjY6Xiuv/view?usp=drivesdk" target="_blank" rel="noopener noreferrer">سيشن الأوديتنج الشامل (م. محمود — مجتمع المنصورة)</a>
+    </footer>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite">تم النسخ بنجاح</div>
+
+  <script>
+    (function () {
+      // 1. Collapsible Right-Side Drawer Navigation
+      const drawer = document.getElementById('courseDrawer');
+      const overlay = document.getElementById('drawerOverlay');
+      const toggleBtn = document.getElementById('drawerToggle');
+      const closeBtn = document.getElementById('drawerClose');
+      const navLinks = Array.from(document.querySelectorAll('.drawer-link'));
+      const progressFill = document.getElementById('progressFill');
+      const progressText = document.getElementById('progressText');
+
+      function setDrawer(open) {
+        drawer.classList.toggle('open', open);
+        overlay.classList.toggle('open', open);
+        toggleBtn.setAttribute('aria-expanded', String(open));
+      }
+
+      toggleBtn.addEventListener('click', () => setDrawer(!drawer.classList.contains('open')));
+      closeBtn.addEventListener('click', () => setDrawer(false));
+      overlay.addEventListener('click', () => setDrawer(false));
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && drawer.classList.contains('open')) setDrawer(false);
+      });
+      navLinks.forEach((link) => link.addEventListener('click', () => setDrawer(false)));
+
+      const sections = navLinks.map((l) => document.querySelector(l.getAttribute('href'))).filter(Boolean);
+      function updateScrollUI() {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const docHeight = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+        const pct = Math.min(100, Math.max(0, Math.round((scrollTop / docHeight) * 100)));
+        progressFill.style.width = pct + '%';
+        progressText.textContent = pct + '%';
+
+        let currentId = sections.length ? sections[0].id : '';
+        for (const sec of sections) {
+          if (sec.getBoundingClientRect().top <= 160) currentId = sec.id;
+        }
+        navLinks.forEach((l) => l.classList.toggle('active', l.getAttribute('href') === '#' + currentId));
+      }
+      window.addEventListener('scroll', updateScrollUI, { passive: true });
+      updateScrollUI();
+
+      // 2. Toast & Copy Buttons
+      const toast = document.getElementById('toast');
+      let toastTimer = null;
+      function showToast(msg) {
+        toast.textContent = msg;
+        toast.classList.add('show');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
+      }
+
+      function fallbackCopy(text) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try {
+          document.execCommand('copy');
+          showToast('تم النسخ بنجاح!');
+        } catch (err) {
+          showToast('تعذّر النسخ التلقائي — انسخه يدوياً.');
+        }
+        document.body.removeChild(ta);
+      }
+
+      function copyText(text) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(() => showToast('تم النسخ بنجاح!'), () => fallbackCopy(text));
+        } else {
+          fallbackCopy(text);
+        }
+      }
+
+      document.querySelectorAll('.copy-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const el = document.getElementById(btn.getAttribute('data-copy-target'));
+          if (el) copyText(el.textContent.trim());
+        });
+      });
+
+      // 3. Calculator 1: CR Impact
+      const crVisitors = document.getElementById('crVisitors');
+      const crCurrent = document.getElementById('crCurrent');
+      const crNew = document.getElementById('crNew');
+      const crAov = document.getElementById('crAov');
+      const resOldOrders = document.getElementById('resOldOrders');
+      const resNewOrders = document.getElementById('resNewOrders');
+      const resExtraMonth = document.getElementById('resExtraMonth');
+      const resExtraRev = document.getElementById('resExtraRev');
+
+      function updateCrCalc() {
+        const v = Math.max(0, parseFloat(crVisitors.value) || 0);
+        const c1 = Math.max(0, parseFloat(crCurrent.value) || 0);
+        const c2 = Math.max(0, parseFloat(crNew.value) || 0);
+        const aov = Math.max(0, parseFloat(crAov.value) || 0);
+        const oldOrd = (v * c1) / 100;
+        const newOrd = (v * c2) / 100;
+        const diffMonth = (newOrd - oldOrd) * 30;
+        const revMonth = diffMonth * aov;
+        const sign = diffMonth >= 0 ? '+' : '';
+        resOldOrders.textContent = oldOrd.toFixed(1).replace(/\.0$/, '');
+        resNewOrders.textContent = newOrd.toFixed(1).replace(/\.0$/, '');
+        resExtraMonth.textContent = sign + Math.round(diffMonth).toLocaleString('en-US') + ' أوردر';
+        resExtraRev.textContent = sign + Math.round(revMonth).toLocaleString('en-US') + ' ج';
+      }
+      [crVisitors, crCurrent, crNew, crAov].forEach((el) => el.addEventListener('input', updateCrCalc));
+      updateCrCalc();
+
+      // 4. Calculator 2: 2x CPP Testing
+      const cppTarget = document.getElementById('cppTarget');
+      const adSpend = document.getElementById('adSpend');
+      const adPurchases = document.getElementById('adPurchases');
+      const resDailyBudget = document.getElementById('resDailyBudget');
+      const resThreeDay = document.getElementById('resThreeDay');
+      const resActualCpp = document.getElementById('resActualCpp');
+      const cppDecision = document.getElementById('cppDecision');
+
+      function updateCppCalc() {
+        const target = Math.max(1, parseFloat(cppTarget.value) || 1);
+        const spend = Math.max(0, parseFloat(adSpend.value) || 0);
+        const purch = Math.max(0, Math.floor(parseFloat(adPurchases.value) || 0));
+        const daily = target * 2;
+        resDailyBudget.textContent = Math.round(daily).toLocaleString('en-US') + ' ج';
+        resThreeDay.textContent = Math.round(daily * 3).toLocaleString('en-US') + ' ج';
+        cppDecision.className = 'decision-banner';
+        if (purch === 0) {
+          resActualCpp.textContent = 'لا توجد مبيعات';
+          if (spend >= daily) {
+            cppDecision.classList.add('kill');
+            cppDecision.textContent = '🔴 قرار فوري (KILL): الإعلان صرف ' + Math.round(spend) + ' ج (≥ ضعف الـ CPP ' + Math.round(daily) + ' ج) وجاب 0 مبيعات — اقفله فوراً وسيب باقي إعلانات الـ Ad Set تشتغل.';
+          } else {
+            cppDecision.classList.add('keep');
+            cppDecision.textContent = '🟡 استمر في التست (KEEP): الإعلان لسه ما كملش ضعف الـ CPP (' + Math.round(daily) + ' ج) — ادي له فرصته لحد الحد الأقصى أو 3 أيام.';
+          }
+        } else {
+          const actual = spend / purch;
+          resActualCpp.textContent = Math.round(actual).toLocaleString('en-US') + ' ج';
+          if (actual <= target) {
+            cppDecision.classList.add('win');
+            cppDecision.textContent = '🟢 إعلان رابح (WINNER / SCALE): الـ CPP الفعلي (' + Math.round(actual) + ' ج) أقل من أو يساوي المستهدف (' + Math.round(target) + ' ج) — حافظ عليه وولّد 5 برومبتات جديدة شبهه!';
+          } else if (actual <= target * 1.35) {
+            cppDecision.classList.add('keep');
+            cppDecision.textContent = '🟡 منطقة مراقبة (WATCH): الـ CPP الفعلي (' + Math.round(actual) + ' ج) أعلى قليلاً من المستهدف — راجع الـ CTR والـ Landing Page قبل قرار الإيقاف.';
+          } else {
+            cppDecision.classList.add('kill');
+            cppDecision.textContent = '🔴 أعلى من المستهدف بكثير (KILL / OPTIMIZE): الـ CPP الفعلي (' + Math.round(actual) + ' ج) مرتفع عن المستهدف (' + Math.round(target) + ' ج) — أوقف الإعلان واختبر زاوية جديدة.';
+          }
+        }
+      }
+      [cppTarget, adSpend, adPurchases].forEach((el) => el.addEventListener('input', updateCppCalc));
+      updateCppCalc();
+
+      // 5. Calculator 3: Funnel & Break-Even ROAS
+      const fClicks = document.getElementById('fClicks');
+      const fViews = document.getElementById('fViews');
+      const fAtc = document.getElementById('fAtc');
+      const fPurch = document.getElementById('fPurch');
+      const fPrice = document.getElementById('fPrice');
+      const fCogs = document.getElementById('fCogs');
+      const resLoadRate = document.getElementById('resLoadRate');
+      const resAtcRate = document.getElementById('resAtcRate');
+      const resCloseRate = document.getElementById('resCloseRate');
+      const resBeRoas = document.getElementById('resBeRoas');
+      const funnelDiagnosis = document.getElementById('funnelDiagnosis');
+
+      function updateFunnelCalc() {
+        const clicks = Math.max(1, parseFloat(fClicks.value) || 1);
+        const views = Math.max(0, parseFloat(fViews.value) || 0);
+        const atc = Math.max(0, parseFloat(fAtc.value) || 0);
+        const purch = Math.max(0, parseFloat(fPurch.value) || 0);
+        const price = Math.max(1, parseFloat(fPrice.value) || 1);
+        const cogs = Math.max(0, parseFloat(fCogs.value) || 0);
+        const loadRate = (views / clicks) * 100;
+        const atcRate = views > 0 ? (atc / views) * 100 : 0;
+        const closeRate = atc > 0 ? (purch / atc) * 100 : 0;
+        const margin = price - cogs;
+        const beRoas = margin > 0 ? price / margin : 0;
+
+        resLoadRate.textContent = loadRate.toFixed(1) + '%';
+        resAtcRate.textContent = atcRate.toFixed(1) + '%';
+        resCloseRate.textContent = closeRate.toFixed(1) + '%';
+        resBeRoas.textContent = margin > 0 ? beRoas.toFixed(2) + '×' : 'هامش سالب!';
+
+        funnelDiagnosis.className = 'decision-banner';
+        if (margin <= 0) {
+          funnelDiagnosis.classList.add('kill');
+          funnelDiagnosis.textContent = '🔴 خطر تسعير: التكلفة قبل الإعلانات أكبر من أو تساوي سعر البيع! راجع التسعير أو اعمل Bundle فوراً قبل صرف أي إعلانات.';
+        } else if (loadRate < 70) {
+          funnelDiagnosis.classList.add('kill');
+          funnelDiagnosis.textContent = '🔴 اختناق في سرعة الموقع (Clicks → Views = ' + loadRate.toFixed(1) + '%): حسّن سرعة الموقع وراجع البيكسل الأول.';
+        } else if (atcRate < 5) {
+          funnelDiagnosis.classList.add('keep');
+          funnelDiagnosis.textContent = '🟡 اختناق في صفحة المنتج (Views → ATC = ' + atcRate.toFixed(1) + '%): راجع الصور الواقعية، الريفيوهات، الضمان، والـ Infographics / Size Chart.';
+        } else if (closeRate < 25) {
+          funnelDiagnosis.classList.add('keep');
+          funnelDiagnosis.textContent = '🟡 اختناق في الـ Checkout (ATC → Purchase = ' + closeRate.toFixed(1) + '%): راجع تكلفة الشحن، بسّط الفورم، وكلم الـ Abandoned Checkouts.';
+        } else {
+          funnelDiagnosis.classList.add('win');
+          funnelDiagnosis.textContent = '🟢 فانل صحية! محتاج ROAS أعلى من ' + beRoas.toFixed(2) + '× عشان تبدأ تكسب صافي — ركّز على توسيع الكريتيفز والـ Micro-Segments.';
+        }
+      }
+      [fClicks, fViews, fAtc, fPurch, fPrice, fCogs].forEach((el) => el.addEventListener('input', updateFunnelCalc));
+      updateFunnelCalc();
+
+      // 6. Interactive 8-Pillar Audit Scorecard
+      const pillarNames = [
+        'البريف والـ Break-Even',
+        'تتبع البرفورمنس',
+        'الأد أكونت والـ Segmentation',
+        'المنتجات والمخزون',
+        'الموقع والـ CRO',
+        'السوشيال وتطابق الوعد',
+        'الأوبريشن وخدمة العملاء',
+        'الريتنشن والـ LTV'
+      ];
+      const sliders = Array.from(document.querySelectorAll('.audit-slider'));
+      const resAuditTotal = document.getElementById('resAuditTotal');
+      const resAuditWeak = document.getElementById('resAuditWeak');
+      const auditSummary = document.getElementById('auditSummary');
+
+      function updateScorecard() {
+        let sum = 0;
+        let minVal = 101;
+        let minIdx = 0;
+        sliders.forEach((s, i) => {
+          const val = parseInt(s.value, 10) || 0;
+          const lbl = document.getElementById('sv' + (i + 1));
+          if (lbl) lbl.textContent = val + '%';
+          sum += val;
+          if (val < minVal) { minVal = val; minIdx = i; }
+        });
+        const avg = Math.round(sum / sliders.length);
+        resAuditTotal.textContent = avg + '%';
+        resAuditWeak.textContent = pillarNames[minIdx] + ' (' + minVal + '%)';
+        auditSummary.className = 'decision-banner';
+        if (avg >= 80) {
+          auditSummary.classList.add('win');
+          auditSummary.textContent = '🟢 البزنس جاهز للـ Scaling! ركّز على رفع "' + pillarNames[minIdx] + '" لمضاعفة الربحية الصافية.';
+        } else if (avg >= 60) {
+          auditSummary.classList.add('keep');
+          auditSummary.textContent = '🟡 البزنس مستقر لكن فيه فرص ضايعة! أولويتك #1 الآن إصلاح "' + pillarNames[minIdx] + '" (' + minVal + '%) قبل زيادة الصرف.';
+        } else {
+          auditSummary.classList.add('kill');
+          auditSummary.textContent = '🔴 لا توسّع الميزانية الآن! عالج اختناق "' + pillarNames[minIdx] + '" (' + minVal + '%) وبقية الركائز الضعيفة أولاً لحماية السيولة.';
+        }
+      }
+      sliders.forEach((s) => s.addEventListener('input', updateScorecard));
+      updateScorecard();
+
+      // 7. Interactive Pre-Flight Checklist
+      const checks = Array.from(document.querySelectorAll('.preflight-check'));
+      const statusBadge = document.getElementById('preflightStatus');
+      function updateChecklist() {
+        let done = 0;
+        checks.forEach((cb) => {
+          const parent = cb.closest('.check-item');
+          if (cb.checked) { done++; parent.classList.add('done'); }
+          else { parent.classList.remove('done'); }
+        });
+        statusBadge.textContent = done === checks.length ? '5 / 5 — جاهز للإطلاق! 🚀' : done + ' / ' + checks.length + ' جاهز';
+      }
+      checks.forEach((cb) => cb.addEventListener('change', updateChecklist));
+      updateChecklist();
+
+      // 8. Interactive Self-Quiz
+      const quizCards = Array.from(document.querySelectorAll('.quiz-card'));
+      const quizScoreEl = document.getElementById('quizScore');
+      const quizResetBtn = document.getElementById('quizReset');
+      const answered = new Map();
+
+      function renderQuizScore() {
+        let score = 0;
+        answered.forEach((ok) => { if (ok) score++; });
+        quizScoreEl.textContent = 'النتيجة: ' + score + ' / ' + quizCards.length;
+      }
+
+      quizCards.forEach((card) => {
+        const qId = card.getAttribute('data-q');
+        const correctIdx = card.getAttribute('data-ans');
+        const expText = card.getAttribute('data-exp');
+        const expEl = card.querySelector('.quiz-exp');
+        const opts = Array.from(card.querySelectorAll('.quiz-option'));
+        opts.forEach((btn) => {
+          btn.addEventListener('click', () => {
+            if (answered.has(qId)) return;
+            const isCorrect = btn.getAttribute('data-idx') === correctIdx;
+            answered.set(qId, isCorrect);
+            opts.forEach((o) => {
+              o.disabled = true;
+              if (o.getAttribute('data-idx') === correctIdx) o.classList.add('correct');
+            });
+            if (!isCorrect) btn.classList.add('wrong');
+            expEl.textContent = (isCorrect ? '✅ إجابة صحيحة: ' : '❌ إجابة غير دقيقة: ') + expText;
+            expEl.classList.add('show');
+            renderQuizScore();
+          });
+        });
+      });
+
+      quizResetBtn.addEventListener('click', () => {
+        answered.clear();
+        quizCards.forEach((card) => {
+          const expEl = card.querySelector('.quiz-exp');
+          expEl.classList.remove('show');
+          expEl.textContent = '';
+          card.querySelectorAll('.quiz-option').forEach((o) => {
+            o.disabled = false;
+            o.classList.remove('correct', 'wrong');
+          });
+        });
+        renderQuizScore();
+        showToast('تم إعادة ضبط الاختبار');
+      });
+    })();
+  </script>
+</body>
+</html>
