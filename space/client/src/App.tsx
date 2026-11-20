@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { SafeAreaTopScrim } from "@hatch/space-sdk/client";
+import { SafeAreaTopScrim, fileToBase64 } from "@hatch/space-sdk/client";
 import { actionFields } from "@hatch/space-sdk/fields" with { type: "macro" };
 import { api } from "./api";
 import zyraLogo from "./assets/zyra-logo.png";
@@ -91,17 +91,13 @@ const EMERGENCY = [
 const METRICS_GLOSSARY = [["Hook Rate","مشاهدات 3 ثواني ÷ Impressions — يقيس قوة الـ Hook (CIS: Hook)"],["Hold Rate","مشاهدات 50%+ ÷ مشاهدات — يقيس الـ Body والفورمات والموهبة"],["Outbound CTR","نقرات خارجية ÷ Impressions"],["CPM","تكلفة 1000 ظهور"],["Placed CPP","إجمالي الإنفاق ÷ الطلبات الموضوعة"],["Delivered CPP","إجمالي الإنفاق ÷ الطلبات المُسلّمة — لنفس الـ Cohort والفترة فقط"],["GPT","Gross Profit per Transaction بعد كل تكاليف الـ COD — Priority 1"],["Net COD Rate","WhatsApp Confirmation % × Delivery %"],["NDR","Delivered ÷ Placed لنفس الـ Cohort"]];
 const SEASONALITY = ["رمضان والعيد: طلب مرتفع على روتينات العناية — جهّز كرييتيف قبل الموسم بـ 30 يوم (Seasonal launch −30d)","الصيف: مشاكل العرق والتصبغات والشمس في المقدمة","الشتاء: الجفاف والترطيب العميق","موسم الأفراح: روتينات تجهيز العروسة","Payday شهرياً: ذروة 25–5 وانخفاض حذر 15–24"];
 
-type Tab = "thinking"|"command"|"relaunch"|"campaigns"|"content"|"organic"|"market"|"ops"|"finance"|"ask"|"system";
+type Tab = "today"|"plan"|"marketing"|"market"|"money"|"ask"|"system";
 const TABS: {id:Tab,label:string,en:string}[] = [
-  { id:"thinking", label:"تفكير زيرا وقراراتنا", en:"Zyra Thinking & Decisions" },
-  { id:"command", label:"لوحة القيادة", en:"Dashboard" },
-  { id:"relaunch", label:"الريلونش", en:"Relaunch" },
-  { id:"campaigns", label:"الحملات والميديا باير", en:"Campaigns & Media Buyer" },
-  { id:"content", label:"المحتوى والكرييتف", en:"Content & Creative" },
-  { id:"organic", label:"الأورجانيك", en:"Organic — Social Media" },
-  { id:"market", label:"السوق والمنافسين", en:"Market & Competitors" },
-  { id:"ops", label:"التشغيل والتعلّم", en:"Operations & Learning" },
-  { id:"finance", label:"المالية والتدقيق", en:"Finance & Audit" },
+  { id:"today", label:"اليوم", en:"Today — Dashboard, Decisions & Thinking" },
+  { id:"plan", label:"الخطة والتنفيذ", en:"Plan & Execution — Relaunch" },
+  { id:"marketing", label:"التسويق", en:"Marketing — Campaigns, Creative & Organic" },
+  { id:"market", label:"السوق", en:"Market & Competitors" },
+  { id:"money", label:"المال والنتائج", en:"Money & Results — Finance & Audit" },
   { id:"ask", label:"اسأل زيرا", en:"Ask Zyra" },
   { id:"system", label:"النظام والإعدادات", en:"System & Settings" },
 ];
@@ -123,12 +119,12 @@ function freshness(iso?: string | null): { icon: string; label: string; stale: b
 const GOVERNANCE = "AI يفسّر — الكود يحسب. AI يقترح — الإنسان يقرر. الكود يفرض — AI لا يتجاوز.";
 const GROWTH_STAGES = [
   { n:1, t:"تأسيس وفهم", d:"مدخلات موثقة وكل ادعاء موسوم: VERIFIED / ZYRA PROVEN / HYPOTHESIS / ESTIMATED / UNKNOWN — بلا وسم = بلا وزن.", go:"system" as Tab },
-  { n:2, t:"أوديت 8 ركائز", d:"تدقيق شامل (بريف/أداء/حساب/منتجات/CRO/سوشيال/عمليات/احتفاظ) قبل أي صرف جديد.", go:"finance" as Tab },
-  { n:3, t:"نفسية عميل وهندسة عروض وكرييتيف", d:"5 Whys و7Ws وRule of One وهندسة عرض — كرييتيف مبني على نفسية العميلة لا على ذوق.", go:"content" as Tab },
-  { n:4, t:"إنتاج وصفحة هبوط", d:"إنتاج الأصول وScent Match كامل مع صفحة الهبوط 1:1.", go:"content" as Tab },
-  { n:5, t:"فحص ما قبل الإطلاق وتستينج منظم", d:"AEO + COD + Payday + هيكلة اختبار بمتغير واحد وقواعد قتل معلنة مسبقاً.", go:"campaigns" as Tab },
-  { n:6, t:"نقد وفحص حتمي", d:"Validator وTask D وأدوات حتمية — الكود يحسب والـ AI يفسّر فقط.", go:"campaigns" as Tab },
-  { n:7, t:"تدقيق مغلق وسكيل وتعلم", d:"حلقة مغلقة: Outcome Review ← تعلم موثق ← Scale مشروط بالبوابات أو قتل مدفون بسبب.", go:"ops" as Tab },
+  { n:2, t:"أوديت 8 ركائز", d:"تدقيق شامل (بريف/أداء/حساب/منتجات/CRO/سوشيال/عمليات/احتفاظ) قبل أي صرف جديد.", go:"money" as Tab },
+  { n:3, t:"نفسية عميل وهندسة عروض وكرييتيف", d:"5 Whys و7Ws وRule of One وهندسة عرض — كرييتيف مبني على نفسية العميلة لا على ذوق.", go:"marketing" as Tab },
+  { n:4, t:"إنتاج وصفحة هبوط", d:"إنتاج الأصول وScent Match كامل مع صفحة الهبوط 1:1.", go:"marketing" as Tab },
+  { n:5, t:"فحص ما قبل الإطلاق وتستينج منظم", d:"AEO + COD + Payday + هيكلة اختبار بمتغير واحد وقواعد قتل معلنة مسبقاً.", go:"marketing" as Tab },
+  { n:6, t:"نقد وفحص حتمي", d:"Validator وTask D وأدوات حتمية — الكود يحسب والـ AI يفسّر فقط.", go:"marketing" as Tab },
+  { n:7, t:"تدقيق مغلق وسكيل وتعلم", d:"حلقة مغلقة: Outcome Review ← تعلم موثق ← Scale مشروط بالبوابات أو قتل مدفون بسبب.", go:"today" as Tab },
 ];
 const PRECEDENCE_RULES = [
   { t:"أسبقية أطر زيرا", d:"عند أي تعارض: COD Math والامتثال (AEO) وهوية البراند تتغلب على أي افتراضيات عامة أو منهجيات مستوردة (بما فيها قواعد الكورس الاستشارية)." },
@@ -161,19 +157,15 @@ function Svg({ children }: { children: ReactNode }) {
   return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{children}</svg>;
 }
 const NAV_ICONS: Record<Tab, ReactNode> = {
-  thinking: <Svg><path d="M9.5 3.5A2.6 2.6 0 0 1 12 6c0 1.1-.5 1.7-1.1 2.4-.5.6-.9 1.2-.9 2.1H7.6c0-1.3-.3-2-1.1-3A4.6 4.6 0 1 1 9.5 3.5Z"/><path d="M8 15.5h3.4M8.4 19h2.6M9.7 21.5h.01"/></Svg>,
-  command: <Svg><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></Svg>,
-  relaunch: <Svg><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></Svg>,
-  campaigns: <Svg><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.8"/><circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"/></Svg>,
-  content: <Svg><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="m5 19 5.5-5.5 3 3L17 13l2 2"/></Svg>,
-  organic: <Svg><path d="M5 19.5C5 10.5 12 4.5 20.5 4.5c0 8.5-6 15-15 15Z"/><path d="M5 19.5c3-6.5 7.5-11 13-13.5"/></Svg>,
+  today: <Svg><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></Svg>,
+  plan: <Svg><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></Svg>,
+  marketing: <Svg><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="m5 19 5.5-5.5 3 3L17 13l2 2"/></Svg>,
   market: <Svg><path d="M2.5 12S6 5.8 12 5.8 21.5 12 21.5 12 18 18.2 12 18.2 2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="3"/></Svg>,
-  ops: <Svg><path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 3v4.2h-4.2"/></Svg>,
-  finance: <Svg><rect x="2.5" y="6" width="19" height="12" rx="2"/><circle cx="12" cy="12" r="2.6"/><path d="M6 9.5h.01M18 14.5h.01"/></Svg>,
+  money: <Svg><rect x="2.5" y="6" width="19" height="12" rx="2"/><circle cx="12" cy="12" r="2.6"/><path d="M6 9.5h.01M18 14.5h.01"/></Svg>,
   ask: <Svg><path d="M12 3l1.7 4.6 4.6 1.7-4.6 1.7L12 15.6l-1.7-4.6L5.7 9.3l4.6-1.7L12 3Z"/><path d="M18.6 15.2l.8 2.1 2.1.8-2.1.8-.8 2.1-.8-2.1-2.1-.8 2.1-.8.8-2.1Z"/></Svg>,
   system: <Svg><path d="M4 7h9"/><path d="M19 7h1"/><circle cx="16" cy="7" r="2.2"/><path d="M4 17h3"/><path d="M13 17h7"/><circle cx="10" cy="17" r="2.2"/></Svg>,
 };
-const NAV_MAIN: Tab[] = ["thinking","command","relaunch","campaigns","content","organic","market","ops","finance"];
+const NAV_MAIN: Tab[] = ["today","plan","marketing","market","money"];
 
 /* ---- Lightweight CSS bar chart (real data only; designed empty frame) ---- */
 function BarChart({ title, items, unit = "", grad = "var(--grad-finance)" }: { title: string; items: { label: string; value: number; highlight?: boolean }[]; unit?: string; grad?: string }) {
@@ -330,11 +322,11 @@ function DashboardHome({ dash, snapshots, tasks, work, approvals, alerts, goals,
   const disc: { icon: ReactNode; bg: string; color: string; title: string; detail: string; go: ()=>void }[] = [];
   const newAlert = alerts.find((a:any)=>a.status==="New");
   if (newAlert) disc.push({ icon:<Svg><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.8"/><circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"/></Svg>, bg:"var(--warning-soft)", color:"var(--warning)", title:`اكتشاف عرض/تغيّر منافس: ${newAlert.competitor}`, detail: newAlert.detail || newAlert.changeType, go:()=>nav("market","market","watch") });
-  if (overdue.length) disc.push({ icon:<Svg><path d="M12 8v5l3 2"/><circle cx="12" cy="12" r="9"/></Svg>, bg:"var(--danger-soft)", color:"var(--danger)", title:`${overdue.length} عنصر شغل متأخر عن الاستحقاق`, detail:"راجع الـ Next Action وحدّث الحالة قبل أي شغل جديد", go:()=>nav("relaunch","relaunch","work") });
-  if ((dash?.approvalsPending ?? 0)>0) disc.push({ icon:<Svg><path d="M12 3 5 5.8v5.4c0 4.5 3 7.7 7 9.3 4-1.6 7-4.8 7-9.3V5.8L12 3Z"/><path d="m9 11.6 2.2 2.2 4.3-4.3"/></Svg>, bg:"var(--info-soft)", color:"var(--info)", title:`${dash.approvalsPending} اعتماد بانتظار قرارك`, detail:"مفيش أي تنفيذ خارجي هيحصل قبل موافقتك الصريحة", go:()=>nav("campaigns","campaigns","approvals") });
+  if (overdue.length) disc.push({ icon:<Svg><path d="M12 8v5l3 2"/><circle cx="12" cy="12" r="9"/></Svg>, bg:"var(--danger-soft)", color:"var(--danger)", title:`${overdue.length} عنصر شغل متأخر عن الاستحقاق`, detail:"راجع الـ Next Action وحدّث الحالة قبل أي شغل جديد", go:()=>nav("plan","plan","work") });
+  if ((dash?.approvalsPending ?? 0)>0) disc.push({ icon:<Svg><path d="M12 3 5 5.8v5.4c0 4.5 3 7.7 7 9.3 4-1.6 7-4.8 7-9.3V5.8L12 3Z"/><path d="m9 11.6 2.2 2.2 4.3-4.3"/></Svg>, bg:"var(--info-soft)", color:"var(--info)", title:`${dash.approvalsPending} اعتماد بانتظار قرارك`, detail:"مفيش أي تنفيذ خارجي هيحصل قبل موافقتك الصريحة", go:()=>nav("marketing","marketing","approvals") });
   if (completeness.pct<100) disc.push({ icon:<Svg><path d="M9 3.5A2.5 2.5 0 0 1 11.5 6c0 1-.5 1.6-1 2.2-.4.5-.5 1-.5 1.8H7.5c0-1.2-.3-1.9-1-2.7A4.5 4.5 0 1 1 9 3.5Z"/><path d="M9 13.5v.01M5 20.5h9"/></Svg>, bg:"var(--warning-soft)", color:"var(--warning)", title:`المدخلات الأساسية مكتملة ${completeness.pct}% بس`, detail:"أي قرار قبل الاكتمال يفضل Provisional — أكمل الناقص", go:()=>nav("system","system","inputs") });
-  if ((dash?.tasksReady ?? 0)>0) disc.push({ icon:<Svg><path d="M10 3h4"/><path d="M10 3v5.5L4.8 18a2 2 0 0 0 1.8 3h10.8a2 2 0 0 0 1.8-3L14 8.5V3"/><path d="M7.5 14.5h9"/></Svg>, bg:"var(--success-soft)", color:"var(--success)", title:`${dash.tasksReady} مهمة جاهزة للمراجعة`, detail:"راجعها واعتمد أو ارجعها بخطوة تصحيح واحدة", go:()=>nav("campaigns","campaigns","tasks") });
-  if (outcomeDue.length) disc.push({ icon:<Svg><path d="M4 19V9M9.5 19V5M15 19v-8M20 19V7"/></Svg>, bg:"var(--info-soft)", color:"var(--info)", title:`${outcomeDue.length} عنصر مستحق مراجعة نتائج`, detail:"قارن المتوقع بالفعلي وسجّل التعلم في سجل التعلم", go:()=>nav("relaunch","relaunch","work") });
+  if ((dash?.tasksReady ?? 0)>0) disc.push({ icon:<Svg><path d="M10 3h4"/><path d="M10 3v5.5L4.8 18a2 2 0 0 0 1.8 3h10.8a2 2 0 0 0 1.8-3L14 8.5V3"/><path d="M7.5 14.5h9"/></Svg>, bg:"var(--success-soft)", color:"var(--success)", title:`${dash.tasksReady} مهمة جاهزة للمراجعة`, detail:"راجعها واعتمد أو ارجعها بخطوة تصحيح واحدة", go:()=>nav("marketing","marketing","tasks") });
+  if (outcomeDue.length) disc.push({ icon:<Svg><path d="M4 19V9M9.5 19V5M15 19v-8M20 19V7"/></Svg>, bg:"var(--info-soft)", color:"var(--info)", title:`${outcomeDue.length} عنصر مستحق مراجعة نتائج`, detail:"قارن المتوقع بالفعلي وسجّل التعلم في سجل التعلم", go:()=>nav("plan","plan","work") });
   const queueTasks = [...tasks].sort((a:any,b:any)=>{ const rank=(s:string)=> s==="Ready for Review"?0 : s==="New"?1 : 2; return rank(a.status)-rank(b.status); }).slice(0,4);
   const queueWork = work.filter((w:any)=>!["Completed","Failed"].includes(w.status)).slice(0,4);
   const pillFor = (s:string)=> s==="Ready for Review" ? "pill pill-draft" : s==="New" ? "pill pill-pending" : s==="Executing" ? "pill pill-live" : "pill pill-locked";
@@ -343,9 +335,9 @@ function DashboardHome({ dash, snapshots, tasks, work, approvals, alerts, goals,
   const steps = [
     { n:1, t:"املأ المدخلات الأساسية", go:()=>nav("system","system","inputs"), done: completeness.pct>=80, active: completeness.pct>0 },
     { n:2, t:"ادرس السوق والمنافسين", go:()=>nav("market","market","watch"), done: (dash?.marketRoundsTotal ?? 0)>0, active: (dash?.marketRoundsTotal ?? 0)>0 },
-    { n:3, t:"جهّز الكرييتيف وافحصه", go:()=>nav("content","content","creative"), done: (dash?.creativesTotal ?? 0)>0, active: (dash?.creativesTotal ?? 0)>0 },
-    { n:4, t:"ابنِ الحملة وقرّر", go:()=>nav("campaigns","campaigns","campaigns"), done: (dash?.campaignsTotal ?? 0)>0, active: (dash?.campaignsTotal ?? 0)>0 },
-    { n:5, t:"تابع وقرّر Kill/Scale وتعلّم", go:()=>nav("relaunch","relaunch","work"), done: (dash?.experimentsTotal ?? 0)>0, active: (dash?.campaignsTotal ?? 0)>0 },
+    { n:3, t:"جهّز الكرييتيف وافحصه", go:()=>nav("marketing","marketing","studio"), done: (dash?.creativesTotal ?? 0)>0, active: (dash?.creativesTotal ?? 0)>0 },
+    { n:4, t:"ابنِ الحملة وقرّر", go:()=>nav("marketing","marketing","campaigns"), done: (dash?.campaignsTotal ?? 0)>0, active: (dash?.campaignsTotal ?? 0)>0 },
+    { n:5, t:"تابع وقرّر Kill/Scale وتعلّم", go:()=>nav("plan","plan","work"), done: (dash?.experimentsTotal ?? 0)>0, active: (dash?.campaignsTotal ?? 0)>0 },
   ];
   return (
     <section>
@@ -358,7 +350,7 @@ function DashboardHome({ dash, snapshots, tasks, work, approvals, alerts, goals,
         </div>
         <div className="flex items-center gap-2 flex-wrap">
           <span className="text-xs font-normal px-3 py-2 rounded-full" style={{background:"var(--surface)",border:"1px solid var(--border)"}}>📅 آخر 7 أيام</span>
-          <button onClick={()=>nav("campaigns","campaigns","approvals")} aria-label="التنبيهات والاعتمادات المعلقة" className="relative w-10 h-10 rounded-full flex items-center justify-center" style={{background:"var(--surface)",border:"1px solid var(--border)"}}>
+          <button onClick={()=>nav("marketing","marketing","approvals")} aria-label="التنبيهات والاعتمادات المعلقة" className="relative w-10 h-10 rounded-full flex items-center justify-center" style={{background:"var(--surface)",border:"1px solid var(--border)"}}>
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true"><path d="M6 9.5a6 6 0 0 1 12 0c0 4 1.5 5.5 1.5 5.5h-15S6 13.5 6 9.5"/><path d="M10 19a2.2 2.2 0 0 0 4 0"/></svg>
             {(dash?.approvalsPending ?? 0)>0 && <span className="absolute -top-1 -left-1 min-w-[18px] h-[18px] px-1 rounded-full text-[10px] font-normal flex items-center justify-center" style={{background:"#D92D20",color:"#fff"}}>{dash.approvalsPending}</span>}
           </button>
@@ -391,7 +383,7 @@ function DashboardHome({ dash, snapshots, tasks, work, approvals, alerts, goals,
           <div key={i} className="rounded-2xl p-4" style={{...card, borderStyle:"dashed"}}>
             <div className="font-cairo text-[30px] font-bold mt-1" style={{color:"var(--dim)"}}>—</div>
             <div className="text-xs mt-1.5" style={{color:"var(--dim)"}}>بانتظار أول لقطة مالية</div>
-            <button onClick={()=>nav("finance","finance","finance")} className="text-[11px] font-normal underline mt-2">احسب Cohort في المالية ←</button>
+            <button onClick={()=>nav("money","money","finance")} className="text-[11px] font-normal underline mt-2">احسب Cohort في المالية ←</button>
           </div>
         ))}
       </div>
@@ -405,7 +397,7 @@ function DashboardHome({ dash, snapshots, tasks, work, approvals, alerts, goals,
           <div className="rounded-2xl p-4" style={card}>
             <div className="flex items-center justify-between gap-2">
               <h3 className="font-bold">✦ أهم اكتشافات زيرا الذكية</h3>
-              <button onClick={()=>nav("relaunch","relaunch","work")} className="text-xs font-normal" style={{color:"var(--accent)"}}>عرض التفاصيل ←</button>
+              <button onClick={()=>nav("plan","plan","work")} className="text-xs font-normal" style={{color:"var(--accent)"}}>عرض التفاصيل ←</button>
             </div>
             <div className="grid gap-1 mt-2">
               {disc.length===0 && <p className="text-sm py-2" style={{color:"var(--dim)"}}>لا اكتشافات جديدة دلوقتي — النظام بيراقب الاستحقاقات والاعتمادات والمنافسين واكتمال المدخلات، وأي إشارة هتظهر هنا فوراً.</p>}
@@ -423,14 +415,14 @@ function DashboardHome({ dash, snapshots, tasks, work, approvals, alerts, goals,
           <div className="rounded-2xl p-4" style={card}>
             <div className="flex items-center justify-between gap-2 flex-wrap">
               <h3 className="font-bold">قائمة المهام الذكية ({(dash?.tasksTotal ?? 0) + (dash?.workTotal ?? 0)} عنصر)</h3>
-              <button onClick={()=>nav("relaunch","relaunch","work")} className="text-xs font-normal" style={{color:"var(--accent)"}}>عرض القائمة كاملة ←</button>
+              <button onClick={()=>nav("plan","plan","work")} className="text-xs font-normal" style={{color:"var(--accent)"}}>عرض القائمة كاملة ←</button>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 mt-3">
               {[
-                { label:"اكتشافات جديدة", n:(dash?.tasksNew ?? 0) + (dash?.alertsOpen ?? 0), go:()=>nav("campaigns","campaigns","tasks"), icon:<Svg><circle cx="11" cy="11" r="6.5"/><path d="m20 20-3.8-3.8"/></Svg> },
-                { label:"جاهزة للمراجعة", n:dash?.tasksReady ?? 0, go:()=>nav("campaigns","campaigns","tasks"), icon:<Svg><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4a3 3 0 0 1 6 0"/><path d="m9.2 14 2 2 3.8-3.8"/></Svg> },
-                { label:"قيد التنفيذ", n:dash?.tasksInProgress ?? 0, go:()=>nav("relaunch","relaunch","work"), icon:<Svg><path d="M13 2 4.5 13.5H11L9.5 22 19 10h-6.5L13 2Z"/></Svg> },
-                { label:"مراجعة النتائج", n:outcomeDue.length, go:()=>nav("relaunch","relaunch","work"), icon:<Svg><path d="M4 19V9M9.5 19V5M15 19v-8M20 19V7"/></Svg> },
+                { label:"اكتشافات جديدة", n:(dash?.tasksNew ?? 0) + (dash?.alertsOpen ?? 0), go:()=>nav("marketing","marketing","tasks"), icon:<Svg><circle cx="11" cy="11" r="6.5"/><path d="m20 20-3.8-3.8"/></Svg> },
+                { label:"جاهزة للمراجعة", n:dash?.tasksReady ?? 0, go:()=>nav("marketing","marketing","tasks"), icon:<Svg><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4a3 3 0 0 1 6 0"/><path d="m9.2 14 2 2 3.8-3.8"/></Svg> },
+                { label:"قيد التنفيذ", n:dash?.tasksInProgress ?? 0, go:()=>nav("plan","plan","work"), icon:<Svg><path d="M13 2 4.5 13.5H11L9.5 22 19 10h-6.5L13 2Z"/></Svg> },
+                { label:"مراجعة النتائج", n:outcomeDue.length, go:()=>nav("plan","plan","work"), icon:<Svg><path d="M4 19V9M9.5 19V5M15 19v-8M20 19V7"/></Svg> },
               ].map(c=>(
                 <button key={c.label} onClick={c.go} aria-label={c.label} className="rounded-xl p-3 text-right lift" style={{background:"var(--bg)",border:"1px solid var(--border)"}}>
                   <span className="flex items-center gap-2"><span className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style={{background:"var(--teal-soft)",color:"#0E5A52"}}><span className="w-4 h-4 block">{c.icon}</span></span><span className="font-cairo text-xl font-normal"><CountUp value={c.n} /></span></span>
@@ -441,7 +433,7 @@ function DashboardHome({ dash, snapshots, tasks, work, approvals, alerts, goals,
             <div className="grid gap-1 mt-2">
               {queueTasks.length===0 && queueWork.length===0 && <p className="text-sm py-2" style={{color:"var(--dim)"}}>القائمة فارغة — أول مهمة من «اسأل زيرا» أو عنصر شغل من الريلونش هيظهر هنا بالأولوية.</p>}
               {queueTasks.map((t:any)=>(
-                <button key={"t"+t.id} onClick={()=>nav("campaigns","campaigns","tasks")} className="flex items-center gap-3 py-2.5 text-right w-full" style={{borderTop:"1px solid var(--border)"}}>
+                <button key={"t"+t.id} onClick={()=>nav("marketing","marketing","tasks")} className="flex items-center gap-3 py-2.5 text-right w-full" style={{borderTop:"1px solid var(--border)"}}>
                   <span className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 font-normal text-xs" style={{background:"var(--teal-soft)",color:"#0E5A52"}}>{t.type}</span>
                   <span className="flex-1 min-w-0"><span className="block font-normal text-sm truncate">{t.title}</span><span className="block text-xs mt-0.5 truncate" style={{color:"var(--dim)"}}>{t.objective || TASK_TYPES[t.type]}</span></span>
                   <span className={pillFor(t.status)}>{pillLabel(t.status)}</span>
@@ -449,7 +441,7 @@ function DashboardHome({ dash, snapshots, tasks, work, approvals, alerts, goals,
                 </button>
               ))}
               {queueWork.map((w:any)=>(
-                <button key={"w"+w.id} onClick={()=>nav("relaunch","relaunch","work")} className="flex items-center gap-3 py-2.5 text-right w-full" style={{borderTop:"1px solid var(--border)"}}>
+                <button key={"w"+w.id} onClick={()=>nav("plan","plan","work")} className="flex items-center gap-3 py-2.5 text-right w-full" style={{borderTop:"1px solid var(--border)"}}>
                   <span className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0" style={{background:"var(--sand)",color:"#0E5A52"}}><span className="w-[18px] h-[18px] block"><Svg><path d="m3 6 2 2 4-4"/><path d="M11 6h10"/><path d="m3 12 2 2 4-4"/><path d="M11 12h10"/><path d="m3 18 2 2 4-4"/><path d="M11 18h10"/></Svg></span></span>
                   <span className="flex-1 min-w-0"><span className="block font-normal text-sm truncate">{w.title}</span><span className="block text-xs mt-0.5 truncate" style={{color:"var(--dim)"}}>{w.nextAction || w.sourceType} · تقدم {w.progress}%</span></span>
                   <span className="hidden sm:flex items-center gap-1.5 text-[11px] font-normal shrink-0" style={{color:"var(--dim)"}}>{priBars(w.priority)}{w.priority==="High"||w.priority==="Critical" ? "أولوية عالية" : w.priority==="Medium" ? "أولوية متوسطة" : "أولوية منخفضة"}</span>
@@ -511,7 +503,7 @@ function DashboardHome({ dash, snapshots, tasks, work, approvals, alerts, goals,
           </div>
           <div className="rounded-2xl p-4" style={card}>
             <h3 className="font-bold">حراسة التنفيذ — Human Control</h3>
-            <p className="text-sm mt-2 leading-relaxed" style={{color:"var(--dim)"}}>ممنوع أي تنفيذ خارجي بدون موافقة المالك الصريحة: لا نشر، لا رسائل عملاء، لا تغيير ميزانيات أو أسعار أو خصومات، لا إيقاف أو إطلاق حملات. كل إجراء خارجي يمر أولاً على <button className="font-normal underline" onClick={()=>nav("campaigns","campaigns","approvals")}>صندوق الاعتمادات</button> ويتسجل في سجل التنفيذ بقيم Before/After.</p>
+            <p className="text-sm mt-2 leading-relaxed" style={{color:"var(--dim)"}}>ممنوع أي تنفيذ خارجي بدون موافقة المالك الصريحة: لا نشر، لا رسائل عملاء، لا تغيير ميزانيات أو أسعار أو خصومات، لا إيقاف أو إطلاق حملات. كل إجراء خارجي يمر أولاً على <button className="font-normal underline" onClick={()=>nav("marketing","marketing","approvals")}>صندوق الاعتمادات</button> ويتسجل في سجل التنفيذ بقيم Before/After.</p>
           </div>
         </div>
 
@@ -522,7 +514,7 @@ function DashboardHome({ dash, snapshots, tasks, work, approvals, alerts, goals,
             <div className="flex items-center gap-4 mt-3">
               <ProgressRing pct={donutPct} size={72} color="var(--teal)"><span className="font-cairo" style={{fontSize:15}}>{donutPct}%</span></ProgressRing>
               <div className="text-sm">
-                {goal0 ? (<><p><span style={{color:"var(--dim)"}}>الهدف:</span> <b>{goal0.metric}</b></p><p className="mt-1"><span style={{color:"var(--dim)"}}>المستهدف:</span> <b>{goal0.target} {goal0.unit}</b></p><p className="mt-1"><span style={{color:"var(--dim)"}}>المحقق:</span> <b>{goal0.current} {goal0.unit}</b></p></>) : (<><p className="font-normal">اكتمال المدخلات الأساسية</p><p className="mt-1" style={{color:"var(--dim)"}}>لسه مفيش هدف يومي مسجل — أول هدف Relaunch هيتحط هنا تلقائياً.</p><button onClick={()=>nav("relaunch","relaunch","board")} className="text-xs font-normal underline mt-1">حدّد أهداف الريلونش ←</button></>)}
+                {goal0 ? (<><p><span style={{color:"var(--dim)"}}>الهدف:</span> <b>{goal0.metric}</b></p><p className="mt-1"><span style={{color:"var(--dim)"}}>المستهدف:</span> <b>{goal0.target} {goal0.unit}</b></p><p className="mt-1"><span style={{color:"var(--dim)"}}>المحقق:</span> <b>{goal0.current} {goal0.unit}</b></p></>) : (<><p className="font-normal">اكتمال المدخلات الأساسية</p><p className="mt-1" style={{color:"var(--dim)"}}>لسه مفيش هدف يومي مسجل — أول هدف Relaunch هيتحط هنا تلقائياً.</p><button onClick={()=>nav("plan","plan","board")} className="text-xs font-normal underline mt-1">حدّد أهداف الريلونش ←</button></>)}
               </div>
             </div>
           </div>
@@ -552,7 +544,7 @@ function DashboardHome({ dash, snapshots, tasks, work, approvals, alerts, goals,
             ) : (
               <div className="grid gap-2.5 mt-2">
                 {executingWork.slice(0,2).map((w:any)=>(
-                  <button key={w.id} onClick={()=>nav("relaunch","relaunch","work")} className="text-right w-full">
+                  <button key={w.id} onClick={()=>nav("plan","plan","work")} className="text-right w-full">
                     <p className="text-sm font-normal flex items-center gap-2"><span style={{color:"var(--success)"}}>▶</span> {w.title}</p>
                     <div className="flex items-center gap-2 mt-1.5"><div className="progress-track flex-1" style={{height:8}}><div className="progress-fill h-full" style={{width:w.progress+"%",background:"var(--teal)"}} /></div><span className="text-xs font-normal">{w.progress}%</span></div>
                   </button>
@@ -566,9 +558,9 @@ function DashboardHome({ dash, snapshots, tasks, work, approvals, alerts, goals,
             <h3 className="font-bold text-sm">القادم</h3>
             <div className="grid gap-1 mt-1">
               {[
-                { label:"عناصر مستحقة مراجعة نتائج", n: outcomeDue.length, go:()=>nav("relaunch","relaunch","work") },
+                { label:"عناصر مستحقة مراجعة نتائج", n: outcomeDue.length, go:()=>nav("plan","plan","work") },
                 { label:"خطط مقترحة بانتظار الاعتماد", n: plans.filter((p:any)=>p.status==="Proposed").length, go:()=>nav("ask") },
-                { label:"مهام جاهزة للمراجعة", n: dash?.tasksReady ?? 0, go:()=>nav("campaigns","campaigns","tasks") },
+                { label:"مهام جاهزة للمراجعة", n: dash?.tasksReady ?? 0, go:()=>nav("marketing","marketing","tasks") },
               ].map(r=>(
                 <button key={r.label} onClick={r.go} className="flex items-center gap-2 py-2 text-right w-full" style={{borderTop:"1px solid var(--border)"}}>
                   <span className="flex-1 text-sm font-normal">{r.label}</span>
@@ -767,8 +759,437 @@ function OrganicTab({ posts, insights, keywords, inv }: any) {
   );
 }
 
+
+/* ================= Global search (بحث شامل واحد) ================= */
+function GlobalSearch({ nav }: { nav: (t: Tab)=>void }) {
+  const [q, setQ] = useState("");
+  const [results, setResults] = useState<any[] | null>(null);
+  const [err, setErr] = useState("");
+  const search = useMutation({ mutationFn: async(v:string)=> await api.globalSearch({ q: v }), onSuccess: (d)=>{ setResults(d.results); setErr(""); }, onError: (e:any)=> setErr(e?.message ?? "تعذر البحث") });
+  return (
+    <div className="relative mb-4">
+      <form onSubmit={(e)=>{ e.preventDefault(); if (q.trim().length < 2) { setErr("اكتب كلمتين على الأقل للبحث"); return; } search.mutate(q.trim()); }} className="flex gap-2">
+        <div className="relative flex-1">
+          <input aria-label="بحث شامل في كل سجلات النظام" {...FIELDS.globalSearch.q} value={q} onChange={e=>{ setQ(e.target.value); if (results) setResults(null); }} placeholder="🔎 بحث شامل — منتج، منافس، زاوية، كرييتف، مهمة، بوست، بريف…" className="w-full rounded-xl px-3 py-2.5 text-sm border" style={inpStyle} />
+        </div>
+        <button type="submit" aria-label="تنفيذ البحث الشامل" className="px-4 py-2.5 rounded-xl font-normal text-sm btn-glow shrink-0" style={{background:"var(--teal)",color:"#FFF6EE"}}>{search.isPending ? "جاري البحث…" : "ابحث"}</button>
+        {results && <button type="button" onClick={()=>{ setResults(null); setQ(""); }} aria-label="مسح نتائج البحث" className="px-3 py-2.5 rounded-xl font-normal text-sm shrink-0" style={{border:"1px solid var(--border)"}}>مسح</button>}
+      </form>
+      {err && <p className="text-xs mt-1.5" style={{color:"var(--danger)"}}>{err}</p>}
+      {results && (
+        <div className="rounded-2xl mt-2 p-2 grid gap-1" style={{background:"var(--surface)",border:"1px solid var(--border)",boxShadow:"var(--shadow-lift)"}}>
+          {results.length===0 && <p className="text-sm p-2" style={{color:"var(--dim)"}}>مفيش نتائج مطابقة في أي سجل.</p>}
+          {results.map((r:any, i:number)=>(
+            <button key={i} onClick={()=>{ nav(r.tab as Tab); setResults(null); }} aria-label={`فتح ${r.kind}: ${r.title}`} className="flex items-center gap-2 text-right rounded-xl px-3 py-2 w-full" style={{background:"var(--surface2)"}}>
+              <span className="pill pill-pending shrink-0">{r.kind}</span>
+              <span className="flex-1 min-w-0"><span className="block text-sm font-normal truncate">{r.title}</span>{r.detail && <span className="block text-[11px] truncate" style={{color:"var(--dim)"}}>{r.detail}</span>}</span>
+              <span className="text-xs shrink-0" style={{color:"var(--dim)"}}>فتح ←</span>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ================= Decision Inbox (صندوق القرارات الموحّد) ================= */
+const INBOX_KIND_LABEL: Record<string,string> = { thinking:"تفكير زيرا", plan:"خطة مقترحة", approval:"طلب اعتماد", organic:"كابشن أورجانيك", brief:"بريف / طلب توليد" };
+function DecisionInbox({ inbox, posts, inv, approvePlan, plans }: any) {
+  const decideThinkingM = useMutation({ mutationFn: async(v:any)=> await api.decideThinking(v), onSuccess: inv });
+  const decideApprovalM = useMutation({ mutationFn: async(v:any)=> await api.decideApproval(v), onSuccess: inv });
+  const rejectPlanM = useMutation({ mutationFn: async(id:number)=> await api.updateAgentPlan({ id, status: "Rejected" }), onSuccess: inv });
+  const decideBriefM = useMutation({ mutationFn: async(v:any)=> await api.updateGenerationRequest(v), onSuccess: inv });
+  const decideOrganicM = useMutation({ mutationFn: async(v:{post:any, approve:boolean})=>{
+    const caps = (v.post.captions ?? []).filter((c:any)=>c.status !== "معتمدة");
+    if (v.approve) {
+      const first = (v.post.captions ?? [])[0];
+      if (first) { await api.saveOrganicCaption({ id: first.id, postId: v.post.id, slot: first.slot, style: first.style, text: first.text, status: "معتمدة" }); await api.updateOrganicPost({ id: v.post.id, finalCaption: first.text }); }
+    } else {
+      for (const c of caps) await api.saveOrganicCaption({ id: c.id, postId: v.post.id, slot: c.slot, style: c.style, text: c.text, status: "مرفوضة" });
+    }
+  }, onSuccess: inv });
+  const postById = (id:number)=> posts.find((p:any)=>p.id===id);
+  if (!inbox) return <div className="skeleton-bar mb-4" role="status" aria-label="جاري تحميل صندوق القرارات" />;
+  return (
+    <section className="rounded-2xl p-4 mb-4" style={{...card, borderColor:"var(--terra)", borderWidth:1.5}} aria-label="صندوق القرارات">
+      <div className="flex items-center gap-2 flex-wrap">
+        <h2 className="font-bold text-lg">📥 صندوق القرارات</h2>
+        <span className="text-sm font-normal px-3 py-1 rounded-full" style={{background: inbox.total>0 ? "var(--danger)" : "var(--success)", color:"#fff"}}>{inbox.total} بند بانتظار قرارك</span>
+        <span className="text-xs" style={{color:"var(--dim)"}}>كل اللي محتاج اعتمادك من كل الأقسام في قائمة واحدة — اعتمد أو ارفض من هنا على طول.</span>
+      </div>
+      <div className="flex gap-1.5 flex-wrap mt-2.5">
+        {(Object.keys(INBOX_KIND_LABEL) as string[]).map(k=>(
+          <span key={k} className="text-[11px] font-normal px-2.5 py-1 rounded-full" style={{background:"var(--surface2)",border:"1px solid var(--border)"}}>{INBOX_KIND_LABEL[k]}: {k==="thinking" ? inbox.counts.thinking : k==="plan" ? inbox.counts.plans : k==="approval" ? inbox.counts.approvals : k==="organic" ? inbox.counts.organic : inbox.counts.briefs}</span>
+        ))}
+      </div>
+      {inbox.total===0 && <p className="text-sm mt-3 font-normal" style={{color:"var(--success)"}}>✓ صندوق القرارات فاضي — مفيش حاجة مستنية اعتمادك دلوقتي.</p>}
+      <div className="grid gap-2 mt-3">
+        {inbox.items.map((it:any)=>(
+          <div key={it.kind + "-" + it.id} className="rounded-xl p-3 flex items-center gap-2.5 flex-wrap" style={{background:"var(--surface2)",border:"1px solid var(--border)"}}>
+            <span className="pill pill-draft shrink-0">{INBOX_KIND_LABEL[it.kind] ?? it.kind}</span>
+            <span className="flex-1 min-w-[200px]">
+              <span className="block text-sm font-normal">{it.title}</span>
+              {it.detail && <span className="block text-[11px] mt-0.5 leading-relaxed" style={{color:"var(--dim)"}}>{it.detail.slice(0, 220)}</span>}
+            </span>
+            <span className="text-[11px] shrink-0" style={{color:"var(--dim)"}}>{new Date(it.createdAt).toLocaleDateString("ar-EG")}</span>
+            <span className="flex gap-1.5 shrink-0">
+              {it.kind==="thinking" && (<>
+                <button onClick={()=>decideThinkingM.mutate({ id: it.id, decision: "معتمد", ownerComment: "" })} aria-label={`اعتماد «${it.title}»`} className="text-xs font-normal px-3 py-1.5 rounded-full" style={{background:"var(--teal)",color:"#FFF6EE"}}>اعتماد</button>
+                <button onClick={()=>decideThinkingM.mutate({ id: it.id, decision: "مرفوض", ownerComment: "" })} aria-label={`رفض «${it.title}»`} className="text-xs font-normal px-3 py-1.5 rounded-full" style={{border:"1px solid var(--border)",color:"var(--danger)"}}>رفض</button>
+              </>)}
+              {it.kind==="plan" && (<>
+                <button onClick={()=>{ const p = plans.find((x:any)=>x.id===it.id); if (p) approvePlan(p); }} aria-label={`اعتماد خطة «${it.title}» وتحويلها لشغل`} className="text-xs font-normal px-3 py-1.5 rounded-full" style={{background:"var(--teal)",color:"#FFF6EE"}}>اعتماد ← شغل</button>
+                <button onClick={()=>rejectPlanM.mutate(it.id)} aria-label={`رفض خطة «${it.title}»`} className="text-xs font-normal px-3 py-1.5 rounded-full" style={{border:"1px solid var(--border)",color:"var(--danger)"}}>رفض</button>
+              </>)}
+              {it.kind==="approval" && (<>
+                <button onClick={()=>decideApprovalM.mutate({ id: it.id, status: "Approved" })} aria-label={`اعتماد «${it.title}»`} className="text-xs font-normal px-3 py-1.5 rounded-full" style={{background:"var(--teal)",color:"#FFF6EE"}}>اعتماد</button>
+                <button onClick={()=>decideApprovalM.mutate({ id: it.id, status: "Rejected" })} aria-label={`رفض «${it.title}»`} className="text-xs font-normal px-3 py-1.5 rounded-full" style={{border:"1px solid var(--border)",color:"var(--danger)"}}>رفض</button>
+              </>)}
+              {it.kind==="organic" && (<>
+                <button onClick={()=>{ const p = postById(it.id); if (p) decideOrganicM.mutate({ post: p, approve: true }); }} aria-label={`اعتماد أول كابشن لبوست «${it.title}» كنهائي`} className="text-xs font-normal px-3 py-1.5 rounded-full" style={{background:"var(--teal)",color:"#FFF6EE"}}>اعتماد الكابشن الأول</button>
+                <button onClick={()=>{ const p = postById(it.id); if (p) decideOrganicM.mutate({ post: p, approve: false }); }} aria-label={`رفض كابشنز بوست «${it.title}»`} className="text-xs font-normal px-3 py-1.5 rounded-full" style={{border:"1px solid var(--border)",color:"var(--danger)"}}>رفض الكل</button>
+              </>)}
+              {it.kind==="brief" && (<>
+                <button onClick={()=>decideBriefM.mutate({ id: it.id, status: "Approved" })} aria-label={`اعتماد بريف «${it.title}» للإنتاج`} className="text-xs font-normal px-3 py-1.5 rounded-full" style={{background:"var(--teal)",color:"#FFF6EE"}}>اعتماد للإنتاج</button>
+                <button onClick={()=>decideBriefM.mutate({ id: it.id, status: "Rejected" })} aria-label={`رفض بريف «${it.title}»`} className="text-xs font-normal px-3 py-1.5 rounded-full" style={{border:"1px solid var(--border)",color:"var(--danger)"}}>رفض</button>
+              </>)}
+            </span>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/* ================= Ops & learning strip (اليوم) ================= */
+function OpsStrip({ ops, activity, work }: any) {
+  const lastRun = ops?.loopRuns?.[0];
+  const blockers = (work ?? []).filter((w:any)=>w.blocker && !["Completed","Failed"].includes(w.status)).slice(0, 3);
+  const kwScans = (ops?.keywords ?? []).map((k:any)=>k.lastScanAt).filter(Boolean).sort();
+  const life = (st:string)=> (ops?.observations ?? []).filter((o:any)=>o.lifecycle===st).length;
+  return (
+    <section className="grid md:grid-cols-2 xl:grid-cols-4 gap-3 mt-4" aria-label="مؤشرات التشغيل والتعلّم">
+      <div className="rounded-2xl p-4" style={card}>
+        <h3 className="font-bold text-sm">⚙️ صحة اللوب</h3>
+        {lastRun ? <p className="text-xs mt-2 leading-relaxed" style={{color:"var(--dim)"}}>آخر تشغيل: <b style={{color:"var(--text)"}}>{lastRun.runType}</b> · {new Date(lastRun.createdAt).toLocaleString("ar-EG")}<br/>{lastRun.summary.slice(0, 160)}</p> : <p className="text-xs mt-2" style={{color:"var(--dim)"}}>لسه مفيش تشغيلات لوب مسجلة.</p>}
+        <p className="text-xs mt-2" style={{color:"var(--dim)"}}>تشغيلات مسجلة: {ops?.loopRuns?.length ?? 0} · المنافس الجاي في الدوران: {ops?.nextCompetitor || "الكل اتغطى النهاردة"}</p>
+      </div>
+      <div className="rounded-2xl p-4" style={card}>
+        <h3 className="font-bold text-sm">🔍 مسح لغة البحث</h3>
+        <p className="text-xs mt-2 leading-relaxed" style={{color:"var(--dim)"}}>{ops?.keywords?.length ?? 0} كلمة متعقبة{kwScans.length ? <> · آخر مسح مسجل: <b style={{color:"var(--text)"}}>{kwScans[kwScans.length-1]}</b></> : " · لسه مفيش مسح مسجل"}</p>
+        <p className="text-xs mt-2" style={{color:"var(--dim)"}}>فرص منتجات مفتوحة: {(ops?.opportunities ?? []).filter((o:any)=>o.status==="قيد الدراسة").length} · لصقات صوت عميل محللة: {ops?.intakes?.length ?? 0}</p>
+      </div>
+      <div className="rounded-2xl p-4" style={card}>
+        <h3 className="font-bold text-sm">🌱 التعلّم</h3>
+        <div className="flex gap-1.5 flex-wrap mt-2">
+          <span className="pill pill-locked">ملاحظة: {life("ملاحظة")}</span>
+          <span className="pill pill-draft">مرشّحة (3–7 أيام): {life("مرشّحة")}</span>
+          <span className="pill pill-live">ثابتة (7+ أيام): {life("ثابتة")}</span>
+        </div>
+        <p className="text-xs mt-2" style={{color:"var(--dim)"}}>تعليمات مالك نشطة: {(ops?.instructions ?? []).filter((i:any)=>i.active).length} — بتتغلب على أي استنتاج آلي.</p>
+      </div>
+      <div className="rounded-2xl p-4" style={card}>
+        <h3 className="font-bold text-sm">⛔ المانعات وآخر التغيرات</h3>
+        {blockers.length===0 && <p className="text-xs mt-2" style={{color:"var(--success)"}}>مفيش مانعات مسجلة على عناصر شغل مفتوحة.</p>}
+        {blockers.map((w:any)=>(<p key={w.id} className="text-xs mt-1.5 leading-relaxed"><b>{w.title}:</b> <span style={{color:"var(--danger)"}}>{w.blocker}</span></p>))}
+        <div className="mt-2 pt-2" style={{borderTop:"1px dashed var(--border)"}}>
+          {(activity ?? []).slice(0, 3).map((e:any)=>(<p key={e.id} className="text-[11px] mt-1" style={{color:"var(--dim)"}}>• {e.eventType}: {e.detail.slice(0, 90)}</p>))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ================= Launch readiness Go/No-Go ================= */
+function LaunchReadiness({ data }: any) {
+  if (!data) return <div className="skeleton-bar mb-4" role="status" aria-label="جاري حساب جاهزية الإطلاق" />;
+  const go = data.pct >= 85;
+  return (
+    <section className="rounded-2xl p-4 mb-4" style={card} aria-label="فحص جاهزية الإطلاق">
+      <div className="flex items-center gap-3 flex-wrap">
+        <ProgressRing pct={data.pct} size={52} color={go ? "var(--success)" : data.pct >= 55 ? "var(--warning)" : "var(--danger)"} />
+        <div className="flex-1 min-w-[200px]">
+          <h2 className="font-bold">فحص جاهزية الإطلاق — Go / No-Go</h2>
+          <p className="text-sm mt-0.5" style={{color: go ? "var(--success)" : "var(--danger)"}}>{data.verdict}</p>
+          <p className="text-xs" style={{color:"var(--dim)"}}>كل فحص محسوب من بيانات مسجلة فعلياً في النظام — مش تقدير كلامي.</p>
+        </div>
+        <span className="font-cairo font-bold text-2xl">{data.pct}%</span>
+      </div>
+      <div className="grid md:grid-cols-2 gap-2 mt-3">
+        {data.checks.map((c:any)=>(
+          <div key={c.label} className="rounded-xl px-3 py-2.5 flex items-start gap-2" style={{background: c.ok ? "var(--success-soft)" : "var(--danger-soft)"}}>
+            <span aria-hidden className="font-bold" style={{color: c.ok ? "var(--success)" : "var(--danger)"}}>{c.ok ? "✓" : "✗"}</span>
+            <span><span className="block text-sm font-normal">{c.label}</span><span className="block text-[11px] mt-0.5 leading-relaxed" style={{color:"var(--dim)"}}>{c.detail}</span></span>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/* ================= Marketing production pipeline ================= */
+function MarketingPipeline({ angles, requests, creatives, scores, setSub }: any) {
+  const scoreOf = (id:number)=> scores.find((s:any)=>s.id===id);
+  const weakNew = requests.filter((r:any)=>r.status==="New" && (scoreOf(r.id)?.total ?? 100) < 60).length;
+  const cols: { title: string; sub: string; color: string; items: { label: string; meta: string }[]; go: string }[] = [
+    { title: "١ · زاوية / بريف", sub: "من المكتبة والطابور", color: "var(--teal)", go: "angles", items: [
+      ...angles.filter((a:any)=>["جديدة","في بريف"].includes(a.status)).slice(0, 3).map((a:any)=>({ label: a.title, meta: `زاوية · ${a.source}` })),
+      ...requests.filter((r:any)=>r.status==="New").slice(0, 3).map((r:any)=>({ label: r.title, meta: "بريف جديد مقفول" })),
+    ]},
+    { title: "٢ · إنتاج", sub: "شغل جاري تنفيذه", color: "var(--teal-light)", go: "studio", items: [
+      ...requests.filter((r:any)=>r.status==="Generating").slice(0, 4).map((r:any)=>({ label: r.title, meta: "قيد التوليد/الإنتاج" })),
+      ...angles.filter((a:any)=>a.status==="قيد إنتاج").slice(0, 2).map((a:any)=>({ label: a.title, meta: "زاوية قيد الإنتاج" })),
+    ]},
+    { title: "٣ · تقييم", sub: "بوابة الدرجات والتحليل", color: "var(--warning)", go: "gate", items: [
+      ...requests.filter((r:any)=>r.status==="Delivered").slice(0, 4).map((r:any)=>({ label: r.title, meta: `مُسلّم · درجة ${scoreOf(r.id)?.total ?? "—"}` })),
+      ...(weakNew > 0 ? [{ label: `${weakNew} بريف جديد درجته أقل من 60`, meta: "⚠ راجع بوابة التقييم قبل أي إنتاج" }] : []),
+    ]},
+    { title: "٤ · اعتماد", sub: "قرار المالك", color: "var(--terra)", go: "approvals", items: requests.filter((r:any)=>r.status==="Approved").slice(0, 4).map((r:any)=>({ label: r.title, meta: "معتمد من المالك" })) },
+    { title: "٥ · جاهز للإطلاق", sub: "أصول في المكتبة", color: "var(--success)", go: "studio", items: creatives.slice(0, 4).map((c:any)=>({ label: c.title, meta: `${c.product || ""} · ${c.perfClass}` })) },
+  ];
+  return (
+    <section>
+      <p className="text-sm mb-3 leading-relaxed" style={{color:"var(--dim)"}}>خط إنتاج واحد من الزاوية لحد الجاهزية للإطلاق — كل مرحلة بتتغذى من سجلاتها الحقيقية (المكتبة، الطابور، المكتبة الإبداعية). دوس على أي مرحلة لفتح قسمها.</p>
+      <div className="grid md:grid-cols-3 xl:grid-cols-5 gap-3">
+        {cols.map(c=>(
+          <button key={c.title} onClick={()=>setSub("marketing", c.go)} aria-label={`فتح مرحلة ${c.title}`} className="rounded-2xl p-3.5 text-right lift" style={card}>
+            <span className="block w-8 h-1.5 rounded-full mb-2" style={{background: c.color}} />
+            <span className="block font-bold text-sm">{c.title}</span>
+            <span className="block text-[11px] mt-0.5" style={{color:"var(--dim)"}}>{c.sub} · {c.items.length > 0 ? "" : ""}</span>
+            <span className="grid gap-1.5 mt-2.5">
+              {c.items.length===0 && <span className="text-xs" style={{color:"var(--dim)"}}>فاضية دلوقتي</span>}
+              {c.items.map((i, idx)=>(<span key={idx} className="block rounded-lg px-2.5 py-2" style={{background:"var(--surface2)"}}><span className="block text-xs font-normal leading-snug">{i.label}</span><span className="block text-[10px] mt-0.5" style={{color:"var(--dim)"}}>{i.meta}</span></span>))}
+            </span>
+          </button>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/* ================= Angles & Hooks Library ================= */
+const ANGLE_SOURCES = ["مالك","بحث","منافس","نمط","صوت العميل","فيديو"];
+const ANGLE_STATUSES = ["جديدة","في بريف","قيد إنتاج","اتعملت","فازت","خسرت"];
+const UGC_STAGES = ["مفهوم","بريف كرييتور","تصوير","استلام","اعتماد"];
+function AnglesLibrary({ angles, products, inv }: any) {
+  const [f, setF] = useState({ title:"", hook:"", product:"", segment:"", source:"مالك", kind:"Static", status:"جديدة", ugcStage:"", notes:"" });
+  const [err, setErr] = useState("");
+  const [filter, setFilter] = useState("الكل");
+  const create = useMutation({ mutationFn: async()=> await api.createAngle(f), onSuccess: ()=>{ setF({ title:"", hook:"", product:"", segment:"", source:"مالك", kind:"Static", status:"جديدة", ugcStage:"", notes:"" }); setErr(""); inv(); }, onError: (e:any)=> setErr(e?.message ?? "تعذر الحفظ") });
+  const upd = useMutation({ mutationFn: async(v:any)=> await api.updateAngle(v), onSuccess: inv });
+  const del = useMutation({ mutationFn: async(id:number)=> await api.deleteAngle({ id }), onSuccess: inv });
+  const convert = useMutation({ mutationFn: async(id:number)=> await api.convertAngleToBrief({ id }), onSuccess: inv });
+  const shown = filter==="الكل" ? angles : angles.filter((a:any)=>a.status===filter || a.source===filter || a.kind===filter);
+  const inpS = { ...inpStyle } as const;
+  return (
+    <section>
+      <p className="text-sm mb-3 leading-relaxed" style={{color:"var(--dim)"}}>سجل موحّد لكل زاوية وهوك: مصدرها (بحث/منافس/نمط/مالك/صوت عميل)، حالتها، المنتج، والشريحة — وأي زاوية بتتحول لبريف جاهز في الطابور بضغطة واحدة.</p>
+      <div className="rounded-2xl p-4 mb-4" style={card}>
+        <h3 className="font-bold text-sm">➕ زاوية / هوك جديد</h3>
+        <form onSubmit={(e)=>{ e.preventDefault(); if (!f.title.trim()) { setErr("اكتب اسم الزاوية أولاً"); return; } create.mutate(); }} className="grid gap-2 mt-3">
+          <div className="flex gap-2 flex-wrap">
+            <input aria-label="اسم الزاوية" {...FIELDS.createAngle.title} value={f.title} onChange={e=>setF({...f, title:e.target.value})} placeholder="اسم الزاوية — مثال: KA-7 «أول مرة ألبس كم قصير»" className="flex-1 min-w-[220px] rounded-xl px-3 py-2 text-sm border" style={inpS} />
+            <input aria-label="المنتج" {...FIELDS.createAngle.product} value={f.product} onChange={e=>setF({...f, product:e.target.value})} placeholder="المنتج" list="angle-products" className="rounded-xl px-3 py-2 text-sm border w-44" style={inpS} />
+            <datalist id="angle-products">{products.map((p:any)=>(<option key={p.id} value={p.name} />))}<option value="روتين جلد الوزة" /><option value="روتين السيلوليت" /></datalist>
+            <select aria-label="نوع الزاوية" value={f.kind} onChange={e=>setF({...f, kind:e.target.value, ugcStage: e.target.value==="UGC" ? "مفهوم" : ""})} className="rounded-xl px-3 py-2 text-sm border" style={inpS}>{["Static","UGC","Carousel","Video"].map(k=><option key={k} value={k}>{k}</option>)}</select>
+            <select aria-label="مصدر الزاوية" value={f.source} onChange={e=>setF({...f, source:e.target.value})} className="rounded-xl px-3 py-2 text-sm border" style={inpS}>{ANGLE_SOURCES.map(s0=><option key={s0} value={s0}>{s0}</option>)}</select>
+          </div>
+          <input aria-label="الهوك" {...FIELDS.createAngle.hook} value={f.hook} onChange={e=>setF({...f, hook:e.target.value})} placeholder="الهوك — أول سطر يشد العين" className="w-full rounded-xl px-3 py-2 text-sm border" style={inpS} />
+          <details>
+            <summary className="text-xs font-normal cursor-pointer" style={{color:"var(--dim)"}}>خيارات متقدمة (الشريحة، الحالة، مرحلة UGC، ملاحظات)</summary>
+            <div className="flex gap-2 flex-wrap mt-2">
+              <input aria-label="الشريحة المستهدفة" {...FIELDS.createAngle.segment} value={f.segment} onChange={e=>setF({...f, segment:e.target.value})} placeholder="الشريحة المستهدفة" className="flex-1 min-w-[180px] rounded-xl px-3 py-2 text-sm border" style={inpS} />
+              <select aria-label="حالة الزاوية" value={f.status} onChange={e=>setF({...f, status:e.target.value})} className="rounded-xl px-3 py-2 text-sm border" style={inpS}>{ANGLE_STATUSES.map(s0=><option key={s0} value={s0}>{s0}</option>)}</select>
+              {f.kind==="UGC" && <select aria-label="مرحلة إنتاج UGC" value={f.ugcStage} onChange={e=>setF({...f, ugcStage:e.target.value})} className="rounded-xl px-3 py-2 text-sm border" style={inpS}>{UGC_STAGES.map(s0=><option key={s0} value={s0}>{s0}</option>)}</select>}
+            </div>
+            <textarea aria-label="ملاحظات الزاوية" {...FIELDS.createAngle.notes} value={f.notes} onChange={e=>setF({...f, notes:e.target.value})} rows={2} placeholder="ملاحظات / تمبلت / دليل المصدر…" className="w-full rounded-xl px-3 py-2 text-sm border mt-2" style={inpS} />
+          </details>
+          {err && <p className="text-xs" style={{color:"var(--danger)"}}>{err}</p>}
+          <div><button type="submit" aria-label="حفظ الزاوية في المكتبة" className="px-4 py-2 rounded-xl font-normal text-sm btn-glow" style={{background:"var(--teal)",color:"#FFF6EE"}}>{create.isPending ? "جاري الحفظ…" : "احفظ في المكتبة"}</button></div>
+        </form>
+      </div>
+      <div className="flex gap-1.5 flex-wrap mb-3" role="tablist" aria-label="تصفية المكتبة">
+        {["الكل", ...ANGLE_STATUSES, ...ANGLE_SOURCES, "UGC", "Static"].map(x=>(
+          <button key={x} role="tab" aria-selected={filter===x} onClick={()=>setFilter(x)} className="text-xs font-normal px-3 py-1.5 rounded-full" style={filter===x ? {background:"var(--teal)",color:"#FFF6EE"} : {background:"var(--surface)",border:"1px solid var(--border)"}}>{x}</button>
+        ))}
+        <span className="text-xs mr-auto self-center" style={{color:"var(--dim)"}}>{shown.length} زاوية معروضة من {angles.length}</span>
+      </div>
+      {angles.length===0 && <Empty title="المكتبة فاضية" hint="الزوايا المعتمدة (11 ستاتيك + 10 UGC) بتتستورد تلقائياً أول مرة — ولو لسه ما ظهرتش، أضف أول زاوية من النموذج فوق." />}
+      <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-3">
+        {shown.map((a:any)=>(
+          <article key={a.id} className="rounded-2xl p-3.5 lift" style={card}>
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <span className="pill pill-pending">{a.kind}</span>
+              <span className="pill pill-locked">مصدر: {a.source}</span>
+              <span className={a.status==="فازت" ? "pill pill-live" : a.status==="خسرت" ? "pill pill-danger" : a.status==="اتعملت" ? "pill pill-pending" : "pill pill-draft"}>{a.status}</span>
+              <span className="mr-auto"><DelBtn label={`حذف زاوية ${a.title}`} onClick={()=>del.mutate(a.id)} /></span>
+            </div>
+            <h3 className="font-bold text-sm mt-2">{a.title}</h3>
+            {a.hook && <p className="text-sm mt-1 leading-relaxed">«{a.hook}»</p>}
+            <p className="text-[11px] mt-1.5" style={{color:"var(--dim)"}}>{a.product || "منتج غير محدد"}{a.segment ? ` · الشريحة: ${a.segment}` : ""}</p>
+            {a.kind==="UGC" && a.ugcStage && <p className="text-[11px] mt-1"><span className="px-2 py-0.5 rounded-full" style={{background:"var(--teal-soft)",color:"var(--teal)"}}>مرحلة UGC: {a.ugcStage}</span></p>}
+            {a.notes && <p className="text-[11px] mt-1.5 leading-relaxed" style={{color:"var(--dim)"}}>{a.notes.slice(0, 160)}</p>}
+            <div className="flex gap-1.5 flex-wrap items-center mt-2.5">
+              <button onClick={()=>convert.mutate(a.id)} aria-label={`تحويل زاوية «${a.title}» لبريف جاهز`} className="text-xs font-normal px-3 py-1.5 rounded-full btn-glow" style={{background:"var(--teal)",color:"#FFF6EE"}}>{convert.isPending && convert.variables===a.id ? "جاري التحويل…" : "حوّل لبريف ←"}</button>
+              <select aria-label={`حالة زاوية ${a.title}`} value={a.status} onChange={e=>upd.mutate({ id: a.id, status: e.target.value })} className="text-xs rounded-full px-2.5 py-1.5 border" style={inpS}>{ANGLE_STATUSES.map(s0=><option key={s0} value={s0}>{s0}</option>)}</select>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/* ================= Pre-production scoring gate ================= */
+function BriefGate({ requests, scores, inv }: any) {
+  const upd = useMutation({ mutationFn: async(v:any)=> await api.updateGenerationRequest(v), onSuccess: inv });
+  const scoreOf = (id:number)=> scores.find((s:any)=>s.id===id);
+  const ordered = [...requests].sort((a:any,b:any)=> (a.status==="New" ? 0 : 1) - (b.status==="New" ? 0 : 1) || b.id - a.id);
+  const weak = ordered.filter((r:any)=>r.status==="New" && (scoreOf(r.id)?.total ?? 100) < 60).length;
+  return (
+    <section>
+      <p className="text-sm mb-3 leading-relaxed" style={{color:"var(--dim)"}}>كل بريف/طلب توليد بيتقيّم قبل ما يتصرف عليه جنيه إنتاج: وضوح الهوك (25) + قوة الـ Clue البصري (20) + الالتزام بقواعد المالك (25) + تنوّع التكوين (15) + مطابقة نمط فائز مسجل (15). الدرجة أقل من 60 = تحذير واضح — راجع الأسباب قبل الاعتماد.</p>
+      {weak > 0 && <p className="rounded-xl px-3.5 py-2.5 text-sm font-normal mb-3" style={{background:"var(--danger-soft)",color:"var(--danger)"}}>⚠ {weak} بريف جديد درجته أقل من 60 — الإنتاج على الدرجات دي مخاطرة؛ قوّي الهوك والـ Clue أو ارفض واطلب تعديل.</p>}
+      {requests.length===0 && <Empty title="لا طلبات توليد بعد" hint="أول طلب توليد من الاستوديو أو من مكتبة الزوايا هيظهر هنا بدرجته فوراً." />}
+      <div className="grid gap-3">
+        {ordered.map((r:any)=>{
+          const sc = scoreOf(r.id);
+          const total = sc?.total ?? 0;
+          const color = total >= 75 ? "var(--success)" : total >= 60 ? "var(--warning)" : "var(--danger)";
+          return (
+            <article key={r.id} className="rounded-2xl p-4" style={{...card, ...(r.status==="New" && total < 60 ? { borderColor:"var(--danger)", borderWidth:1.5 } : {})}}>
+              <div className="flex items-center gap-2.5 flex-wrap">
+                <span className="font-cairo font-bold text-xl shrink-0" style={{color}}>{sc ? total : "—"}<span className="text-xs font-normal" style={{color:"var(--dim)"}}>/100</span></span>
+                <div className="progress-track w-28 shrink-0" style={{height:8}}><div className="progress-fill" style={{width:`${total}%`, height:"100%", background: color}} /></div>
+                <h3 className="font-bold text-sm flex-1 min-w-[180px]">{r.title}</h3>
+                <span className="pill pill-locked">{r.status}</span>
+                {r.status==="New" && total < 60 && <span className="pill pill-danger">⚠ درجة ضعيفة — لا إنتاج قبل المراجعة</span>}
+                {r.status==="New" && (<span className="flex gap-1.5">
+                  <button onClick={()=>upd.mutate({ id: r.id, status: "Approved" })} aria-label={`اعتماد بريف «${r.title}» من البوابة`} className="text-xs font-normal px-3 py-1.5 rounded-full" style={{background:"var(--teal)",color:"#FFF6EE"}}>اعتماد</button>
+                  <button onClick={()=>upd.mutate({ id: r.id, status: "Rejected" })} aria-label={`رفض بريف «${r.title}» من البوابة`} className="text-xs font-normal px-3 py-1.5 rounded-full" style={{border:"1px solid var(--border)",color:"var(--danger)"}}>رفض</button>
+                </span>)}
+              </div>
+              <p className="text-[11px] mt-1.5" style={{color:"var(--dim)"}}>{r.product || "منتج غير محدد"} · {r.format || ""} · الهوك: {r.hook || "—"}</p>
+              {sc && sc.warnings.length > 0 && <div className="flex gap-1.5 flex-wrap mt-2">{sc.warnings.map((w:string, i:number)=>(<span key={i} className="text-[11px] font-normal px-2.5 py-1 rounded-full" style={{background:"var(--danger-soft)",color:"var(--danger)"}}>⚠ {w}</span>))}</div>}
+              {sc && (
+                <details className="mt-2">
+                  <summary className="text-xs font-normal cursor-pointer" style={{color:"var(--dim)"}}>تفصيل الدرجة بند بند</summary>
+                  <div className="grid md:grid-cols-2 xl:grid-cols-5 gap-2 mt-2">
+                    {sc.parts.map((pt:any)=>(
+                      <div key={pt.label} className="rounded-lg px-2.5 py-2" style={{background:"var(--surface2)"}}>
+                        <div className="flex items-center justify-between text-xs"><span style={{color:"var(--dim)"}}>{pt.label}</span><b>{pt.score}/{pt.max}</b></div>
+                        <div className="progress-track mt-1.5" style={{height:5}}><div className="progress-fill" style={{width:`${pt.max ? pt.score/pt.max*100 : 0}%`, height:"100%", background:"var(--grad-accent)"}} /></div>
+                        <p className="text-[10px] mt-1.5 leading-relaxed" style={{color:"var(--dim)"}}>{pt.note}</p>
+                      </div>
+                    ))}
+                  </div>
+                </details>
+              )}
+            </article>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+/* ================= UGC production pipeline ================= */
+function UGCPipeline({ angles, inv }: any) {
+  const upd = useMutation({ mutationFn: async(v:any)=> await api.updateAngle(v), onSuccess: inv });
+  const ugc = angles.filter((a:any)=>a.kind==="UGC");
+  return (
+    <section>
+      <p className="text-sm mb-3 leading-relaxed" style={{color:"var(--dim)"}}>كل مفهوم UGC بيعدي 5 مراحل: مفهوم ← بريف كرييتور ← تصوير ← استلام ← اعتماد. حرّك المرحلة من هنا، والحالة العامة من مكتبة الزوايا. UGC حقيقي بس — كرييتورز وعملاء حقيقيين، ممنوع وجوه مولّدة أو شهادات مزيفة.</p>
+      {ugc.length===0 && <Empty title="لا مفاهيم UGC في المكتبة بعد" hint="مفاهيم الإطلاق العشرة بتتستورد تلقائياً في المكتبة — أو أضف مفهوم جديد من مكتبة الزوايا بنوع UGC." />}
+      <div className="grid gap-3">
+        {ugc.map((a:any)=>{
+          const cur = UGC_STAGES.indexOf(a.ugcStage || "مفهوم");
+          return (
+            <article key={a.id} className="rounded-2xl p-4" style={card}>
+              <div className="flex items-center gap-2 flex-wrap">
+                <h3 className="font-bold text-sm flex-1 min-w-[180px]">{a.title}</h3>
+                <span className="pill pill-locked">{a.product}</span>
+                <span className={a.status==="اتعملت" ? "pill pill-live" : "pill pill-draft"}>{a.status}</span>
+              </div>
+              {a.hook && <p className="text-sm mt-1">الهوك: «{a.hook}»</p>}
+              {a.segment && <p className="text-[11px] mt-0.5" style={{color:"var(--dim)"}}>الشخصية/الشريحة: {a.segment}</p>}
+              <div className="flex items-center gap-1 flex-wrap mt-3" role="group" aria-label={`مراحل إنتاج ${a.title}`}>
+                {UGC_STAGES.map((st, i)=>(
+                  <span key={st} className="flex items-center gap-1">
+                    <button onClick={()=>upd.mutate({ id: a.id, ugcStage: st, ...(st==="اعتماد" ? { status: "اتعملت" } : {}) })} aria-label={`نقل «${a.title}» لمرحلة ${st}`} className="text-xs font-normal px-3 py-1.5 rounded-full" style={i===cur ? {background:"var(--teal)",color:"#FFF6EE"} : i<cur ? {background:"var(--success-soft)",color:"var(--success)"} : {background:"var(--surface2)",border:"1px solid var(--border)",color:"var(--dim)"}}>{i<cur ? "✓ " : ""}{st}</button>
+                    {i<UGC_STAGES.length-1 && <span aria-hidden style={{color:"var(--dim)"}}>←</span>}
+                  </span>
+                ))}
+              </div>
+            </article>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+/* ================= Unified content calendar ================= */
+function UnifiedCalendar({ posts, items }: any) {
+  const rows: { date: string; title: string; kind: string; status: string; channel: string }[] = [
+    ...posts.map((p:any)=>({ date: p.scheduledDate || "", title: p.name, kind: "أورجانيك", status: p.status, channel: p.channel })),
+    ...items.map((i:any)=>({ date: i.scheduledDate || "", title: i.title, kind: "محتوى / مدفوع", status: i.status, channel: i.channel })),
+  ].sort((a,b)=> (a.date || "9999").localeCompare(b.date || "9999"));
+  const pillFor = (s:string)=> /معتمد|اتنشر|منشور|Published|Approved/.test(s) ? "pill pill-live" : /مجدول|Scheduled/.test(s) ? "pill pill-pending" : "pill pill-draft";
+  return (
+    <section>
+      <p className="text-sm mb-3 leading-relaxed" style={{color:"var(--dim)"}}>الأورجانيك والمدفوع في تقويم واحد — كل قطعة بتاريخها وحالتها (مسودة/معتمد/مجدول/منشور). التعديل بيتم من قسم كل قطعة (الأورجانيك أو تقويم المحتوى في الاستوديو).</p>
+      {rows.length===0 && <Empty title="التقويم فاضي" hint="أول بوست أورجانيك أو عنصر محتوى بتاريخ مجدول هيظهر هنا." />}
+      <div className="grid gap-2">
+        {rows.map((r, i)=>(
+          <div key={i} className="rounded-xl px-3.5 py-2.5 flex items-center gap-2.5 flex-wrap" style={{background:"var(--surface)",border:"1px solid var(--border)"}}>
+            <span className="text-xs font-normal px-2.5 py-1 rounded-lg shrink-0" style={{background:"var(--teal-soft)",color:"var(--teal)"}} dir="ltr">{r.date || "بلا تاريخ"}</span>
+            <span className="pill pill-locked shrink-0">{r.kind}</span>
+            <span className="text-sm font-normal flex-1 min-w-[160px]">{r.title}</span>
+            <span className="text-[11px]" style={{color:"var(--dim)"}}>{r.channel}</span>
+            <span className={pillFor(r.status)}>{r.status}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/* ================= Calibration summary (المال والنتائج) ================= */
+function CalibrationCard({ entries, snapshots }: any) {
+  const decided = entries.filter((e:any)=>["معتمد","مرفوض"].includes(e.status));
+  const approved = decided.filter((e:any)=>e.status==="معتمد");
+  const avgConf = decided.length ? Math.round(decided.reduce((a:number,e:any)=>a+e.confidence,0)/decided.length) : 0;
+  return (
+    <section className="grid gap-4">
+      <CppGauge />
+      <div className="rounded-2xl p-4" style={card}>
+        <h3 className="font-bold">📏 سجل معايرة التوقعات — مختصر</h3>
+        <p className="text-sm mt-1 leading-relaxed" style={{color:"var(--dim)"}}>كل توقع/خطة اتسجلت بثقتها، وبيتقارن بالفعلي أول ما تتدفق بيانات أداء حقيقية. حالياً بيانات الأداء الفعلية لسه ما بدأتش (Meta Pending والريلونش لم يُطلق بعد) — فالمعايرة المعروضة هي سجل القرارات وثقتها وقت اتخاذها، من غير أي نتائج مخترعة.</p>
+        <div className="flex gap-2 flex-wrap mt-3">
+          <span className="pill pill-pending">مدخلات تفكير/توقعات: {entries.length}</span>
+          <span className="pill pill-live">اتحسمت بقرارك: {decided.length} (معتمد {approved.length})</span>
+          <span className="pill pill-locked">متوسط ثقة المحسوم: {decided.length ? avgConf + "%" : "—"}</span>
+          <span className="pill pill-draft">لقطات مالية للمقارنة: {snapshots.length}</span>
+        </div>
+        <div className="grid gap-2 mt-3">
+          {decided.slice(0, 6).map((e:any)=>(
+            <div key={e.id} className="rounded-xl px-3 py-2.5 flex items-center gap-2 flex-wrap" style={{background:"var(--surface2)",border:"1px solid var(--border)"}}>
+              <span className={e.status==="معتمد" ? "pill pill-live" : "pill pill-danger"}>{e.status}</span>
+              <span className="text-sm font-normal flex-1 min-w-[180px]">{e.title}</span>
+              <span className="text-[11px]" style={{color:"var(--dim)"}}>ثقة وقت التوقع: {e.confidence}% · {new Date(e.createdAt).toLocaleDateString("ar-EG")}</span>
+            </div>
+          ))}
+          {decided.length===0 && <p className="text-sm" style={{color:"var(--dim)"}}>لسه مفيش توقعات محسومة — أول خطة تعتمدها أو ترفضها هتتسجل هنا بثقتها.</p>}
+        </div>
+        <p className="text-xs mt-3 leading-relaxed" style={{color:"var(--dim)"}}>مرجع المحاكاة المسجل: بكرييتف متوسط الـ CPP المتوقع ~262 (قرب التعادل 275)، والهدف 150–160 محتاج كرييتف قوي (CTR ~2%) — عشان كده بوابة تقييم البريفات في «التسويق» هي خط الدفاع الأول قبل الصرف.</p>
+      </div>
+    </section>
+  );
+}
+
 export function App() {
-  const [tab, setTab] = useState<Tab>("thinking");
+  const [tab, setTab] = useState<Tab>("today");
   const [subs, setSubs] = useState<Record<string,string>>({});
   const sub = (host: string, def: string) => subs[host] ?? def;
   const setSub = (host: string, v: string) => setSubs(s=>({ ...s, [host]: v }));
@@ -786,35 +1207,45 @@ export function App() {
   const on = (...ts: Tab[]) => ts.includes(tab);
   const dash = useQuery({ queryKey:["dashboard"], queryFn:()=>api.getDashboard({}), staleTime: STALE });
   const profileQ = useQuery({ queryKey:["coreProfile"], queryFn:()=>api.getCoreProfile({}), staleTime: STALE });
-  const productsQ = useQuery({ queryKey:["products"], queryFn:()=>api.listProducts({limit:100}), staleTime: STALE, enabled: on("command","relaunch","system") });
-  const workQ = useQuery({ queryKey:["work"], queryFn:()=>api.listWorkItems({limit:100}), staleTime: STALE, enabled: on("command","relaunch") });
-  const tasksQ = useQuery({ queryKey:["tasks"], queryFn:()=>api.listTasks({limit:100}), staleTime: STALE, enabled: on("command","relaunch","campaigns","system") });
-  const campQ = useQuery({ queryKey:["campaigns"], queryFn:()=>api.listCampaigns({limit:100}), staleTime: STALE, enabled: on("command","relaunch","campaigns") });
-  const creaQ = useQuery({ queryKey:["creatives"], queryFn:()=>api.listCreatives({limit:100}), staleTime: STALE, enabled: on("thinking","command","relaunch","content") });
-  const contentQ = useQuery({ queryKey:["content"], queryFn:()=>api.listContent({limit:100}), staleTime: STALE, enabled: on("relaunch","content") });
-  const compQ = useQuery({ queryKey:["competitors"], queryFn:()=>api.listCompetitors({limit:100}), staleTime: STALE, enabled: on("command","system","market","ops") });
-  const obsQ = useQuery({ queryKey:["observations"], queryFn:()=>api.listObservations({limit:100}), staleTime: STALE, enabled: on("thinking","market") });
-  const custQ = useQuery({ queryKey:["custInsights"], queryFn:()=>api.listCustomerInsights({limit:100}), staleTime: STALE, enabled: on("market","organic") });
-  const snapQ = useQuery({ queryKey:["snapshots"], queryFn:()=>api.listSnapshots({limit:100}), staleTime: STALE, enabled: on("command","campaigns","finance") });
-  const expQ = useQuery({ queryKey:["experiments"], queryFn:()=>api.listExperiments({limit:100}), staleTime: STALE, enabled: on("command","relaunch","ops") });
-  const revQ = useQuery({ queryKey:["reviews"], queryFn:()=>api.listReviews({limit:100}), staleTime: STALE, enabled: on("ops","organic") });
-  const apprQ = useQuery({ queryKey:["approvals"], queryFn:()=>api.listApprovals({limit:100}), staleTime: STALE, enabled: on("command","campaigns") });
-  const learnQ = useQuery({ queryKey:["learnings"], queryFn:()=>api.listLearnings({limit:100}), staleTime: STALE, enabled: on("ops") });
-  const execQ = useQuery({ queryKey:["executions"], queryFn:()=>api.listExecutions({limit:100}), staleTime: STALE, enabled: on("campaigns") });
-  const roundsQ = useQuery({ queryKey:["rounds"], queryFn:()=>api.listMarketRounds({limit:100}), staleTime: STALE, enabled: on("command","market","relaunch") });
-  const alertsQ = useQuery({ queryKey:["alerts"], queryFn:()=>api.listCompetitorAlerts({limit:100}), staleTime: STALE, enabled: on("command","market") });
-  const plansQ = useQuery({ queryKey:["plans"], queryFn:()=>api.listAgentPlans({limit:100}), staleTime: STALE, enabled: on("command","relaunch","ask","system") });
-  const goalsQ = useQuery({ queryKey:["goals"], queryFn:()=>api.listRelaunchGoals({limit:100}), staleTime: STALE, enabled: on("command","relaunch") });
-  const syncsQ = useQuery({ queryKey:["syncs"], queryFn:()=>api.listSyncs({limit:100}), staleTime: STALE, enabled: on("command","market","system") });
-  const genQ = useQuery({ queryKey:["genRequests"], queryFn:()=>api.listGenerationRequests({limit:100}), staleTime: STALE, enabled: on("command","content","system") });
-  const activityQ = useQuery({ queryKey:["activity"], queryFn:()=>api.listActivity({limit:100}), staleTime: STALE, enabled: on("relaunch","system") });
-  const auditQ = useQuery({ queryKey:["audit"], queryFn:()=>api.listAuditState({}), staleTime: STALE, enabled: on("finance") });
-  const opsQ = useQuery({ queryKey:["ops"], queryFn:()=>api.getOpsState({}), staleTime: STALE, enabled: on("ops","organic") });
-  const organicQ = useQuery({ queryKey:["organicPosts"], queryFn:()=>api.listOrganicPosts({limit:100}), staleTime: STALE, enabled: on("organic") });
-  const thinkingQ = useQuery({ queryKey:["thinking"], queryFn:()=>api.listThinking({limit:100}), staleTime: STALE, enabled: on("thinking") });
-  const ownerPlansQ = useQuery({ queryKey:["ownerPlans"], queryFn:()=>api.listOwnerPlans({limit:100}), staleTime: STALE, enabled: on("thinking") });
-  const creaAnQ = useQuery({ queryKey:["creativeAnalyses"], queryFn:()=>api.listCreativeAnalyses({limit:100}), staleTime: STALE, enabled: on("thinking","content") });
-  const compAnQ = useQuery({ queryKey:["competitorAdAnalyses"], queryFn:()=>api.listCompetitorAdAnalyses({limit:100}), staleTime: STALE, enabled: on("thinking","market") });
+  const productsQ = useQuery({ queryKey:["products"], queryFn:()=>api.listProducts({limit:100}), staleTime: STALE, enabled: on("today","plan","system","marketing") });
+  const workQ = useQuery({ queryKey:["work"], queryFn:()=>api.listWorkItems({limit:100}), staleTime: STALE, enabled: on("today","plan") });
+  const tasksQ = useQuery({ queryKey:["tasks"], queryFn:()=>api.listTasks({limit:100}), staleTime: STALE, enabled: on("today","plan","marketing","system") });
+  const campQ = useQuery({ queryKey:["campaigns"], queryFn:()=>api.listCampaigns({limit:100}), staleTime: STALE, enabled: on("today","plan","marketing") });
+  const creaQ = useQuery({ queryKey:["creatives"], queryFn:()=>api.listCreatives({limit:100}), staleTime: STALE, enabled: on("today","plan","marketing") });
+  const contentQ = useQuery({ queryKey:["content"], queryFn:()=>api.listContent({limit:100}), staleTime: STALE, enabled: on("plan","marketing") });
+  const compQ = useQuery({ queryKey:["competitors"], queryFn:()=>api.listCompetitors({limit:100}), staleTime: STALE, enabled: on("today","system","market") });
+  const obsQ = useQuery({ queryKey:["observations"], queryFn:()=>api.listObservations({limit:100}), staleTime: STALE, enabled: on("today","market") });
+  const custQ = useQuery({ queryKey:["custInsights"], queryFn:()=>api.listCustomerInsights({limit:100}), staleTime: STALE, enabled: on("market","marketing") });
+  const snapQ = useQuery({ queryKey:["snapshots"], queryFn:()=>api.listSnapshots({limit:100}), staleTime: STALE, enabled: on("today","marketing","money") });
+  const expQ = useQuery({ queryKey:["experiments"], queryFn:()=>api.listExperiments({limit:100}), staleTime: STALE, enabled: on("today","plan","system","money") });
+  const revQ = useQuery({ queryKey:["reviews"], queryFn:()=>api.listReviews({limit:100}), staleTime: STALE, enabled: on("system","marketing") });
+  const apprQ = useQuery({ queryKey:["approvals"], queryFn:()=>api.listApprovals({limit:100}), staleTime: STALE, enabled: on("today","marketing") });
+  const learnQ = useQuery({ queryKey:["learnings"], queryFn:()=>api.listLearnings({limit:100}), staleTime: STALE, enabled: on("system") });
+  const execQ = useQuery({ queryKey:["executions"], queryFn:()=>api.listExecutions({limit:100}), staleTime: STALE, enabled: on("marketing") });
+  const roundsQ = useQuery({ queryKey:["rounds"], queryFn:()=>api.listMarketRounds({limit:100}), staleTime: STALE, enabled: on("today","market","plan") });
+  const alertsQ = useQuery({ queryKey:["alerts"], queryFn:()=>api.listCompetitorAlerts({limit:100}), staleTime: STALE, enabled: on("today","market") });
+  const plansQ = useQuery({ queryKey:["plans"], queryFn:()=>api.listAgentPlans({limit:100}), staleTime: STALE, enabled: on("today","plan","ask","system") });
+  const goalsQ = useQuery({ queryKey:["goals"], queryFn:()=>api.listRelaunchGoals({limit:100}), staleTime: STALE, enabled: on("today","plan") });
+  const syncsQ = useQuery({ queryKey:["syncs"], queryFn:()=>api.listSyncs({limit:100}), staleTime: STALE, enabled: on("today","market","system") });
+  const genQ = useQuery({ queryKey:["genRequests"], queryFn:()=>api.listGenerationRequests({limit:100}), staleTime: STALE, enabled: on("today","marketing","system") });
+  const activityQ = useQuery({ queryKey:["activity"], queryFn:()=>api.listActivity({limit:100}), staleTime: STALE, enabled: on("plan","system","today") });
+  const auditQ = useQuery({ queryKey:["audit"], queryFn:()=>api.listAuditState({}), staleTime: STALE, enabled: on("money") });
+  const opsQ = useQuery({ queryKey:["ops"], queryFn:()=>api.getOpsState({}), staleTime: STALE, enabled: on("today","system","marketing") });
+  const organicQ = useQuery({ queryKey:["organicPosts"], queryFn:()=>api.listOrganicPosts({limit:100}), staleTime: STALE, enabled: on("today","marketing") });
+  const thinkingQ = useQuery({ queryKey:["thinking"], queryFn:()=>api.listThinking({limit:100}), staleTime: STALE, enabled: on("today","plan","marketing","money") });
+  const ownerPlansQ = useQuery({ queryKey:["ownerPlans"], queryFn:()=>api.listOwnerPlans({limit:100}), staleTime: STALE, enabled: on("plan","today") });
+  const creaAnQ = useQuery({ queryKey:["creativeAnalyses"], queryFn:()=>api.listCreativeAnalyses({limit:100}), staleTime: STALE, enabled: on("today","marketing","money") });
+  const compAnQ = useQuery({ queryKey:["competitorAdAnalyses"], queryFn:()=>api.listCompetitorAdAnalyses({limit:100}), staleTime: STALE, enabled: on("today","market","marketing") });
+  const anglesQ = useQuery({ queryKey:["angles"], queryFn:()=>api.listAngles({limit:200}), staleTime: STALE, enabled: on("marketing") });
+  const inboxQ = useQuery({ queryKey:["decisionInbox"], queryFn:()=>api.getDecisionInbox({}), staleTime: STALE, enabled: on("today") });
+  const readinessQ = useQuery({ queryKey:["launchReadiness"], queryFn:()=>api.getLaunchReadiness({}), staleTime: STALE, enabled: on("plan","today") });
+  const scoresQ = useQuery({ queryKey:["briefScores"], queryFn:()=>api.scoreBriefs({}), staleTime: STALE, enabled: on("marketing") });
+  const videoQ = useQuery({ queryKey:["videoAnalyses"], queryFn:()=>api.listVideoAnalyses({limit:100}), staleTime: STALE, enabled: on("marketing") });
+  const creatorsQ = useQuery({ queryKey:["creators"], queryFn:()=>api.listCreators({limit:200}), staleTime: STALE, enabled: on("marketing") });
+  const repliesQ = useQuery({ queryKey:["replyDrafts"], queryFn:()=>api.listReplyDrafts({limit:100}), staleTime: STALE, enabled: on("marketing") });
+  const offersQ = useQuery({ queryKey:["offerLab"], queryFn:()=>api.listOfferLab({limit:100}), staleTime: STALE, enabled: on("money") });
+  const deliveriesQ = useQuery({ queryKey:["deliveries"], queryFn:()=>api.listDeliveries({limit:50}), staleTime: STALE, enabled: on("plan") });
+  const flowsQ = useQuery({ queryKey:["retentionFlows"], queryFn:()=>api.listRetentionFlows({limit:50}), staleTime: STALE, enabled: on("money") });
 
   const refreshMut = useMutation({ mutationFn: async()=> await api.refreshDaily({}), onSuccess: inv });
   const profile = profileQ.data?.profile ?? null;
@@ -855,7 +1286,7 @@ export function App() {
     if (/(استراتيج|شهر|ربع|خطة شاملة|relaunch)/.test(s)) return "C";
     return "A";
   };
-  const SECTION_FOR: Record<string,{tab:Tab,label:string}> = { A:{tab:"content",label:"المحتوى والكرييتف"}, B:{tab:"ops",label:"التشغيل والتعلّم"}, C:{tab:"relaunch",label:"الريلونش"}, D:{tab:"campaigns",label:"الحملات والميديا باير"}, E:{tab:"system",label:"النظام — المدخلات الأساسية"}, F:{tab:"content",label:"المحتوى والكرييتف — Validator"}, G:{tab:"market",label:"السوق والمنافسين"} };
+  const SECTION_FOR: Record<string,{tab:Tab,label:string}> = { A:{tab:"marketing",label:"التسويق — المحتوى والكرييتف"}, B:{tab:"today",label:"اليوم — التشغيل والتعلّم"}, C:{tab:"plan",label:"الخطة والتنفيذ"}, D:{tab:"marketing",label:"التسويق — الحملات والميديا باير"}, E:{tab:"system",label:"النظام — المدخلات الأساسية"}, F:{tab:"marketing",label:"التسويق — Validator"}, G:{tab:"market",label:"السوق"} };
   const buildSteps = (goal:string, type:string) => {
     const sec = SECTION_FOR[type] ?? SECTION_FOR["A"]!;
     return [
@@ -871,7 +1302,7 @@ export function App() {
   };
   const [planPreview,setPlanPreview]=useState<{goal:string,type:string,steps:ReturnType<typeof buildSteps>}|null>(null);
   const planMut = useMutation({ mutationFn: async()=> await api.createAgentPlan({ goal: planPreview!.goal, taskType: planPreview!.type as "A", steps: planPreview!.steps }), onSuccess:()=>{ inv(); } });
-  const approvePlanMut = useMutation({ mutationFn: async(p:any)=>{ await api.updateAgentPlan({ id:p.id, status:"Approved" }); const sec = SECTION_FOR[p.taskType] ?? SECTION_FOR["A"]!; for (const s of p.steps) { await api.createWorkItem({ title: s.step, sourceType: "Plan", ownerRole: p.taskType==="D" ? "Media Buyer" : p.taskType==="G" ? "Analyst" : p.taskType==="A"||p.taskType==="F" ? "Creative" : "Owner", priority:"Medium", dueDate:"", progress:0, blocker:"", nextAction: s.detail, notes: `من خطة معتمدة: ${p.goal} · مرحلة ${s.stage} · القسم: ${sec.label}` }); } await api.createTask({ title: p.goal, type: p.taskType as "A", objective:"", evidenceTag:"UNKNOWN", assumptions:"", confidence:50, freshness:"", notes:"خطة معتمدة من Ask Zyra — عناصرها في متابعة الشغل" }); }, onSuccess:()=>{ inv(); setTab("relaunch"); setSub("relaunch","work"); } });
+  const approvePlanMut = useMutation({ mutationFn: async(p:any)=>{ await api.updateAgentPlan({ id:p.id, status:"Approved" }); const sec = SECTION_FOR[p.taskType] ?? SECTION_FOR["A"]!; for (const s of p.steps) { await api.createWorkItem({ title: s.step, sourceType: "Plan", ownerRole: p.taskType==="D" ? "Media Buyer" : p.taskType==="G" ? "Analyst" : p.taskType==="A"||p.taskType==="F" ? "Creative" : "Owner", priority:"Medium", dueDate:"", progress:0, blocker:"", nextAction: s.detail, notes: `من خطة معتمدة: ${p.goal} · مرحلة ${s.stage} · القسم: ${sec.label}` }); } await api.createTask({ title: p.goal, type: p.taskType as "A", objective:"", evidenceTag:"UNKNOWN", assumptions:"", confidence:50, freshness:"", notes:"خطة معتمدة من Ask Zyra — عناصرها في متابعة الشغل" }); }, onSuccess:()=>{ inv(); setTab("plan"); setSub("plan","work"); } });
   const importMut = useMutation({ mutationFn: async()=> await api.importWebsiteData({}), onSuccess: inv });
 
   // System-status block: lives ONLY inside the dashboard (collapsible card)
@@ -922,7 +1353,7 @@ export function App() {
         <p className={`text-[11px] mt-2.5 opacity-75 relative z-10 ${expanded ? "" : "lg:hidden"}`}>وكيل ذكاء التسويق — AI يفسّر • الكود يحسب • إنت تقرر</p>
         <nav aria-label="أقسام النظام" className="mt-4 relative z-10">
           <div className="flex flex-col gap-1.5">
-            {NAV_MAIN.map(id=>{ const t = TABS.find(x=>x.id===id)!; const active = tab===t.id; const badge = t.id==="campaigns" ? (dash.data?.approvalsPending ?? 0) : t.id==="relaunch" ? overdue.length + outcomeDue.length : 0; return (
+            {NAV_MAIN.map(id=>{ const t = TABS.find(x=>x.id===id)!; const active = tab===t.id; const badge = t.id==="today" ? (inboxQ.data?.total ?? 0) : t.id==="plan" ? overdue.length + outcomeDue.length : 0; return (
               <button key={t.id} onClick={()=>{ setTab(t.id); setDrawer(false); }} aria-label={t.en} title={t.label} className={`nav-item ${active ? "active" : ""}`}>
                 <span className="nav-chip relative" style={{background: active ? "rgba(1,56,53,0.10)" : "rgba(255,255,255,0.09)", boxShadow:"none", color: active ? "#013835" : "#FFF6EE"}}>{NAV_ICONS[t.id]}{badge>0 && !expanded && <span className="absolute -top-1 -left-1 w-3 h-3 rounded-full hidden lg:block" style={{background:"#D92D20",border:"1.5px solid #FFFFFF"}} />}</span>
                 <span className={expanded ? "" : "lg:hidden"}>{t.label}</span>
@@ -990,16 +1421,15 @@ export function App() {
         <main className="px-3 md:px-5 pb-10 pt-3 w-full min-w-0">
         {(dash.isLoading || profileQ.isLoading) && <div className="skeleton-bar mb-4" role="status" aria-label="جاري التحميل" />}
         <div key={tab} className="tab-enter">
-        {tab!=="command" && (()=>{ const t = TABS.find(x=>x.id===tab)!; return (
+        <GlobalSearch nav={(t:Tab)=>{ setTab(t); }} />
+        {tab!=="today" && (()=>{ const t = TABS.find(x=>x.id===tab)!; return (
           <div className="sec-band">
             <span className="sec-icon">{NAV_ICONS[t.id]}</span>
             <div><h2>{t.label}</h2><p>{t.en}</p></div>
           </div> );})()}
-        {tab==="thinking" && <ThinkingTab entries={thinkingQ.data?.entries ?? []} plans={ownerPlansQ.data?.plans ?? []} creatives={creaQ.data?.creatives ?? []} observations={obsQ.data?.observations ?? []} creaAnalyses={creaAnQ.data?.analyses ?? []} compAnalyses={compAnQ.data?.analyses ?? []} inv={inv} nav={(t:Tab, host?:string, s?:string)=>{ setTab(t); if (host && s) setSub(host, s); }} />}
-        {tab==="command" && (<>
+        {tab==="today" && (<>
+          <DecisionInbox inbox={inboxQ.data} posts={organicQ.data?.posts ?? []} inv={inv} approvePlan={(p:any)=>approvePlanMut.mutate(p)} plans={plansQ.data?.plans ?? []} />
           <DashboardHome statusSlot={(
-            /* The full system-status block lives ONLY here (dashboard), as a
-               collapsible section directly under the greeting header */
             <div className="rounded-2xl mt-4" style={card}>
               <button onClick={()=>setDashStatusOpen(o=>!o)} aria-expanded={dashStatusOpen} aria-label="حالة النظام — طي أو فتح قسم حالة النظام" className="w-full flex items-center gap-2.5 px-4 py-3 text-right">
                 <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{background: dash.data?.lastSyncAt ? "#12B76A" : "#E0A83E"}} />
@@ -1010,45 +1440,55 @@ export function App() {
               {dashStatusOpen && <div className="px-4 pb-4">{statusBlock}</div>}
             </div>
           )} dash={dash.data} snapshots={snapQ.data?.snapshots ?? []} tasks={tasksQ.data?.tasks ?? []} work={workQ.data?.items ?? []} approvals={apprQ.data?.approvals ?? []} alerts={alertsQ.data?.alerts ?? []} goals={goalsQ.data?.goals ?? []} plans={plansQ.data?.plans ?? []} completeness={completeness} overdue={overdue} outcomeDue={outcomeDue} inv={inv} egp={egp} onRefresh={()=>refreshMut.mutate()} nav={(t:Tab, host?:string, s?:string)=>{ setTab(t); if (host && s) setSub(host, s); }} />
+          <OpsStrip ops={opsQ.data} activity={activityQ.data?.events ?? []} work={workQ.data?.items ?? []} />
+          <div className="mt-4">
+            <ThinkingTab section="thinking" entries={thinkingQ.data?.entries ?? []} plans={[]} creatives={creaQ.data?.creatives ?? []} observations={obsQ.data?.observations ?? []} creaAnalyses={creaAnQ.data?.analyses ?? []} compAnalyses={compAnQ.data?.analyses ?? []} inv={inv} nav={(t:Tab, host?:string, s?:string)=>{ setTab(t); if (host && s) setSub(host, s); }} />
+          </div>
         </>)}
-        {tab==="relaunch" && (<>
-          <SubTabs host="relaunch" cur={sub("relaunch","board")} setSub={setSub} items={[{id:"board",label:"لوحة الريلونش والأهداف"},{id:"work",label:"متابعة الشغل"}]} />
-          {sub("relaunch","board")==="board"
-            ? <RelaunchTab work={workQ.data?.items ?? []} goals={goalsQ.data?.goals ?? []} plans={plansQ.data?.plans ?? []} products={productsQ.data?.products ?? []} profile={profile} inv={inv} setTab={(t:any)=>{ if (t==="tracking") setSub("relaunch","work"); else setTab(t); }} egp={egp} />
-            : <TrackingTab work={workQ.data?.items ?? []} tasks={tasksQ.data?.tasks ?? []} campaigns={campQ.data?.campaigns ?? []} creatives={creaQ.data?.creatives ?? []} content={contentQ.data?.items ?? []} experiments={expQ.data?.experiments ?? []} rounds={roundsQ.data?.rounds ?? []} activity={activityQ.data?.events ?? []} overdue={overdue} outcomeDue={outcomeDue} inv={inv} setTab={setTab} />}
+        {tab==="plan" && (<>
+          <LaunchReadiness data={readinessQ.data} />
+          <SubTabs host="plan" cur={sub("plan","board")} setSub={setSub} items={[{id:"board",label:"لوحة الريلونش والأهداف"},{id:"planning",label:"تخطيط — كلامك إنت"},{id:"work",label:"متابعة الشغل والمهام"},{id:"deliveries",label:"لوحة تسليمات الأقسام"}]} />
+          {sub("plan","board")==="board" && <RelaunchTab work={workQ.data?.items ?? []} goals={goalsQ.data?.goals ?? []} plans={plansQ.data?.plans ?? []} products={productsQ.data?.products ?? []} profile={profile} inv={inv} setTab={(t:any)=>{ if (t==="tracking") setSub("plan","work"); else setTab(t); }} egp={egp} />}
+          {sub("plan","board")==="planning" && <ThinkingTab section="plans" entries={thinkingQ.data?.entries ?? []} plans={ownerPlansQ.data?.plans ?? []} creatives={[]} observations={[]} creaAnalyses={[]} compAnalyses={[]} inv={inv} nav={(t:Tab, host?:string, s?:string)=>{ setTab(t); if (host && s) setSub(host, s); }} />}
+          {sub("plan","board")==="work" && <TrackingTab work={workQ.data?.items ?? []} tasks={tasksQ.data?.tasks ?? []} campaigns={campQ.data?.campaigns ?? []} creatives={creaQ.data?.creatives ?? []} content={contentQ.data?.items ?? []} experiments={expQ.data?.experiments ?? []} rounds={roundsQ.data?.rounds ?? []} activity={activityQ.data?.events ?? []} overdue={overdue} outcomeDue={outcomeDue} inv={inv} setTab={(t:any)=>{ const m: Record<string,Tab> = { campaigns:"marketing", content:"marketing", finance:"money", ops:"system", market:"market", command:"today", thinking:"today", relaunch:"plan", organic:"marketing", system:"system", ask:"ask" }; setTab(m[t as string] ?? "plan"); }} />}
+          {sub("plan","board")==="deliveries" && <DeliveriesTab deliveries={deliveriesQ.data?.deliveries ?? []} inv={inv} />}
         </>)}
-        {tab==="campaigns" && (<>
-          <SubTabs host="campaigns" cur={sub("campaigns","campaigns")} setSub={setSub} items={[{id:"campaigns",label:"الحملات وقرار Task D"},{id:"tasks",label:"مهام A–G"},{id:"approvals",label:"الاعتمادات والتنفيذ"}]} />
-          {sub("campaigns","campaigns")==="campaigns" && <MediaTab campaigns={campQ.data?.campaigns ?? []} profile={profile} payday={payday} snapshots={snapQ.data?.snapshots ?? []} inv={inv} egp={egp} />}
-          {sub("campaigns","campaigns")==="tasks" && <QueueTab tasks={tasksQ.data?.tasks ?? []} inv={inv} />}
-          {sub("campaigns","campaigns")==="approvals" && <ApprovalsTab approvals={apprQ.data?.approvals ?? []} executions={execQ.data?.executions ?? []} inv={inv} />}
+        {tab==="marketing" && (<>
+          <SubTabs host="marketing" cur={sub("marketing","pipeline")} setSub={setSub} items={[{id:"pipeline",label:"خط الإنتاج"},{id:"angles",label:"مكتبة الزوايا والهوكات"},{id:"gate",label:"بوابة التقييم قبل الإنتاج"},{id:"ugc",label:"خط إنتاج UGC"},{id:"creators",label:"الكرييتورز وUGC — السجل"},{id:"community",label:"مسودات ردود المجتمع"},{id:"studio",label:"استوديو الكرييتيف والتوليد"},{id:"analysis",label:"تحليل الكرييتف"},{id:"video",label:"تحليل الفيديو"},{id:"organic",label:"الأورجانيك"},{id:"calendar",label:"تقويم محتوى موحّد"},{id:"campaigns",label:"الحملات وقرار Task D"},{id:"tasks",label:"مهام A–G"},{id:"approvals",label:"الاعتمادات والتنفيذ"}]} />
+          {sub("marketing","pipeline")==="pipeline" && <MarketingPipeline angles={anglesQ.data?.angles ?? []} requests={genQ.data?.requests ?? []} creatives={creaQ.data?.creatives ?? []} scores={scoresQ.data?.scores ?? []} setSub={setSub} />}
+          {sub("marketing","pipeline")==="angles" && <AnglesLibrary angles={anglesQ.data?.angles ?? []} products={productsQ.data?.products ?? []} inv={inv} />}
+          {sub("marketing","pipeline")==="gate" && <BriefGate requests={genQ.data?.requests ?? []} scores={scoresQ.data?.scores ?? []} inv={inv} />}
+          {sub("marketing","pipeline")==="ugc" && <UGCPipeline angles={anglesQ.data?.angles ?? []} inv={inv} />}
+          {sub("marketing","pipeline")==="creators" && <CreatorsTab creators={creatorsQ.data?.creators ?? []} inv={inv} />}
+          {sub("marketing","pipeline")==="community" && <CommunityDraftsTab drafts={repliesQ.data?.drafts ?? []} inv={inv} />}
+          {sub("marketing","pipeline")==="studio" && <CreativeTab creatives={creaQ.data?.creatives ?? []} genRequests={genQ.data?.requests ?? []} inv={inv} />}
+          {sub("marketing","pipeline")==="analysis" && <CreativeAnalysisTab creatives={creaQ.data?.creatives ?? []} analyses={creaAnQ.data?.analyses ?? []} thinking={thinkingQ.data?.entries ?? []} inv={inv} />}
+          {sub("marketing","pipeline")==="video" && <VideoAnalysisTab analyses={videoQ.data?.analyses ?? []} products={productsQ.data?.products ?? []} inv={inv} />}
+          {sub("marketing","pipeline")==="organic" && <OrganicTab posts={organicQ.data?.posts ?? []} insights={custQ.data?.insights ?? []} keywords={opsQ.data?.keywords ?? []} inv={inv} />}
+          {sub("marketing","pipeline")==="calendar" && (<><UnifiedCalendar posts={organicQ.data?.posts ?? []} items={contentQ.data?.items ?? []} /><div className="mt-5"><h3 className="font-bold mb-3">إدارة عناصر المحتوى (إضافة وتعديل وجدولة)</h3><ContentTab items={contentQ.data?.items ?? []} inv={inv} /></div></>)}
+          {sub("marketing","pipeline")==="campaigns" && <MediaTab campaigns={campQ.data?.campaigns ?? []} profile={profile} payday={payday} snapshots={snapQ.data?.snapshots ?? []} inv={inv} egp={egp} />}
+          {sub("marketing","pipeline")==="tasks" && <QueueTab tasks={tasksQ.data?.tasks ?? []} inv={inv} />}
+          {sub("marketing","pipeline")==="approvals" && <ApprovalsTab approvals={apprQ.data?.approvals ?? []} executions={execQ.data?.executions ?? []} inv={inv} />}
         </>)}
-        {tab==="content" && (<>
-          <SubTabs host="content" cur={sub("content","creative")} setSub={setSub} items={[{id:"creative",label:"استوديو الكرييتيف والتوليد"},{id:"analysis",label:"تحليل الكرييتف"},{id:"calendar",label:"تقويم المحتوى"}]} />
-          {sub("content","creative")==="creative" && <CreativeTab creatives={creaQ.data?.creatives ?? []} genRequests={genQ.data?.requests ?? []} inv={inv} />}
-          {sub("content","creative")==="analysis" && <CreativeAnalysisTab creatives={creaQ.data?.creatives ?? []} analyses={creaAnQ.data?.analyses ?? []} inv={inv} />}
-          {sub("content","creative")==="calendar" && <ContentTab items={contentQ.data?.items ?? []} inv={inv} />}
-        </>)}
-        {tab==="organic" && <OrganicTab posts={organicQ.data?.posts ?? []} insights={custQ.data?.insights ?? []} keywords={opsQ.data?.keywords ?? []} inv={inv} />}
         {tab==="market" && (<>
           <SubTabs host="market" cur={sub("market","research")} setSub={setSub} items={[{id:"research",label:"المنافسون والعملاء"},{id:"adanalysis",label:"تحليل إعلانات المنافسين"},{id:"watch",label:"متابعة السوق والجولات"}]} />
           {sub("market","research")==="research" && <ResearchTab competitors={compQ.data?.competitors ?? []} observations={obsQ.data?.observations ?? []} insights={custQ.data?.insights ?? []} inv={inv} />}
           {sub("market","research")==="adanalysis" && <CompetitorAdAnalysisTab observations={obsQ.data?.observations ?? []} analyses={compAnQ.data?.analyses ?? []} inv={inv} />}
           {sub("market","research")==="watch" && <MarketTab rounds={roundsQ.data?.rounds ?? []} alerts={alertsQ.data?.alerts ?? []} syncs={syncsQ.data?.syncs ?? []} competitors={compQ.data?.competitors ?? []} inv={inv} importMut={importMut} />}
         </>)}
-        {tab==="ops" && (<>
-          <SubTabs host="ops" cur={sub("ops","ops")} setSub={setSub} items={[{id:"ops",label:"التشغيل واللوب وصوت العميل"},{id:"learning",label:"التجارب والتعلّمات والمراجعات"}]} />
-          {sub("ops","ops")==="ops" && <OpsTab ops={opsQ.data} competitors={compQ.data?.competitors ?? []} inv={inv} setTab={(t:any)=>{ if (t==="integrations") { setTab("system"); setSub("system","integrations"); } else setTab(t); }} />}
-          {sub("ops","ops")==="learning" && <ExperimentsTab experiments={expQ.data?.experiments ?? []} learnings={learnQ.data?.learnings ?? []} reviews={revQ.data?.reviews ?? []} inv={inv} />}
-        </>)}
-        {tab==="finance" && (<>
-          <SubTabs host="finance" cur={sub("finance","finance")} setSub={setSub} items={[{id:"finance",label:"حاسبة COD واللقطات المالية"},{id:"audit",label:"الأوديت الشامل — 8 ركائز"}]} />
-          {sub("finance","finance")==="finance" && <FinanceTab profile={profile} snapshots={snapQ.data?.snapshots ?? []} inv={inv} egp={egp} />}
-          {sub("finance","finance")==="audit" && <AuditTab state={auditQ.data?.items ?? []} inv={inv} />}
+        {tab==="money" && (<>
+          <SubTabs host="money" cur={sub("money","finance")} setSub={setSub} items={[{id:"finance",label:"حاسبة COD واللقطات المالية"},{id:"offers",label:"مختبر العروض"},{id:"retention",label:"فلوهات الاحتفاظ"},{id:"calibration",label:"المعايرة وبوابات CPP"},{id:"audit",label:"الأوديت الشامل — 8 ركائز"}]} />
+          {sub("money","finance")==="finance" && <FinanceTab profile={profile} snapshots={snapQ.data?.snapshots ?? []} inv={inv} egp={egp} />}
+          {sub("money","finance")==="offers" && <OffersLabTab data={offersQ.data} inv={inv} egp={egp} />}
+          {sub("money","finance")==="retention" && <RetentionFlowsTab flows={flowsQ.data?.flows ?? []} inv={inv} />}
+          {sub("money","finance")==="calibration" && <CalibrationCard entries={thinkingQ.data?.entries ?? []} snapshots={snapQ.data?.snapshots ?? []} />}
+          {sub("money","finance")==="audit" && <AuditTab state={auditQ.data?.items ?? []} inv={inv} />}
         </>)}
         {tab==="system" && (<>
-          <SubTabs host="system" cur={sub("system","inputs")} setSub={setSub} items={[{id:"inputs",label:"المدخلات الأساسية"},{id:"rules",label:"القواعد والفريموركس"},{id:"integrations",label:"الربط والمزامنة"},{id:"activity",label:"سجل النشاط"}]} />
-          {sub("system","inputs")==="inputs" && <InputsTab profile={profile} completeness={completeness} netCodRate={netCodRate} payday={payday} products={productsQ.data?.products ?? []} inv={inv} egp={egp} setTab={setTab} />}
+          <SubTabs host="system" cur={sub("system","inputs")} setSub={setSub} items={[{id:"inputs",label:"المدخلات الأساسية"},{id:"ops",label:"التحكم في اللوب وتعليمات المالك"},{id:"learning",label:"التجارب والتعلّمات والمراجعات"},{id:"rules",label:"القواعد والفريموركس"},{id:"integrations",label:"الربط والمزامنة"},{id:"activity",label:"سجل النشاط"}]} />
+          {sub("system","inputs")==="inputs" && <InputsTab profile={profile} completeness={completeness} netCodRate={netCodRate} payday={payday} products={productsQ.data?.products ?? []} inv={inv} egp={egp} setTab={(t:any)=>{ const m: Record<string,Tab> = { finance:"money", campaigns:"marketing", content:"marketing" }; setTab(m[t as string] ?? t); }} />}
+          {sub("system","inputs")==="ops" && <OpsTab ops={opsQ.data} competitors={compQ.data?.competitors ?? []} inv={inv} setTab={(t:any)=>{ if (t==="integrations") setSub("system","integrations"); else setTab(t); }} />}
+          {sub("system","inputs")==="learning" && <ExperimentsTab experiments={expQ.data?.experiments ?? []} learnings={learnQ.data?.learnings ?? []} reviews={revQ.data?.reviews ?? []} inv={inv} />}
           {sub("system","inputs")==="rules" && <FrameworksTab dash={dash.data} tasksCount={tasksQ.data?.tasks.length ?? 0} plansCount={plansQ.data?.plans.length ?? 0} genCount={genQ.data?.requests.length ?? 0} />}
           {sub("system","inputs")==="integrations" && <IntegrationsTab syncs={syncsQ.data?.syncs ?? []} dash={dash.data} importMut={importMut} products={productsQ.data?.products ?? []} />}
           {sub("system","inputs")==="activity" && <ActivityPanel events={activityQ.data?.events ?? []} />}
@@ -1099,7 +1539,7 @@ export function App() {
 }
 
 /* ================= Thinking & Planning (تفكير زيرا وقراراتنا + تخطيط) ================= */
-function ThinkingTab({ entries, plans, creatives, observations, creaAnalyses, compAnalyses, inv, nav }: any) {
+function ThinkingTab({ entries, plans, creatives, observations, creaAnalyses, compAnalyses, inv, nav, section = "all" }: any) {
   const [pTitle, setPTitle] = useState("");
   const [pKind, setPKind] = useState("خطة");
   const [pBody, setPBody] = useState("");
@@ -1120,10 +1560,12 @@ function ThinkingTab({ entries, plans, creatives, observations, creaAnalyses, co
   const pendingCrea = creatives.filter((c:any)=>!analyzedCrea.has(c.id)).length;
   const pendingObs = observations.filter((o:any)=>!analyzedObs.has(o.id)).length;
   const statusPill = (s:string)=> s==="معتمد" ? "pill pill-live" : s==="مرفوض" ? "pill pill-danger" : "pill pill-draft";
+  const showPlans = section !== "thinking";
+  const showThinking = section !== "plans";
   return (
     <section className="grid gap-4">
-      {/* تخطيط — the owner's own writing, first thing on the page */}
-      <div className="rounded-2xl p-4" style={card}>
+      {/* تخطيط — the owner's own writing */}
+      {showPlans && (<div className="rounded-2xl p-4" style={card}>
         <h3 className="font-bold">✍️ تخطيط — اكتب اللي إنت عايزه بخط إيدك</h3>
         <p className="text-xs mt-1" style={{color:"var(--dim)"}}>أهداف، أفكار، توجيهات، خطط — بتتسجل مؤرخة هنا، وتقدر تربط أي عنصر بمدخلة تفكير أو تحوّله لمهمة متابعة.</p>
         <form onSubmit={(e)=>{ e.preventDefault(); if (!pTitle.trim()) { setPErr("اكتب عنوان عنصر التخطيط أولاً"); return; } setPErr(""); createPlan.mutate(); }} className="grid gap-2 mt-3">
@@ -1161,14 +1603,15 @@ function ThinkingTab({ entries, plans, creatives, observations, creaAnalyses, co
             </div>
           ))}
         </div>
-      </div>
+      </div>)}
 
+      {showThinking && (<>
       {/* Analysis-loop signals */}
       <div className="rounded-2xl p-4 flex items-center gap-2 flex-wrap" style={card}>
         <span className="font-normal text-sm">🔁 لوب التحليل:</span>
         <span className="text-xs" style={{color:"var(--dim)"}}>أي كرييتف أو إعلان منافس جديد بيتسجل بيظهر هنا فوراً كمستحق تحليل، وتحاليله بتغذي التفكير اللي تحت.</span>
         <span className="mr-auto flex gap-2 flex-wrap">
-          <button onClick={()=>nav("content","content","analysis")} aria-label="فتح تحليل الكرييتف" className="text-xs font-normal px-3 py-2 rounded-full" style={{background: pendingCrea>0 ? "var(--warning-soft)" : "var(--surface2)", color: pendingCrea>0 ? "var(--warning)" : "var(--dim)", border:"1px solid var(--border)"}}>كرييتف بانتظار التحليل: {pendingCrea}</button>
+          <button onClick={()=>nav("marketing","marketing","analysis")} aria-label="فتح تحليل الكرييتف" className="text-xs font-normal px-3 py-2 rounded-full" style={{background: pendingCrea>0 ? "var(--warning-soft)" : "var(--surface2)", color: pendingCrea>0 ? "var(--warning)" : "var(--dim)", border:"1px solid var(--border)"}}>كرييتف بانتظار التحليل: {pendingCrea}</button>
           <button onClick={()=>nav("market","market","adanalysis")} aria-label="فتح تحليل إعلانات المنافسين" className="text-xs font-normal px-3 py-2 rounded-full" style={{background: pendingObs>0 ? "var(--warning-soft)" : "var(--surface2)", color: pendingObs>0 ? "var(--warning)" : "var(--dim)", border:"1px solid var(--border)"}}>إعلانات منافسين بانتظار التحليل: {pendingObs}</button>
           {(pendingCrea>0 || pendingObs>0) && <button onClick={()=>runLoop.mutate()} aria-label="تشغيل لوب التحليل على كل العناصر المنتظرة" className="text-xs font-normal px-3 py-2 rounded-full btn-glow" style={{background:"var(--teal)",color:"#FFF6EE"}}>{runLoop.isPending ? "اللوب شغال…" : "▶ شغّل اللوب: حلّل كل المنتظر"}</button>}
         </span>
@@ -1212,20 +1655,116 @@ function ThinkingTab({ entries, plans, creatives, observations, creaAnalyses, co
           ))}
         </div>
       </div>
+      </>)}
     </section>
   );
 }
 
 /* ================= Creative Analysis (CIS loop) ================= */
 const CLASS_PILL: Record<string,string> = { "Validated":"pill pill-live", "Promising":"pill pill-pending", "Declining":"pill pill-danger", "Insufficient Evidence":"pill pill-locked" };
-function CreativeAnalysisTab({ creatives, analyses, inv }: any) {
+function CreativeAnalysisTab({ creatives, analyses, thinking, inv }: any) {
   const [err, setErr] = useState("");
   const analyze = useMutation({ mutationFn: async(id:number)=> await api.analyzeCreativeDeep({ creativeId: id }), onSuccess: ()=>{ setErr(""); inv(); }, onError: (e:any)=> setErr(e?.message ?? "تعذر التحليل دلوقتي") });
   const del = useMutation({ mutationFn: async(id:number)=> await api.deleteCreativeAnalysis({ id }), onSuccess: inv });
+  const remix = useMutation({ mutationFn: async(id:number)=> await api.remixFromCreativeAnalysis({ analysisId: id }), onSuccess: inv });
   const byCreative = (cid:number)=> analyses.filter((a:any)=>a.creativeId===cid);
+  // ---- Upload a creative image from the device and analyze it visually ----
+  const [upTitle, setUpTitle] = useState("");
+  const [upProduct, setUpProduct] = useState("");
+  const [upFile, setUpFile] = useState<File | null>(null);
+  const [upPreview, setUpPreview] = useState("");
+  const [upErr, setUpErr] = useState("");
+  const [upDone, setUpDone] = useState("");
+  const upload = useMutation({
+    mutationFn: async()=> {
+      if (!upFile) throw new Error("اختار صورة الأول");
+      const enc = await fileToBase64(upFile);
+      return await api.analyzeUploadedCreativeImage({ title: upTitle.trim(), product: upProduct.trim(), image: enc });
+    },
+    onSuccess: ()=>{ setUpDone("اترفعت الصورة واتحللت ✓ — الكرييتف الجديد وتحليله البصري الكامل تحت."); setUpErr(""); setUpFile(null); setUpPreview(""); setUpTitle(""); setUpProduct(""); inv(); },
+    onError: (e:any)=> { setUpDone(""); setUpErr(e?.message ?? "تعذر رفع الصورة أو تحليلها دلوقتي"); },
+  });
+  const pickFile = (f: File | null)=> {
+    setUpErr(""); setUpDone("");
+    if (!f) { setUpFile(null); setUpPreview(""); return; }
+    if (f.type !== "image/jpeg" && f.type !== "image/png") { setUpFile(null); setUpPreview(""); setUpErr("الصيغة دي مش مدعومة للتحليل — ارفع صورة JPG أو PNG."); return; }
+    if (f.size > 10 * 1024 * 1024) { setUpFile(null); setUpPreview(""); setUpErr("الصورة أكبر من 10 ميجا — صغّرها أو اضغطها وارفعها تاني."); return; }
+    setUpFile(f); setUpPreview(URL.createObjectURL(f));
+  };
+  const parseScores = (s: string)=> { try { const o = JSON.parse(s || "{}"); return [["الهوك", o.hook], ["الوضوح", o.clarity], ["العرض", o.offer], ["الثقة", o.trust], ["البراند", o.brand], ["الإجمالي", o.overall]].filter(([,v])=> typeof v === "number") as [string, number][]; } catch { return [] as [string, number][]; } };
+  // ---- Creative plan: merge every recorded input + analysis into next period's focus ----
+  const [planRes, setPlanRes] = useState<any>(null);
+  const [planErr, setPlanErr] = useState("");
+  const planMut = useMutation({ mutationFn: async()=> await api.generateCreativePlan({}), onSuccess: (d)=>{ setPlanRes(d); setPlanErr(""); inv(); }, onError: (e:any)=> setPlanErr(e?.message ?? "تعذر بناء الخطة دلوقتي") });
+  const latestPlan = (thinking ?? []).find((e:any)=> (e.title ?? "").startsWith("خطة الكرييتف للفترة الجاية"));
   return (
     <section>
       <p className="text-sm mb-3 leading-relaxed" style={{color:"var(--dim)"}}>تحليل طبقات CIS لكل كرييتف مسجل فعلياً: ليه نجح أو ليه فشل — بالأرقام والملاحظات المسجلة بس، مع حجم العينة والثقة واقتراحات Remix. أي كرييتف جديد أو أرقام أداء جديدة = تحليل جديد يتحفظ هنا، وبيغذي «تفكير زيرا وقراراتنا».</p>
+      <div className="rounded-2xl p-4 mb-4" style={{...card, border:"1.5px dashed var(--terra)"}}>
+        <h3 className="font-bold text-sm">📤 ارفع صورة من جهازك وحلّلها ككرييتف</h3>
+        <p className="text-xs mt-1 leading-relaxed" style={{color:"var(--dim)"}}>ارفع أي تصميم (JPG أو PNG، لحد 10 ميجا) — هيتخزن هنا ككرييتف جديد، وهيتحلل بصريًا على طول: قراءة للصورة، النص اللي فيها، طبقات CIS، درجات (هوك/وضوح/عرض/ثقة/براند)، نقاط قوة وضعف، وفحص التزام على الكوبي الظاهر. الدرجات حكم بصري على التصميم — مش أرقام أداء، والتصنيف بيبقى Insufficient Evidence لحد ما الكرييتف يشتغل وتتسجل أرقامه.</p>
+        <div className="flex gap-2 flex-wrap mt-3 items-start">
+          <input aria-label="اسم الكرييتف (اختياري)" {...FIELDS.analyzeUploadedCreativeImage.title} value={upTitle} onChange={e=>setUpTitle(e.target.value)} placeholder="اسم الكرييتف (اختياري — هيتقترح من الصورة)" className="rounded-xl px-3 py-2 text-sm flex-1 min-w-[180px]" />
+          <input aria-label="المنتج أو الروتين (اختياري)" {...FIELDS.analyzeUploadedCreativeImage.product} value={upProduct} onChange={e=>setUpProduct(e.target.value)} placeholder="المنتج/الروتين (اختياري)" className="rounded-xl px-3 py-2 text-sm flex-1 min-w-[160px]" />
+        </div>
+        <div className="flex gap-3 flex-wrap mt-3 items-center">
+          <label className="text-xs font-normal px-4 py-2.5 rounded-full cursor-pointer" style={{background:"var(--surface2)",border:"1px solid var(--border)"}}>
+            {upFile ? `الصورة: ${upFile.name}` : "اختار صورة من جهازك…"}
+            <input type="file" accept="image/jpeg,image/png" aria-label="اختيار صورة كرييتف من الجهاز" className="hidden" onChange={e=>pickFile(e.target.files?.[0] ?? null)} />
+          </label>
+          {upPreview && <img src={upPreview} alt="معاينة الصورة المختارة للتحليل" className="rounded-xl object-cover" style={{width:84,height:84,border:"1px solid var(--border)"}} />}
+          <button onClick={()=>{ if(!upFile){ setUpErr("اختار صورة من جهازك الأول."); return; } setUpErr(""); upload.mutate(); }} disabled={upload.isPending} aria-label="رفع الصورة وتحليلها ككرييتف" className="text-xs font-normal px-4 py-2.5 rounded-full btn-glow" style={{background:"var(--teal)",color:"#FFF6EE",opacity: upload.isPending ? .6 : 1}}>{upload.isPending ? "جاري الرفع والتحليل البصري…" : "ارفع وحلّل الصورة ✦"}</button>
+        </div>
+        {upErr && <p className="text-xs font-normal mt-2" style={{color:"var(--danger)"}}>{upErr}</p>}
+        {upDone && <p className="text-xs font-normal mt-2" style={{color:"var(--success)"}}>{upDone}</p>}
+      </div>
+      <div className="rounded-2xl p-4 mb-4" style={{...card, border:"1.5px solid var(--teal)"}}>
+        <h3 className="font-bold text-sm">🧠 خطة الكرييتف للفترة الجاية — فكّر وادمج كل المعطيات</h3>
+        <p className="text-xs mt-1 leading-relaxed" style={{color:"var(--dim)"}}>النظام بيدمج كل اللي حددته وسجّلته: تعليماتك وخططك بكلماتك وقراراتك المعتمدة + المدخلات الأساسية والمنتجات + تحليلات كل الكرييتفز (بما فيها درجات الصور المرفوعة) + دروس إعلانات المنافسين + صوت العميل ولغة البحث + اللي في قائمة التوليد أصلاً — وبيقرر: هنركّز على أنهي كرييتفز، وننتج إيه، ونوع كل كرييتف وشكله بالظبط وبأي ترتيب. الناتج: خطة محفوظة في «تفكير زيرا وقراراتنا» بانتظار قرارك + طلب توليد لكل كرييتف مركّز (مقفول على اعتمادك — مفيش تنفيذ قبله). واللوب شغال وراك أصلاً: كل تيك بيحلل اللي لسه ما اتحللش، ولو ظهرت تحليلات جديدة ومفيش خطة بانتظار قرارك، بيبني خطة جديدة لوحده.</p>
+        <div className="flex gap-2 flex-wrap mt-3 items-center">
+          <button onClick={()=>{ setPlanErr(""); planMut.mutate(); }} disabled={planMut.isPending} aria-label="بناء خطة الكرييتف للفترة الجاية من كل المعطيات" className="text-xs font-normal px-4 py-2.5 rounded-full btn-glow" style={{background:"var(--teal)",color:"#FFF6EE",opacity: planMut.isPending ? .6 : 1}}>{planMut.isPending ? "جاري الدمج والتفكير وبناء الخطة…" : "ابنِ خطة الفترة الجاية ✦"}</button>
+          {latestPlan && <span className="text-[11px]" style={{color:"var(--dim)"}}>آخر خطة محفوظة: {new Date(latestPlan.createdAt).toLocaleString("ar-EG")} · حالتها: {latestPlan.status}</span>}
+        </div>
+        {planErr && <p className="text-xs font-normal mt-2" style={{color:"var(--danger)"}}>{planErr}</p>}
+        {planRes && (
+          <div className="mt-3 rounded-xl p-3" style={{background:"var(--surface2)",border:"1px solid var(--border)"}}>
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="pill pill-pending">خطة جديدة اتبنت</span>
+              <b className="text-sm">{planRes.title}</b>
+              <span className="text-[11px]" style={{color:"var(--dim)"}}>ثقة {planRes.confidence}% · {planRes.requestsCreated} طلب توليد اتقيد بانتظار اعتمادك</span>
+            </div>
+            <p className="text-sm mt-2 leading-relaxed"><b>التشخيص المدمج:</b> {planRes.diagnosis}</p>
+            <div className="grid gap-2 mt-2">
+              {planRes.focus.map((f:any,i:number)=>(
+                <div key={i} className="rounded-lg px-3 py-2" style={{background:"var(--surface)"}}>
+                  <p className="text-sm"><b>{i+1}. {f.title}</b> <span className="pill pill-locked">أولوية {f.priority}</span></p>
+                  <p className="text-xs mt-1" style={{color:"var(--dim)"}}>{f.product} · النوع: {f.creativeType} · الشكل: {f.format} · المقاس: {f.size} · الزاوية: {f.angle} · الرافعة: {f.lever}</p>
+                  <p className="text-xs mt-1"><b>الهوك:</b> {f.hook} · <b>CTA:</b> {f.cta}</p>
+                  <p className="text-xs mt-1" style={{color:"var(--dim)"}}><b>ليه ده:</b> {f.why}</p>
+                </div>
+              ))}
+            </div>
+            {planRes.avoid?.length>0 && <p className="text-sm mt-2 leading-relaxed"><b>نتجنب:</b> {planRes.avoid.join(" ؛ ")}</p>}
+            {planRes.sequence && <p className="text-sm mt-1 leading-relaxed"><b>ترتيب التنفيذ:</b> {planRes.sequence}</p>}
+            {planRes.missingData?.length>0 && <p className="text-xs mt-1" style={{color:"var(--warning)"}}><b>بيانات ناقصة بتضعف الخطة:</b> {planRes.missingData.join(" ؛ ")}</p>}
+            <p className="text-sm mt-2 leading-relaxed"><b>الاستنتاج:</b> {planRes.conclusion}</p>
+            <p className="text-xs mt-2" style={{color:"var(--dim)"}}>الخطة كاملة محفوظة في «تفكير زيرا وقراراتنا» — اعتمدها من هناك فتتحول لشغل متابَع، وطلبات التوليد بتاعتها في «استوديو الكرييتيف» مقفولة على اعتمادك.</p>
+          </div>
+        )}
+        {!planRes && latestPlan && (
+          <div className="mt-3 rounded-xl p-3" style={{background:"var(--surface2)",border:"1px solid var(--border)"}}>
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className={latestPlan.status==="بانتظار قرارك" ? "pill pill-pending" : latestPlan.status==="معتمد" ? "pill pill-live" : "pill pill-danger"}>{latestPlan.status}</span>
+              <b className="text-sm">{latestPlan.title}</b>
+              <span className="text-[11px]" style={{color:"var(--dim)"}}>ثقة {latestPlan.confidence}%</span>
+            </div>
+            <p className="text-sm mt-2 leading-relaxed"><b>التشخيص والترتيب:</b> {latestPlan.reasoning}</p>
+            <p className="text-sm mt-1 leading-relaxed"><b>الاستنتاج:</b> {latestPlan.conclusion}</p>
+            <p className="text-sm mt-1 leading-relaxed"><b>القرار المقترح:</b> {latestPlan.decision}</p>
+            <p className="text-xs mt-2" style={{color:"var(--dim)"}}>اعتماد أو رفض الخطة بيتم من «تفكير زيرا وقراراتنا» — الاعتماد بيحوّلها لعنصر متابعة شغل.</p>
+          </div>
+        )}
+      </div>
       {err && <p className="text-xs font-normal mb-2" style={{color:"var(--danger)"}}>{err}</p>}
       {creatives.length===0 && <Empty title="لا كرييتف مسجل بعد" hint="سجّل أول كرييتف من «استوديو الكرييتف والتوليد» وهيظهر هنا جاهزاً للتحليل فوراً." />}
       <div className="grid gap-3">
@@ -1236,6 +1775,7 @@ function CreativeAnalysisTab({ creatives, analyses, inv }: any) {
           return (
             <article key={c.id} className="rounded-2xl p-4" style={card}>
               <div className="flex items-center gap-2 flex-wrap">
+                {c.imageUrl && <img src={c.imageUrl} alt={`صورة الكرييتف ${c.title}`} className="rounded-lg object-cover shrink-0" style={{width:52,height:52,border:"1px solid var(--border)"}} />}
                 <h3 className="font-bold text-sm flex-1 min-w-[180px]">{c.title}</h3>
                 <span className="text-[11px] font-normal px-2 py-1 rounded-full" style={{background:"var(--surface2)",border:"1px solid var(--border)"}} dir="ltr">{c.cisTag}</span>
                 <span className={CLASS_PILL[c.perfClass] ?? "pill pill-locked"}>{c.perfClass}</span>
@@ -1253,13 +1793,39 @@ function CreativeAnalysisTab({ creatives, analyses, inv }: any) {
                   <div className="flex items-center gap-2 flex-wrap">
                     <span className={CLASS_PILL[latest.classification] ?? "pill pill-locked"}>{latest.classification}</span>
                     <span className="text-[11px]" style={{color:"var(--dim)"}}>آخر تحليل: {new Date(latest.createdAt).toLocaleString("ar-EG")} · ثقة {latest.confidence}% · تحليلات سابقة: {Math.max(0, list.length-1)}</span>
+                    <button onClick={()=>remix.mutate(latest.id)} aria-label={`ريمكس من تحليل ${c.title} — توليد بريفات مشتقة مقفولة`} className="text-xs font-normal px-3 py-1.5 rounded-full" style={{background:"var(--terra)",color:"#FFF6EE"}}>{remix.isPending && remix.variables===latest.id ? "جاري إنشاء الريمكس…" : "🔀 ريمكس ← بريفات مقفولة"}</button>
                     <span className="mr-auto"><DelBtn label={`حذف تحليل ${c.title}`} onClick={()=>del.mutate(latest.id)} /></span>
                   </div>
+                  {latest.visualRead && c.imageUrl && (
+                    <div className="mt-3 flex gap-3 flex-wrap">
+                      <img src={c.imageUrl} alt={`الصورة المرفوعة للكرييتف ${c.title}`} className="rounded-xl object-contain shrink-0" style={{width:180,maxHeight:230,background:"var(--surface)",border:"1px solid var(--border)"}} />
+                      <div className="flex-1 min-w-[220px] grid gap-1.5 text-sm leading-relaxed content-start">
+                        <p><b>القراءة البصرية:</b> {latest.visualRead}</p>
+                        <p><b>النص اللي في الصورة:</b> <span style={{color:"var(--dim)"}}>{latest.ocrText}</span></p>
+                      </div>
+                    </div>
+                  )}
+                  {latest.scoresJson && parseScores(latest.scoresJson).length>0 && (
+                    <div className="grid gap-1.5 mt-3">
+                      <p className="text-xs font-normal" style={{color:"var(--dim)"}}>درجات التحليل البصري (حكم على التصميم — مش أرقام أداء):</p>
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                        {parseScores(latest.scoresJson).map(([label, v])=>(
+                          <div key={label} className="rounded-lg px-2.5 py-2" style={{background:"var(--surface)"}}>
+                            <div className="flex items-center justify-between text-xs"><span style={{color:"var(--dim)"}}>{label}</span><b>{v}/100</b></div>
+                            <div className="progress-track mt-1.5" style={{height:6}}><div className="progress-fill" style={{width:`${v}%`, height:"100%", background: v>=70 ? "var(--grad-success)" : v>=45 ? "linear-gradient(90deg,#E0A83E,#E2915A)" : "linear-gradient(90deg,#D92D20,#F97066)"}} /></div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                   <div className="grid gap-1.5 mt-2 text-sm leading-relaxed">
                     <p><b>طبقة الـ Hook:</b> {latest.cisHook}</p>
                     <p><b>طبقة الـ Format:</b> {latest.cisFormat}</p>
                     <p><b>طبقة الـ Angle:</b> {latest.cisAngle}</p>
                     <p><b>طبقة الـ Lever:</b> {latest.cisLever}</p>
+                    {latest.strengths && <div><b>نقاط القوة:</b>{latest.strengths.split("\n").filter(Boolean).map((r:string,i:number)=>(<p key={i} className="mt-1">✓ {r}</p>))}</div>}
+                    {latest.weaknesses && <div><b>نقاط الضعف:</b>{latest.weaknesses.split("\n").filter(Boolean).map((r:string,i:number)=>(<p key={i} className="mt-1">• {r}</p>))}</div>}
+                    {latest.compliance && <p><b>فحص الالتزام (AEO):</b> {latest.compliance}</p>}
                     <p><b>ليه نجح/فشل:</b> {latest.why}</p>
                     <p><b>الأدلة:</b> <span style={{color:"var(--dim)"}}>{latest.evidence}</span></p>
                     <p><b>حجم العينة:</b> <span style={{color:"var(--dim)"}}>{latest.sampleNote}</span></p>
@@ -1275,15 +1841,153 @@ function CreativeAnalysisTab({ creatives, analyses, inv }: any) {
   );
 }
 
+/* ================= Video Analysis (تحليل الفيديو) ================= */
+const VIDEO_TYPES = ["UGC","فاوندر","ريفيو","إعلان منافس"];
+const VIDEO_RATINGS = ["نعم","جزئي","لا"];
+const VIDEO_HOOK_CLASSES = ["مشكلة","حل","فضول","سلطة","إثبات اجتماعي","عرض","مقارنة"];
+const VIDEO_SCORE_PARTS: [string, string, number][] = [["وضوح أول إطار","clarity",25],["ظهور المنتج/البراند بدري","earlyBrand",20],["قوة تصنيف الهوك","hookStrength",20],["بنية الاحتفاظ","retention",20],["الالتزام بالقواعد والممنوعات","compliance",15]];
+function VideoAnalysisTab({ analyses, products, inv }: any) {
+  const emptyForm = { title:"", videoRef:"", product:"", duration:"", contentType:"UGC", firstFrameDesc:"", clueRating:"", productEarlyRating:"", hookTextRating:"", transcript:"", hookClass:"", proofMoments:"", patternInterrupts:"", ctaTiming:"", retinolWarning:"لا ينطبق", cisHook:"", cisFormat:"", cisAngle:"", cisLever:"", whyWonLost:"", notes:"" };
+  const [f, setF] = useState<any>(emptyForm);
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [err, setErr] = useState("");
+  const [warn, setWarn] = useState<string[]>([]);
+  const create = useMutation({ mutationFn: async()=> await api.createVideoAnalysis(f), onSuccess: (d:any)=>{ setWarn(d?.warnings ?? []); setF(emptyForm); setErr(""); inv(); }, onError: (e:any)=> setErr(e?.message ?? "تعذر حفظ التحليل") });
+  const update = useMutation({ mutationFn: async()=> await api.updateVideoAnalysis({ id: editingId!, ...f }), onSuccess: ()=>{ setEditingId(null); setF(emptyForm); setErr(""); setWarn([]); inv(); }, onError: (e:any)=> setErr(e?.message ?? "تعذر تحديث التحليل") });
+  const del = useMutation({ mutationFn: async(id:number)=> await api.deleteVideoAnalysis({ id }), onSuccess: inv });
+  const parseBd = (s:string)=> { try { return JSON.parse(s || "{}"); } catch { return {}; } };
+  const inpS = { ...inpStyle } as const;
+  const ratingSel = (label: string, key: string) => (
+    <div><label className="text-xs font-normal block mb-1">{label}</label><select aria-label={label} value={f[key]} onChange={e=>setF({...f, [key]: e.target.value})} className="w-full rounded-xl px-3 py-2 text-sm border" style={inpS}><option value="">— لسه ما اتقيّمش —</option>{VIDEO_RATINGS.map(r=><option key={r} value={r}>{r}</option>)}</select></div>
+  );
+  return (
+    <section>
+      <p className="text-sm mb-3 leading-relaxed" style={{color:"var(--dim)"}}>تحليل فيديوهاتنا (وإعلانات فيديو المنافسين كمرجع) بنفس عمق تحليل الصور: هوك أول 3 ثوانٍ، النص المنطوق وتصنيفه، بنية الاحتفاظ، وفحص الممنوعات وتحذير الريتينول — ودرجة هوك 0–100 محسوبة على السيرفر (أقل من 60 = تحذير). أي هوك محلل بيظهر تلقائياً في «مكتبة الزوايا والهوكات» كمصدر «فيديو» قابل للتحويل لبريف. القائمة بتبدأ فاضية — التحليلات بيدخلها المالك/الوكيل من هنا.</p>
+      <div className="rounded-2xl p-4 mb-4" style={card}>
+        <h3 className="font-bold text-sm">{editingId ? `✏️ تعديل تحليل فيديو #${editingId}` : "🎬 تحليل فيديو جديد"}</h3>
+        <form onSubmit={(e)=>{ e.preventDefault(); if (!f.title.trim()) { setErr("اكتب عنوان الفيديو أولاً"); return; } setErr(""); if (editingId) update.mutate(); else create.mutate(); }} className="grid gap-3 mt-3">
+          <div className="grid md:grid-cols-3 gap-2">
+            <div className="md:col-span-2"><label className="text-xs font-normal block mb-1">عنوان الفيديو *</label><input aria-label="عنوان الفيديو" {...FIELDS.createVideoAnalysis.title} value={f.title} onChange={e=>setF({...f, title:e.target.value})} placeholder="مثال: UGC-KP-01 «اختبار الدراع» — نسخة الكرييتور" className="w-full rounded-xl px-3 py-2 text-sm border" style={inpS} /></div>
+            <div><label className="text-xs font-normal block mb-1">نوع المحتوى</label><select aria-label="نوع محتوى الفيديو" value={f.contentType} onChange={e=>setF({...f, contentType:e.target.value})} className="w-full rounded-xl px-3 py-2 text-sm border" style={inpS}>{VIDEO_TYPES.map(t=><option key={t} value={t}>{t}</option>)}</select></div>
+            <div className="md:col-span-2"><label className="text-xs font-normal block mb-1">رابط الفيديو أو مرجعه</label><input aria-label="رابط الفيديو أو مرجعه" {...FIELDS.createVideoAnalysis.videoRef} value={f.videoRef} onChange={e=>setF({...f, videoRef:e.target.value})} placeholder="لينك (Drive/تيك توك/انستجرام) أو مرجع ملف — مثال: ملف WhatsApp من الكرييتور 12 نوفمبر" className="w-full rounded-xl px-3 py-2 text-sm border" style={inpS} /></div>
+            <div><label className="text-xs font-normal block mb-1">المدة</label><input aria-label="مدة الفيديو" {...FIELDS.createVideoAnalysis.duration} value={f.duration} onChange={e=>setF({...f, duration:e.target.value})} placeholder="مثال: 0:38" className="w-full rounded-xl px-3 py-2 text-sm border" style={inpS} /></div>
+            <div><label className="text-xs font-normal block mb-1">المنتج المرتبط</label><input aria-label="المنتج المرتبط بالفيديو" {...FIELDS.createVideoAnalysis.product} value={f.product} onChange={e=>setF({...f, product:e.target.value})} placeholder="المنتج/الروتين" list="video-products" className="w-full rounded-xl px-3 py-2 text-sm border" style={inpS} /><datalist id="video-products">{products.map((p:any)=>(<option key={p.id} value={p.name} />))}<option value="روتين جلد الوزة" /><option value="روتين السيلوليت" /></datalist></div>
+          </div>
+          <div className="rounded-xl p-3" style={{background:"var(--surface2)",border:"1px solid var(--border)"}}>
+            <p className="font-bold text-sm">⏱️ هوك أول 3 ثوانٍ</p>
+            <textarea aria-label="وصف الإطار الأول" {...FIELDS.createVideoAnalysis.firstFrameDesc} value={f.firstFrameDesc} onChange={e=>setF({...f, firstFrameDesc:e.target.value})} rows={2} placeholder="وصف الإطار الأول: إيه اللي باين في أول لقطة بالظبط؟ (وجه/يد/ملمس جلد/منتج/نص…)" className="w-full rounded-xl px-3 py-2 text-sm border mt-2" style={inpS} />
+            <div className="grid md:grid-cols-3 gap-2 mt-2">
+              {ratingSel("مشكلة/Clue بصرية واضحة من أول إطار؟", "clueRating")}
+              {ratingSel("المنتج أو اسم البراند ظاهر بدري؟", "productEarlyRating")}
+              {ratingSel("فيه نص هوك مقروء على الشاشة؟", "hookTextRating")}
+            </div>
+          </div>
+          <div className="rounded-xl p-3" style={{background:"var(--surface2)",border:"1px solid var(--border)"}}>
+            <p className="font-bold text-sm">🗣️ النص المنطوق / المكتوب</p>
+            <textarea aria-label="النص المنطوق أو المكتوب في الفيديو" {...FIELDS.createVideoAnalysis.transcript} value={f.transcript} onChange={e=>setF({...f, transcript:e.target.value})} rows={3} placeholder="الصق النص المنطوق/المكتوب في الفيديو هنا (أو المستخرج منه) — بيتصنف وبيتفحص تلقائياً على الادعاءات الممنوعة" className="w-full rounded-xl px-3 py-2 text-sm border mt-2" style={inpS} />
+            <div className="flex gap-2 flex-wrap items-center mt-2">
+              <label className="text-xs font-normal" htmlFor="va-hookclass">تصنيف الهوك</label>
+              <select id="va-hookclass" aria-label="تصنيف هوك الفيديو" value={f.hookClass} onChange={e=>setF({...f, hookClass:e.target.value})} className="rounded-xl px-3 py-2 text-sm border" style={inpS}><option value="">— غير مصنف —</option>{VIDEO_HOOK_CLASSES.map(h=><option key={h} value={h}>{h}</option>)}</select>
+              <span className="text-[11px]" style={{color:"var(--dim)"}}>قوة التصنيف بتأثر في الدرجة: مشكلة وفضول أقوى، العرض أضعف كبداية فيديو.</span>
+            </div>
+          </div>
+          <div className="rounded-xl p-3" style={{background:"var(--surface2)",border:"1px solid var(--border)"}}>
+            <p className="font-bold text-sm">🧲 بنية الاحتفاظ والالتزام</p>
+            <div className="grid md:grid-cols-3 gap-2 mt-2">
+              <div><label className="text-xs font-normal block mb-1">لحظات الإثبات (Proof)</label><textarea aria-label="لحظات الإثبات في الفيديو" {...FIELDS.createVideoAnalysis.proofMoments} value={f.proofMoments} onChange={e=>setF({...f, proofMoments:e.target.value})} rows={2} placeholder="مثال: 0:12 ملمس الدراع قبل/بعد · 0:20 قراءة نسبة اليوريا" className="w-full rounded-xl px-3 py-2 text-sm border" style={inpS} /></div>
+              <div><label className="text-xs font-normal block mb-1">مقاطعات النمط (Pattern Interrupts)</label><textarea aria-label="مقاطعات النمط في الفيديو" {...FIELDS.createVideoAnalysis.patternInterrupts} value={f.patternInterrupts} onChange={e=>setF({...f, patternInterrupts:e.target.value})} rows={2} placeholder="مثال: زوم مفاجئ 0:08 · سؤال للكاميرا 0:18 · تغيير زاوية 0:27" className="w-full rounded-xl px-3 py-2 text-sm border" style={inpS} /></div>
+              <div><label className="text-xs font-normal block mb-1">توقيت الـ CTA</label><input aria-label="توقيت دعوة الإجراء في الفيديو" {...FIELDS.createVideoAnalysis.ctaTiming} value={f.ctaTiming} onChange={e=>setF({...f, ctaTiming:e.target.value})} placeholder="مثال: CTA منطوق 0:31 + زر من 0:05" className="w-full rounded-xl px-3 py-2 text-sm border" style={inpS} /></div>
+            </div>
+            <div className="flex gap-2 flex-wrap items-center mt-2">
+              <label className="text-xs font-normal" htmlFor="va-retinol">تحذير الريتينول (إلزامي لفيديوهات السيلوليت)</label>
+              <select id="va-retinol" aria-label="تواجد تحذير الريتينول" value={f.retinolWarning} onChange={e=>setF({...f, retinolWarning:e.target.value})} className="rounded-xl px-3 py-2 text-sm border" style={inpS}>{["موجود","غائب","لا ينطبق"].map(r=><option key={r} value={r}>{r}</option>)}</select>
+              <span className="text-[11px]" style={{color:"var(--dim)"}}>غيابه في فيديو سيلوليت بيخصم من بند الالتزام وبيطلع تنبيه.</span>
+            </div>
+          </div>
+          <details>
+            <summary className="text-xs font-normal cursor-pointer" style={{color:"var(--dim)"}}>طبقات CIS و«ليه كسب/خسر» وملاحظات (اختياري — بتتكتب من التحليل اليدوي/الوكيل)</summary>
+            <div className="grid md:grid-cols-2 gap-2 mt-2">
+              <input aria-label="طبقة CIS للهوك" {...FIELDS.createVideoAnalysis.cisHook} value={f.cisHook} onChange={e=>setF({...f, cisHook:e.target.value})} placeholder="CIS · Hook: حكم الطبقة" className="rounded-xl px-3 py-2 text-sm border" style={inpS} />
+              <input aria-label="طبقة CIS للفورمات" {...FIELDS.createVideoAnalysis.cisFormat} value={f.cisFormat} onChange={e=>setF({...f, cisFormat:e.target.value})} placeholder="CIS · Format: حكم الطبقة" className="rounded-xl px-3 py-2 text-sm border" style={inpS} />
+              <input aria-label="طبقة CIS للزاوية" {...FIELDS.createVideoAnalysis.cisAngle} value={f.cisAngle} onChange={e=>setF({...f, cisAngle:e.target.value})} placeholder="CIS · Angle: حكم الطبقة" className="rounded-xl px-3 py-2 text-sm border" style={inpS} />
+              <input aria-label="طبقة CIS للرافعة" {...FIELDS.createVideoAnalysis.cisLever} value={f.cisLever} onChange={e=>setF({...f, cisLever:e.target.value})} placeholder="CIS · Lever: حكم الطبقة" className="rounded-xl px-3 py-2 text-sm border" style={inpS} />
+            </div>
+            <textarea aria-label="ليه الفيديو كسب أو خسر" {...FIELDS.createVideoAnalysis.whyWonLost} value={f.whyWonLost} onChange={e=>setF({...f, whyWonLost:e.target.value})} rows={2} placeholder="ليه كسب/خسر (أو ليه لسه بدري) — مبني على اللي اتسجل بس" className="w-full rounded-xl px-3 py-2 text-sm border mt-2" style={inpS} />
+            <textarea aria-label="ملاحظات تحليل الفيديو" {...FIELDS.createVideoAnalysis.notes} value={f.notes} onChange={e=>setF({...f, notes:e.target.value})} rows={2} placeholder="ملاحظات إضافية" className="w-full rounded-xl px-3 py-2 text-sm border mt-2" style={inpS} />
+          </details>
+          {err && <p className="text-xs" style={{color:"var(--danger)"}}>{err}</p>}
+          {warn.length>0 && <div className="rounded-xl px-3 py-2" style={{background:"var(--warning-soft)"}}>{warn.map((w:string,i:number)=>(<p key={i} className="text-xs font-normal" style={{color:"var(--warning)"}}>⚠ {w}</p>))}</div>}
+          <div className="flex gap-2 flex-wrap">
+            <button type="submit" aria-label={editingId ? "حفظ تعديلات تحليل الفيديو" : "حفظ تحليل الفيديو وحساب درجته"} className="px-4 py-2 rounded-xl font-normal text-sm btn-glow" style={{background:"var(--teal)",color:"#FFF6EE"}}>{(create.isPending || update.isPending) ? "جاري الحفظ…" : editingId ? "احفظ التعديلات (الدرجة بتتحدث)" : "احفظ التحليل واحسب الدرجة"}</button>
+            {editingId && <button type="button" onClick={()=>{ setEditingId(null); setF(emptyForm); setWarn([]); }} aria-label="إلغاء تعديل تحليل الفيديو" className="px-4 py-2 rounded-xl font-normal text-sm" style={{border:"1px solid var(--border)"}}>إلغاء التعديل</button>}
+          </div>
+        </form>
+      </div>
+      {analyses.length===0 && <Empty title="لا تحليلات فيديو بعد" hint="أول فيديو يتحلل من النموذج فوق هيظهر هنا بدرجته وتفصيلها — والهوك بتاعه هيدخل مكتبة الزوايا كمصدر «فيديو» تلقائياً." />}
+      <div className="grid gap-3">
+        {analyses.map((a:any)=>{
+          const bd = parseBd(a.scoreBreakdownJson);
+          const score = a.hookScore ?? 0;
+          const color = score >= 75 ? "var(--success)" : score >= 60 ? "var(--warning)" : "var(--danger)";
+          const isCell = /سيلوليت/.test(`${a.product} ${a.title}`);
+          return (
+            <article key={a.id} className="rounded-2xl p-4" style={{...card, ...(score < 60 ? { borderColor:"var(--danger)", borderWidth:1.5 } : {})}}>
+              <div className="flex items-center gap-2.5 flex-wrap">
+                <span className="font-cairo font-bold text-2xl shrink-0" style={{color}}>{score}<span className="text-xs font-normal" style={{color:"var(--dim)"}}>/100 درجة الهوك</span></span>
+                <div className="progress-track w-28 shrink-0" style={{height:8}}><div className="progress-fill" style={{width:`${score}%`, height:"100%", background: color}} /></div>
+                <h3 className="font-bold text-sm flex-1 min-w-[180px]">{a.title}</h3>
+                <span className="pill pill-pending">{a.contentType}</span>
+                {a.product && <span className="pill pill-locked">{a.product}</span>}
+                {a.duration && <span className="text-[11px]" style={{color:"var(--dim)"}}>المدة: {a.duration}</span>}
+                {score < 60 && <span className="pill pill-danger">⚠ درجة ضعيفة — راجع البنود قبل الإنتاج/النشر</span>}
+              </div>
+              {a.videoRef && <p className="text-xs mt-1.5" style={{color:"var(--dim)"}}>المرجع: {/^https?:\/\//.test(a.videoRef) ? <a href={a.videoRef} target="_blank" rel="noreferrer" className="underline">{a.videoRef}</a> : a.videoRef}</p>}
+              <div className="grid md:grid-cols-5 gap-2 mt-3">
+                {VIDEO_SCORE_PARTS.map(([label, key, max])=>{ const v = typeof bd[key] === "number" ? bd[key] : 0; return (
+                  <div key={key} className="rounded-lg px-2.5 py-2" style={{background:"var(--surface2)"}}>
+                    <div className="flex items-center justify-between text-xs"><span style={{color:"var(--dim)"}}>{label}</span><b>{v}/{max}</b></div>
+                    <div className="progress-track mt-1.5" style={{height:5}}><div className="progress-fill" style={{width:`${max ? v/max*100 : 0}%`, height:"100%", background:"var(--grad-accent)"}} /></div>
+                  </div> ); })}
+              </div>
+              <div className="grid gap-1.5 mt-3 text-sm leading-relaxed">
+                {a.firstFrameDesc && <p><b>أول إطار:</b> {a.firstFrameDesc}</p>}
+                <p className="text-xs" style={{color:"var(--dim)"}}>أول 3 ثوانٍ — Clue/مشكلة واضحة: <b>{a.clueRating || "غير مقيّم"}</b> · المنتج/البراند بدري: <b>{a.productEarlyRating || "غير مقيّم"}</b> · نص هوك مقروء: <b>{a.hookTextRating || "غير مقيّم"}</b></p>
+                {a.transcript && <p><b>النص المنطوق/المكتوب:</b> <span style={{color:"var(--dim)"}}>{a.transcript}</span></p>}
+                {a.hookClass && <p><b>تصنيف الهوك:</b> {a.hookClass}</p>}
+                {(a.proofMoments || a.patternInterrupts || a.ctaTiming) && <p><b>بنية الاحتفاظ:</b> {a.proofMoments && <>لحظات إثبات: {a.proofMoments} </>}{a.patternInterrupts && <>· مقاطعات نمط: {a.patternInterrupts} </>}{a.ctaTiming && <>· CTA: {a.ctaTiming}</>}</p>}
+                {a.bannedClaimsNote && <p className="rounded-lg px-2.5 py-2 text-xs font-normal" style={a.bannedClaimsNote.startsWith("⚠") ? {background:"var(--danger-soft)",color:"var(--danger)"} : {background:"var(--success-soft)",color:"var(--success)"}}>{a.bannedClaimsNote}</p>}
+                {isCell && a.retinolWarning !== "موجود" && <p className="rounded-lg px-2.5 py-2 text-xs font-normal" style={{background:"var(--danger-soft)",color:"var(--danger)"}}>⚠ تحذير الريتينول غائب في فيديو سيلوليت — إلزامي (الكريم فيه ريتينول: ممنوع أثناء الحمل، وفي الرضاعة بعد استشارة الدكتور).</p>}
+                {a.retinolWarning === "موجود" && <p className="text-xs" style={{color:"var(--success)"}}>✓ تحذير الريتينول موجود.</p>}
+                {(a.cisHook || a.cisFormat || a.cisAngle || a.cisLever) && <div className="grid md:grid-cols-2 gap-1.5">{a.cisHook && <p><b>CIS · Hook:</b> {a.cisHook}</p>}{a.cisFormat && <p><b>CIS · Format:</b> {a.cisFormat}</p>}{a.cisAngle && <p><b>CIS · Angle:</b> {a.cisAngle}</p>}{a.cisLever && <p><b>CIS · Lever:</b> {a.cisLever}</p>}</div>}
+                {a.whyWonLost && <p><b>ليه كسب/خسر:</b> {a.whyWonLost}</p>}
+                {a.notes && <p style={{color:"var(--dim)"}}>{a.notes}</p>}
+              </div>
+              <div className="flex gap-2 items-center mt-3">
+                <button onClick={()=>{ setEditingId(a.id); setF({ title:a.title, videoRef:a.videoRef, product:a.product, duration:a.duration, contentType:a.contentType, firstFrameDesc:a.firstFrameDesc, clueRating:a.clueRating, productEarlyRating:a.productEarlyRating, hookTextRating:a.hookTextRating, transcript:a.transcript, hookClass:a.hookClass, proofMoments:a.proofMoments, patternInterrupts:a.patternInterrupts, ctaTiming:a.ctaTiming, retinolWarning:a.retinolWarning, cisHook:a.cisHook, cisFormat:a.cisFormat, cisAngle:a.cisAngle, cisLever:a.cisLever, whyWonLost:a.whyWonLost, notes:a.notes }); setWarn([]); window.scrollTo({ top: 0, behavior: "smooth" }); }} aria-label={`تعديل تحليل فيديو ${a.title}`} className="text-xs font-normal px-3 py-1.5 rounded-full" style={{background:"var(--teal)",color:"#FFF6EE"}}>تعديل</button>
+                <span className="text-[11px]" style={{color:"var(--dim)"}}>{new Date(a.createdAt).toLocaleString("ar-EG")} · الهوك ده في مكتبة الزوايا بمصدر «فيديو»</span>
+                <span className="mr-auto"><DelBtn label={`حذف تحليل فيديو ${a.title}`} onClick={()=>del.mutate(a.id)} /></span>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
 /* ================= Competitor Ad Analysis loop ================= */
 function CompetitorAdAnalysisTab({ observations, analyses, inv }: any) {
   const [err, setErr] = useState("");
   const analyze = useMutation({ mutationFn: async(id:number)=> await api.analyzeCompetitorAd({ observationId: id }), onSuccess: ()=>{ setErr(""); inv(); }, onError: (e:any)=> setErr(e?.message ?? "تعذر التحليل دلوقتي") });
   const del = useMutation({ mutationFn: async(id:number)=> await api.deleteCompetitorAdAnalysis({ id }), onSuccess: inv });
+  const remix = useMutation({ mutationFn: async(id:number)=> await api.remixFromCompetitorAnalysis({ analysisId: id }), onSuccess: inv });
+  const [vDraft, setVDraft] = useState<Record<number, any>>({});
+  const updVideo = useMutation({ mutationFn: async(v:any)=> await api.updateCompetitorAdAnalysisVideo(v), onSuccess: inv });
   const byObs = (oid:number)=> analyses.filter((a:any)=>a.observationId===oid);
+  const inpS = { ...inpStyle } as const;
   return (
     <section>
-      <p className="text-sm mb-3 leading-relaxed" style={{color:"var(--dim)"}}>كل إعلان منافس مسجل كملاحظة سوق (من Meta Ads Library أو TikTok Ads Library أو موقع المنافس) بيتحلل هنا: الزاوية، الهوك، الفورمات، العرض، مدة التشغيل، ليه شغال، ضعفه فين، والدروس لزيرا — من التسجيل فقط، من غير أي أرقام مخترعة. إعلان جديد يتسجل = تحليل جديد، وبيغذي «تفكير زيرا وقراراتنا».</p>
+      <p className="text-sm mb-3 leading-relaxed" style={{color:"var(--dim)"}}>كل إعلان منافس مسجل كملاحظة سوق (من Meta Ads Library أو TikTok Ads Library أو موقع المنافس) بيتحلل هنا: الزاوية، الهوك، الفورمات، العرض، مدة التشغيل، ليه شغال، ضعفه فين، والدروس لزيرا — من التسجيل فقط، من غير أي أرقام مخترعة. ولإعلانات الفيديو فيه حقول فيديو مخصوصة (نوع الهوك، أول 3 ثوانٍ، نص الهوك/المنطوق، مدة الفيديو) عشان الإعلانات الطويلة العمر زي نمط Hepta تتفكك بنفس العمق — وأي هوك فيديو بيتسجل هنا بيظهر في مكتبة الزوايا كمصدر «فيديو». إعلان جديد يتسجل = تحليل جديد، وبيغذي «تفكير زيرا وقراراتنا».</p>
       {err && <p className="text-xs font-normal mb-2" style={{color:"var(--danger)"}}>{err}</p>}
       {observations.length===0 && <Empty title="لا إعلانات منافسين مسجلة بعد" hint="سجّل إعلان منافس كملاحظة من «المنافسون والعملاء» (المصدر: Meta/TikTok Ads Library) وهيظهر هنا جاهزاً للتحليل." />}
       <div className="grid gap-3">
@@ -1304,6 +2008,7 @@ function CompetitorAdAnalysisTab({ observations, analyses, inv }: any) {
                   <div className="flex items-center gap-2 flex-wrap">
                     <span className="pill pill-pending">{latest.competitor || "منافس"}</span>
                     <span className="text-[11px]" style={{color:"var(--dim)"}}>آخر تحليل: {new Date(latest.createdAt).toLocaleString("ar-EG")} · تحليلات سابقة: {Math.max(0, list.length-1)}</span>
+                    <button onClick={()=>remix.mutate(latest.id)} aria-label={`ريمكس من تحليل إعلان ${o.title} — توليد بريفات مشتقة مقفولة`} className="text-xs font-normal px-3 py-1.5 rounded-full" style={{background:"var(--terra)",color:"#FFF6EE"}}>{remix.isPending && remix.variables===latest.id ? "جاري إنشاء الريمكس…" : "🔀 ريمكس ← بريفات مقفولة"}</button>
                     <span className="mr-auto"><DelBtn label={`حذف تحليل إعلان ${o.title}`} onClick={()=>del.mutate(latest.id)} /></span>
                   </div>
                   <div className="grid gap-1.5 mt-2 text-sm leading-relaxed">
@@ -1315,6 +2020,30 @@ function CompetitorAdAnalysisTab({ observations, analyses, inv }: any) {
                     <p><b>ليه شغال:</b> {latest.whyWorking}</p>
                     <p><b>نقطة ضعفه:</b> {latest.weakness}</p>
                     {latest.lessons && <div><b>دروس لزيرا:</b>{latest.lessons.split("\n").filter(Boolean).map((r:string,i:number)=>(<p key={i} className="mt-1">• {r}</p>))}</div>}
+                  </div>
+                  <div className="mt-3 rounded-xl p-3" style={{background:"var(--surface)",border:"1px dashed var(--border)"}}>
+                    <p className="font-bold text-sm">🎬 حقول الفيديو — تفكيك أول 3 ثوانٍ</p>
+                    {(latest.videoHookType || latest.videoFirst3Sec || latest.videoHookText || latest.videoDuration) ? (
+                      <div className="grid gap-1 mt-2 text-sm leading-relaxed">
+                        {latest.videoHookType && <p><b>نوع الهوك:</b> {latest.videoHookType}</p>}
+                        {latest.videoFirst3Sec && <p><b>أول 3 ثوانٍ:</b> {latest.videoFirst3Sec}</p>}
+                        {latest.videoHookText && <p><b>نص الهوك/المنطوق:</b> <span style={{color:"var(--dim)"}}>{latest.videoHookText}</span></p>}
+                        {latest.videoDuration && <p><b>مدة الفيديو:</b> {latest.videoDuration}</p>}
+                      </div>
+                    ) : <p className="text-xs mt-1.5" style={{color:"var(--dim)"}}>لسه ما اتسجلتش حقول فيديو للتحليل ده — لو الإعلان فيديو، املأها من المشاهدة/النص تحت.</p>}
+                    <details className="mt-2">
+                      <summary className="text-xs font-normal cursor-pointer" style={{color:"var(--dim)"}}>تسجيل / تعديل حقول الفيديو</summary>
+                      {(()=>{ const d = vDraft[latest.id] ?? { videoHookType: latest.videoHookType ?? "", videoFirst3Sec: latest.videoFirst3Sec ?? "", videoHookText: latest.videoHookText ?? "", videoDuration: latest.videoDuration ?? "" }; const setD = (patch:any)=> setVDraft({...vDraft, [latest.id]: {...d, ...patch}}); return (
+                        <div className="grid gap-2 mt-2">
+                          <div className="flex gap-2 flex-wrap">
+                            <select aria-label={`نوع هوك فيديو تحليل ${o.title}`} value={d.videoHookType} onChange={e=>setD({ videoHookType: e.target.value })} className="rounded-xl px-3 py-2 text-sm border" style={inpS}><option value="">نوع الهوك — غير مصنف</option>{VIDEO_HOOK_CLASSES.map(h=><option key={h} value={h}>{h}</option>)}</select>
+                            <input aria-label={`مدة فيديو تحليل ${o.title}`} {...FIELDS.updateCompetitorAdAnalysisVideo.videoDuration} value={d.videoDuration} onChange={e=>setD({ videoDuration: e.target.value })} placeholder="مدة الفيديو — مثال: 1:24" className="rounded-xl px-3 py-2 text-sm border w-44" style={inpS} />
+                          </div>
+                          <textarea aria-label={`وصف أول 3 ثوانٍ في تحليل ${o.title}`} {...FIELDS.updateCompetitorAdAnalysisVideo.videoFirst3Sec} value={d.videoFirst3Sec} onChange={e=>setD({ videoFirst3Sec: e.target.value })} rows={2} placeholder="وصف أول 3 ثوانٍ: الإطار الأول واللي بيحصل فيه" className="w-full rounded-xl px-3 py-2 text-sm border" style={inpS} />
+                          <textarea aria-label={`نص هوك فيديو تحليل ${o.title}`} {...FIELDS.updateCompetitorAdAnalysisVideo.videoHookText} value={d.videoHookText} onChange={e=>setD({ videoHookText: e.target.value })} rows={2} placeholder="نص الهوك/المنطوق حرفياً كما في الفيديو" className="w-full rounded-xl px-3 py-2 text-sm border" style={inpS} />
+                          <div><button onClick={()=>updVideo.mutate({ id: latest.id, ...d })} aria-label={`حفظ حقول فيديو تحليل ${o.title}`} className="text-xs font-normal px-3 py-2 rounded-full" style={{background:"var(--teal)",color:"#FFF6EE"}}>{updVideo.isPending && updVideo.variables?.id===latest.id ? "جاري الحفظ…" : "احفظ حقول الفيديو"}</button></div>
+                        </div> ); })()}
+                    </details>
                   </div>
                 </div>
               )}
@@ -1695,7 +2424,7 @@ function InputsTab({ profile, completeness, netCodRate, payday, products, inv, e
         {err && <p className="text-xs" style={{color:"var(--danger)"}}>{err}</p>}
         <div className="flex gap-2 flex-wrap">
           <button type="submit" aria-label="حفظ المدخلات الأساسية" className="px-5 py-2.5 rounded-full font-normal" style={{background:"var(--accent)",color:"#FFFFFF"}}>{save.isPending?"جاري الحفظ…":"حفظ المدخلات الأساسية"}</button>
-          <button type="button" onClick={()=>setTab("finance")} aria-label="الذهاب لحاسبة COD" className="px-5 py-2.5 rounded-full font-normal" style={{border:"1px solid var(--border)"}}>القيم دي بتغذي حاسبة COD ←</button>
+          <button type="button" onClick={()=>setTab("money")} aria-label="الذهاب لحاسبة COD" className="px-5 py-2.5 rounded-full font-normal" style={{border:"1px solid var(--border)"}}>القيم دي بتغذي حاسبة COD ←</button>
         </div>
         {profile && <p className="text-xs" style={{color:"var(--dim)"}}>آخر حفظ: {new Date(profile.updatedAt).toLocaleString("ar-EG")} — كل حفظ بيخزن نسخة جديدة والتحليلات بتستخدم الأحدث.</p>}
       </form>
@@ -2085,11 +2814,14 @@ function CreativeTab({ creatives, genRequests, inv }: any) {
         {creatives.map((c:any)=>(
           <article key={c.id} className="rounded-2xl p-4" style={card}>
             <div className="flex items-start justify-between gap-3 flex-wrap">
-              <div><h3 className="font-bold">{c.title}</h3><p className="text-xs mt-1" dir="ltr" style={{textAlign:"right",color:"var(--dim)"}}>{c.cisTag}</p><p className="text-xs mt-1" style={{color:"var(--dim)"}}>{c.format} · {c.angle} · {c.perfClass}</p></div>
+              <div className="flex items-start gap-3">
+                {c.imageUrl && <img src={c.imageUrl} alt={`صورة الكرييتف ${c.title}`} className="rounded-lg object-cover shrink-0" style={{width:56,height:56,border:"1px solid var(--border)"}} />}
+                <div><h3 className="font-bold">{c.title}</h3><p className="text-xs mt-1" dir="ltr" style={{textAlign:"right",color:"var(--dim)"}}>{c.cisTag}</p><p className="text-xs mt-1" style={{color:"var(--dim)"}}>{c.format} · {c.angle} · {c.perfClass}</p></div>
+              </div>
               <span className="text-xs font-normal px-3 py-1.5 rounded-full shrink-0" style={{background: c.status==="Ready to Publish" ? "#067647" : "var(--surface2)", color: c.status==="Ready to Publish" ? "#fff" : "var(--text)"}}>{c.status}</span>
             </div>
             <div className="flex gap-2 flex-wrap mt-3 items-center">
-              <select aria-label={`حالة ${c.title}`} value={c.status} onChange={e=>upd.mutate({id:c.id,status:e.target.value})} className="rounded-xl px-2 py-1.5 border text-xs" style={inpStyle}>{["Concept Draft","In Production","Ready for Review","Ready to Publish","Archived"].map(s=>(<option key={s}>{s}</option>))}</select>
+              <select aria-label={`حالة ${c.title}`} value={c.status} onChange={e=>upd.mutate({id:c.id,status:e.target.value})} className="rounded-xl px-2 py-1.5 border text-xs" style={inpStyle}>{["Concept Draft","Uploaded Draft","In Production","Ready for Review","Ready to Publish","Archived"].map(s=>(<option key={s}>{s}</option>))}</select>
               <select aria-label={`أداء ${c.title}`} value={c.perfClass} onChange={e=>upd.mutate({id:c.id,perfClass:e.target.value})} className="rounded-xl px-2 py-1.5 border text-xs" style={inpStyle}>{["Insufficient Evidence","Promising","Validated for this scope","Declining-Fatigued"].map(s=>(<option key={s}>{s}</option>))}</select>
               <DelBtn label={`حذف كرييتيف ${c.title}`} onClick={()=>del.mutate(c.id)} />
             </div>
@@ -3057,6 +3789,299 @@ function OpsTab({ ops, competitors, inv, setTab }: any) {
             ))}
           </div>
         </div>
+      </div>
+    </section>
+  );
+}
+
+/* ================= Agency layer: Creators CRM (الكرييتورز وUGC) ================= */
+const CREATOR_STATUSES = ["مرشحة","تم التواصل","مفاوضة","متعاقدة","صوّرت","سلّمت","معتمدة للإعلان","مراقبة"];
+function CreatorsTab({ creators, inv }: { creators: any[]; inv: ()=>void }) {
+  const [f, setF] = useState({ name:"", handle:"", platform:"Instagram", profileUrl:"", followers:"", segmentFit:"", conceptCode:"", contactRoute:"", expertFlag:0, notes:"" });
+  const [err, setErr] = useState("");
+  const [filter, setFilter] = useState("الكل");
+  const create = useMutation({ mutationFn: async()=> await api.createCreator({ ...f, status:"مرشحة", usageRights:"" }), onSuccess: ()=>{ setF({ name:"", handle:"", platform:"Instagram", profileUrl:"", followers:"", segmentFit:"", conceptCode:"", contactRoute:"", expertFlag:0, notes:"" }); setErr(""); inv(); }, onError:(e:any)=> setErr(e?.message ?? "تعذر الحفظ") });
+  const upd = useMutation({ mutationFn: async(v:any)=> await api.updateCreator(v), onSuccess: inv });
+  const del = useMutation({ mutationFn: async(id:number)=> await api.deleteCreator({id}), onSuccess: inv });
+  const imp = useMutation({ mutationFn: async()=> await api.importCreatorsShortlist({}), onSuccess: inv });
+  const shown = filter==="الكل" ? creators : creators.filter((c:any)=>c.status===filter);
+  const pillFor = (s:string)=> s==="معتمدة للإعلان" ? "pill pill-live" : s==="مراقبة" ? "pill pill-locked" : ["متعاقدة","صوّرت","سلّمت"].includes(s) ? "pill pill-pending" : "pill pill-draft";
+  return (
+    <section className="grid gap-4">
+      <div className="sec-band"><span className="sec-icon"><Svg><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c.6-3 2.8-4.5 5.5-4.5S13.9 16 14.5 19"/><path d="M16 5.5a3.2 3.2 0 0 1 0 5.6M17.5 14.9c1.7.6 2.7 1.9 3 4.1"/></Svg></span><div><h2>سجل الكرييتورز وUGC</h2><p>CRM خفيف: مرشحات القائمة القصيرة، حالة التواصل، وحقوق الاستخدام الإعلاني — محدش بيتم التواصل معاه من غير اعتمادك.</p></div></div>
+      <div className="rounded-2xl p-4" style={card}>
+        <div className="flex items-center justify-between gap-3 flex-wrap">
+          <p className="text-sm font-normal">{creators.length} كرييتور مسجل · {creators.filter((c:any)=>c.status==="مراقبة").length} في المراقبة · {creators.filter((c:any)=>c.expertFlag===1).length} بخلفية خبير (مراجعة)</p>
+          <button onClick={()=>imp.mutate()} disabled={imp.isPending} aria-label="استيراد قائمة الكرييتورز القصيرة" className="px-4 py-2 rounded-full font-normal text-sm" style={{background:"var(--accent)",color:"#FFFFFF"}}>{imp.isPending ? "جاري الاستيراد…" : "استيراد القائمة القصيرة (18 + 6)"}</button>
+        </div>
+        {imp.data && <p className="text-xs mt-2" style={{color:"var(--dim)"}}>نتيجة آخر استيراد: اتضاف {imp.data.inserted} · اتخطى {imp.data.skipped} (موجودين أصلاً — الاستيراد ما بيكتبش فوق أي سجل).</p>}
+        <div className="flex gap-2 flex-wrap mt-3">
+          {["الكل", ...CREATOR_STATUSES].map(s=>(<button key={s} onClick={()=>setFilter(s)} aria-label={`فلترة الكرييتورز: ${s}`} className="text-xs font-normal px-3 py-1.5 rounded-full" style={{background: filter===s ? "var(--teal)" : "var(--surface2)", color: filter===s ? "#FFF6EE" : "var(--text)", border:"1px solid var(--border)"}}>{s}</button>))}
+        </div>
+      </div>
+      <div className="rounded-2xl p-4" style={card}>
+        <h3 className="font-bold">إضافة كرييتور يدوياً</h3>
+        <form className="grid gap-3 mt-3" onSubmit={(e)=>{e.preventDefault(); if(!f.name.trim()){setErr("اسم الكرييتور مطلوب");return;} setErr(""); create.mutate();}}>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            <div><label htmlFor="cr-name" className="text-sm font-normal block mb-1">الاسم *</label><input id="cr-name" {...FIELDS.createCreator.name} value={f.name} onChange={e=>setF({...f,name:e.target.value})} className={inp} style={inpStyle} />{err && <p className="text-xs mt-1" style={{color:"var(--danger)"}}>{err}</p>}</div>
+            <div><label htmlFor="cr-handle" className="text-sm font-normal block mb-1">الهاندل</label><input id="cr-handle" {...FIELDS.createCreator.handle} value={f.handle} onChange={e=>setF({...f,handle:e.target.value})} className={inp} style={inpStyle} placeholder="@handle" /></div>
+            <div><label htmlFor="cr-platform" className="text-sm font-normal block mb-1">المنصة</label><input id="cr-platform" {...FIELDS.createCreator.platform} value={f.platform} onChange={e=>setF({...f,platform:e.target.value})} className={inp} style={inpStyle} /></div>
+            <div><label htmlFor="cr-url" className="text-sm font-normal block mb-1">رابط البروفايل</label><input id="cr-url" {...FIELDS.createCreator.profileUrl} value={f.profileUrl} onChange={e=>setF({...f,profileUrl:e.target.value})} className={inp} style={inpStyle} /></div>
+            <div><label htmlFor="cr-fol" className="text-sm font-normal block mb-1">المتابعون (تقريبي)</label><input id="cr-fol" {...FIELDS.createCreator.followers} value={f.followers} onChange={e=>setF({...f,followers:e.target.value})} className={inp} style={inpStyle} placeholder="~50k" /></div>
+            <div><label htmlFor="cr-seg" className="text-sm font-normal block mb-1">ملاءمة الشريحة</label><input id="cr-seg" {...FIELDS.createCreator.segmentFit} value={f.segmentFit} onChange={e=>setF({...f,segmentFit:e.target.value})} className={inp} style={inpStyle} placeholder="KP / سيلوليت / أم / متحولة من الصيدلية…" /></div>
+            <div><label htmlFor="cr-concept" className="text-sm font-normal block mb-1">كود مفهوم UGC</label><input id="cr-concept" {...FIELDS.createCreator.conceptCode} value={f.conceptCode} onChange={e=>setF({...f,conceptCode:e.target.value})} className={inp} style={inpStyle} placeholder="UGC-KP-01" /></div>
+            <div><label htmlFor="cr-contact" className="text-sm font-normal block mb-1">وسيلة التواصل العلنية</label><input id="cr-contact" {...FIELDS.createCreator.contactRoute} value={f.contactRoute} onChange={e=>setF({...f,contactRoute:e.target.value})} className={inp} style={inpStyle} /></div>
+            <div><label htmlFor="cr-expert" className="text-sm font-normal block mb-1">الخلفية</label><select id="cr-expert" value={f.expertFlag} onChange={e=>setF({...f,expertFlag:Number(e.target.value)})} className={inp} style={inpStyle}><option value={0}>كرييتور/عميلة حقيقية</option><option value={1}>خلفية خبير/صيدلانية — مراجعة</option></select></div>
+          </div>
+          <div><label htmlFor="cr-notes" className="text-sm font-normal block mb-1">ملاحظات</label><input id="cr-notes" {...FIELDS.createCreator.notes} value={f.notes} onChange={e=>setF({...f,notes:e.target.value})} className={inp} style={inpStyle} /></div>
+          <button type="submit" aria-label="إضافة الكرييتور للسجل" className="px-5 py-2.5 rounded-full font-normal justify-self-start" style={{background:"var(--accent)",color:"#FFFFFF"}}>＋ إضافة للسجل</button>
+        </form>
+      </div>
+      <div className="grid gap-2.5">
+        {shown.length===0 && <Empty title="لا كرييتورز في العرض ده" hint="استورد القائمة القصيرة من زر الاستيراد فوق، أو أضف كرييتور يدوياً." />}
+        {shown.map((c:any)=>(
+          <article key={c.id} className="rounded-2xl p-4 lift" style={card}>
+            <div className="flex items-start justify-between gap-2 flex-wrap">
+              <div className="min-w-0">
+                <p className="font-normal">{c.name} {c.handle && <span className="text-sm" style={{color:"var(--dim)"}}>{c.handle}</span>}</p>
+                <p className="text-xs mt-0.5" style={{color:"var(--dim)"}}>{c.platform}{c.followers ? ` · متابعون: ${c.followers}` : ""}{c.conceptCode ? ` · مفهوم: ${c.conceptCode}` : ""}</p>
+              </div>
+              <div className="flex items-center gap-2 flex-wrap">
+                {c.expertFlag===1 && <span className="pill" style={{background:"var(--warning-soft)",color:"var(--warning)"}}>مراجعة: قاعدة UGC فقط</span>}
+                <span className={pillFor(c.status)}>{c.status}</span>
+                <DelBtn label={`حذف كرييتور ${c.name}`} onClick={()=>del.mutate(c.id)} />
+              </div>
+            </div>
+            {c.segmentFit && <p className="text-sm mt-2">ملاءمة الشريحة: {c.segmentFit}</p>}
+            {c.profileUrl && <p className="text-sm mt-1"><a href={c.profileUrl} target="_blank" rel="noreferrer" className="underline" style={{color:"var(--teal-light)"}}>رابط البروفايل ↗</a></p>}
+            {c.contactRoute && <p className="text-sm mt-1">التواصل العلني: {c.contactRoute}</p>}
+            {c.notes && <p className="text-sm mt-1" style={{color:"var(--dim)"}}>{c.notes}</p>}
+            <div className="grid sm:grid-cols-2 gap-3 mt-3">
+              <div><label htmlFor={`cr-status-${c.id}`} className="text-xs font-normal block mb-1">الحالة</label><select id={`cr-status-${c.id}`} aria-label={`حالة كرييتور ${c.name}`} value={c.status} onChange={e=>upd.mutate({id:c.id, status:e.target.value})} className={inp} style={inpStyle}>{CREATOR_STATUSES.map(s=>(<option key={s}>{s}</option>))}</select></div>
+              <div><label htmlFor={`cr-rights-${c.id}`} className="text-xs font-normal block mb-1">حقوق الاستخدام الإعلاني (مدة/قنوات/موافقة مكتوبة؟)</label><input id={`cr-rights-${c.id}`} {...FIELDS.updateCreator.usageRights} defaultValue={c.usageRights} onBlur={e=>{ if(e.target.value!==c.usageRights) upd.mutate({id:c.id, usageRights:e.target.value}); }} className={inp} style={inpStyle} placeholder="مثال: 6 شهور — Meta + TikTok — موافقة مكتوبة: نعم" /></div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/* ================= Agency layer: Community reply drafts (مسودات ردود المجتمع) ================= */
+function CommunityDraftsTab({ drafts, inv }: { drafts: any[]; inv: ()=>void }) {
+  const [f, setF] = useState({ topic:"", draftText:"", source:"صوت العميل", notes:"" });
+  const [err, setErr] = useState("");
+  const create = useMutation({ mutationFn: async()=> await api.createReplyDraft(f), onSuccess: ()=>{ setF({ topic:"", draftText:"", source:"صوت العميل", notes:"" }); setErr(""); inv(); }, onError:(e:any)=> setErr(e?.message ?? "تعذر الحفظ") });
+  const upd = useMutation({ mutationFn: async(v:any)=> await api.updateReplyDraft(v), onSuccess: inv });
+  const del = useMutation({ mutationFn: async(id:number)=> await api.deleteReplyDraft({id}), onSuccess: inv });
+  return (
+    <section className="grid gap-4">
+      <div className="sec-band"><span className="sec-icon"><Svg><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5c-1.5 0-3-.4-4.2-1.1L3 20l1.1-5.3A8.5 8.5 0 1 1 21 11.5Z"/></Svg></span><div><h2>مسودات ردود المجتمع</h2><p>ردود جاهزة على التعليقات والأسئلة الشائعة — المسودات بتيجي من تحليل صوت العميل وبتتخزن هنا لحد اعتمادك.</p></div></div>
+      <div className="rounded-2xl p-4" style={{background:"var(--warning-soft)",border:"1px solid var(--border)"}}>
+        <p className="font-normal text-sm">⛔ قاعدة ثابتة: مفيش رد بيتبعت أبداً من غير اعتماد المالك. «معتمدة» هنا معناها جاهزة للنسخ اليدوي بس — النظام ما بيبعتش رسايل عملاء من نفسه.</p>
+      </div>
+      <div className="rounded-2xl p-4" style={card}>
+        <h3 className="font-bold">مسودة رد جديدة</h3>
+        <form className="grid gap-3 mt-3" onSubmit={(e)=>{e.preventDefault(); if(!f.topic.trim()){setErr("موضوع الرد/السؤال مطلوب");return;} setErr(""); create.mutate();}}>
+          <div className="grid sm:grid-cols-2 gap-3">
+            <div><label htmlFor="rp-topic" className="text-sm font-normal block mb-1">التعليق/السؤال الشائع *</label><input id="rp-topic" {...FIELDS.createReplyDraft.topic} value={f.topic} onChange={e=>setF({...f,topic:e.target.value})} className={inp} style={inpStyle} />{err && <p className="text-xs mt-1" style={{color:"var(--danger)"}}>{err}</p>}</div>
+            <div><label htmlFor="rp-src" className="text-sm font-normal block mb-1">المصدر</label><select id="rp-src" value={f.source} onChange={e=>setF({...f,source:e.target.value})} className={inp} style={inpStyle}>{["صوت العميل","تعليقات إعلانات","أسئلة الصفحة","واتساب مجمّع","يدوي"].map(s=>(<option key={s}>{s}</option>))}</select></div>
+          </div>
+          <div><label htmlFor="rp-text" className="text-sm font-normal block mb-1">نص الرد المقترح</label><textarea id="rp-text" {...FIELDS.createReplyDraft.draftText} value={f.draftText} onChange={e=>setF({...f,draftText:e.target.value})} rows={3} className={inp} style={inpStyle} /></div>
+          <button type="submit" aria-label="حفظ مسودة الرد" className="px-5 py-2.5 rounded-full font-normal justify-self-start" style={{background:"var(--accent)",color:"#FFFFFF"}}>＋ حفظ كمسودة</button>
+        </form>
+      </div>
+      <div className="grid gap-2.5">
+        {drafts.length===0 && <Empty title="لسه مفيش مسودات ردود" hint="البنية جاهزة — أول مسودات هتيجي من تحليلات صوت العميل (اعتراضات وأسئلة متكررة)، أو أضف مسودة يدوياً فوق." />}
+        {drafts.map((d:any)=>(
+          <article key={d.id} className="rounded-2xl p-4 lift" style={card}>
+            <div className="flex items-start justify-between gap-2 flex-wrap">
+              <p className="font-normal flex-1 min-w-[200px]">{d.topic}</p>
+              <div className="flex items-center gap-2">
+                <span className={d.status==="معتمدة" ? "pill pill-live" : "pill pill-draft"}>{d.status}</span>
+                <DelBtn label={`حذف مسودة رد ${d.topic}`} onClick={()=>del.mutate(d.id)} />
+              </div>
+            </div>
+            <p className="text-xs mt-1" style={{color:"var(--dim)"}}>المصدر: {d.source} · {new Date(d.createdAt).toLocaleDateString("ar-EG")}</p>
+            <label htmlFor={`rp-edit-${d.id}`} className="text-xs font-normal block mt-3 mb-1">نص الرد</label>
+            <textarea id={`rp-edit-${d.id}`} {...FIELDS.updateReplyDraft.draftText} defaultValue={d.draftText} onBlur={e=>{ if(e.target.value!==d.draftText) upd.mutate({id:d.id, draftText:e.target.value}); }} rows={3} className={inp} style={inpStyle} />
+            <div className="flex gap-2 mt-3">
+              {d.status!=="معتمدة" && <button onClick={()=>upd.mutate({id:d.id, status:"معتمدة"})} aria-label={`اعتماد مسودة رد ${d.topic}`} className="text-xs font-normal px-4 py-2 rounded-full" style={{background:"var(--accent)",color:"#FFFFFF"}}>اعتماد المسودة</button>}
+              {d.status==="معتمدة" && <button onClick={()=>upd.mutate({id:d.id, status:"مسودة"})} aria-label={`إرجاع مسودة رد ${d.topic} لمسودة`} className="text-xs font-normal px-4 py-2 rounded-full" style={{border:"1px solid var(--border)"}}>إرجاع لمسودة</button>}
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/* ================= Agency layer: Offers Lab (مختبر العروض) ================= */
+function OffersLabTab({ data, inv, egp }: { data: any; inv: ()=>void; egp:(n:number)=>string }) {
+  const offers: any[] = data?.offers ?? [];
+  const threshold: number = data?.threshold ?? 1000;
+  const [hyp, setHyp] = useState("");
+  const [offer, setOffer] = useState("");
+  const [items, setItems] = useState<{name:string, price:number}[]>([{name:"روتين هيرو (سيلوليت أو جلد الوزة)", price:799},{name:"", price:0}]);
+  const [err, setErr] = useState("");
+  const create = useMutation({ mutationFn: async()=> await api.createOfferExperiment({ hypothesis: hyp.trim(), offer, items: items.filter(i=>i.name.trim()), status:"مسودة", result:"" }), onSuccess: ()=>{ setHyp(""); setOffer(""); setItems([{name:"روتين هيرو (سيلوليت أو جلد الوزة)", price:799},{name:"", price:0}]); setErr(""); inv(); }, onError:(e:any)=> setErr(e?.message ?? "تعذر الحفظ") });
+  const upd = useMutation({ mutationFn: async(v:any)=> await api.updateOfferExperiment(v), onSuccess: inv });
+  const del = useMutation({ mutationFn: async(id:number)=> await api.deleteExperiment({id}), onSuccess: inv });
+  const seed = useMutation({ mutationFn: async()=> await api.seedOfferLab({}), onSuccess: inv });
+  const total = items.reduce((s,i)=> s + (Number(i.price)||0), 0);
+  return (
+    <section className="grid gap-4">
+      <div className="sec-band"><span className="sec-icon"><Svg><path d="M9 3h6M10 3v5.5L4.8 18a2.4 2.4 0 0 0 2.1 3.5h10.2a2.4 2.4 0 0 0 2.1-3.5L14 8.5V3"/><path d="M7.5 14h9"/></Svg></span><div><h2>مختبر العروض — سلات مقابل عتبة الشحن المجاني</h2><p>كل تجربة: فرضية وباندل — ومجموع السلة والفرق عن عتبة {egp(threshold)} بيتحسبوا تلقائياً. الشحن 75 ج تحت العتبة ومجاني من {egp(threshold)}.</p></div></div>
+      <div className="rounded-2xl p-4" style={card}>
+        <div className="flex items-center justify-between gap-3 flex-wrap">
+          <p className="text-sm font-normal">{offers.length} تجربة عرض مسجلة في المختبر</p>
+          <button onClick={()=>seed.mutate()} disabled={seed.isPending} aria-label="زرع التجارب الأولية الثلاث" className="px-4 py-2 rounded-full font-normal text-sm" style={{background:"var(--accent)",color:"#FFFFFF"}}>{seed.isPending ? "جاري الزرع…" : "زرع التجارب الأولية (998 / 1,039 / 1,598)"}</button>
+        </div>
+        {seed.data && <p className="text-xs mt-2" style={{color:"var(--dim)"}}>آخر زرع: اتضاف {seed.data.inserted} تجربة (الموجودة بتتخطى — الزرع ما بيكررش ولا بيكتب فوق نتيجة).</p>}
+      </div>
+      <div className="grid gap-2.5">
+        {offers.length===0 && <Empty title="المختبر فاضي" hint="ازرع التجارب الأولية الثلاث من الزر فوق، أو أضف تجربة سلة جديدة من النموذج تحت." />}
+        {offers.map((o:any)=>(
+          <article key={o.id} className="rounded-2xl p-4 lift" style={card}>
+            <div className="flex items-start justify-between gap-2 flex-wrap">
+              <p className="font-normal flex-1 min-w-[220px]">{o.hypothesis}</p>
+              <div className="flex items-center gap-2">
+                <span className={o.status==="مسودة" ? "pill pill-draft" : o.status==="شغالة" ? "pill pill-pending" : "pill pill-live"}>{o.status}</span>
+                <DelBtn label={`حذف تجربة عرض ${o.id}`} onClick={()=>del.mutate(o.id)} />
+              </div>
+            </div>
+            {o.offer && <p className="text-sm mt-1" style={{color:"var(--dim)"}}>{o.offer}</p>}
+            <div className="flex gap-2 flex-wrap mt-3">
+              {o.items.map((it:any, i:number)=>(<span key={i} className="text-xs font-normal px-3 py-1.5 rounded-full" style={{background:"var(--surface2)",border:"1px solid var(--border)"}}>{it.name} — {egp(it.price)}</span>))}
+            </div>
+            <div className="rounded-xl p-3 mt-3" style={{background: o.freeShipping ? "var(--success-soft)" : "var(--warning-soft)"}}>
+              <p className="font-normal text-sm">مجموع السلة: {egp(o.basketTotal)} · {o.freeShipping ? `✅ عدّت العتبة — شحن مجاني (زيادة ${egp(o.basketTotal - threshold)} فوق العتبة)` : `⚠️ تحت العتبة بـ ${egp(o.gap)} — العميلة هتدفع 75 ج شحن`}</p>
+              <div className="progress-track mt-2" style={{height:8}}><div className="progress-fill" style={{width:`${Math.min(100, Math.round(o.basketTotal/threshold*100))}%`, height:"100%", background: o.freeShipping ? "var(--grad-success)" : "var(--grad-accent)"}} /></div>
+            </div>
+            <div className="grid sm:grid-cols-2 gap-3 mt-3">
+              <div><label htmlFor={`of-status-${o.id}`} className="text-xs font-normal block mb-1">حالة التجربة</label><select id={`of-status-${o.id}`} aria-label={`حالة تجربة عرض ${o.id}`} value={o.status} onChange={e=>upd.mutate({id:o.id, status:e.target.value})} className={inp} style={inpStyle}>{["مسودة","شغالة","خلصت","موقوفة"].map(s=>(<option key={s}>{s}</option>))}</select></div>
+              <div><label htmlFor={`of-result-${o.id}`} className="text-xs font-normal block mb-1">النتيجة</label><input id={`of-result-${o.id}`} {...FIELDS.updateOfferExperiment.result} defaultValue={o.result} onBlur={e=>{ if(e.target.value!==o.result) upd.mutate({id:o.id, result:e.target.value}); }} className={inp} style={inpStyle} placeholder="هتتكتب بعد التشغيل الفعلي" /></div>
+            </div>
+          </article>
+        ))}
+      </div>
+      <div className="rounded-2xl p-4" style={card}>
+        <h3 className="font-bold">تجربة سلة جديدة</h3>
+        <form className="grid gap-3 mt-3" onSubmit={(e)=>{e.preventDefault(); if(!hyp.trim()){setErr("الفرضية مطلوبة");return;} if(items.filter(i=>i.name.trim()).length===0){setErr("ضيف عنصر واحد على الأقل في السلة");return;} setErr(""); create.mutate();}}>
+          <div><label htmlFor="of-hyp" className="text-sm font-normal block mb-1">الفرضية *</label><input id="of-hyp" {...FIELDS.createOfferExperiment.hypothesis} value={hyp} onChange={e=>setHyp(e.target.value)} className={inp} style={inpStyle} />{err && <p className="text-xs mt-1" style={{color:"var(--danger)"}}>{err}</p>}</div>
+          <div><label htmlFor="of-offer" className="text-sm font-normal block mb-1">وصف الباندل/العرض</label><input id="of-offer" {...FIELDS.createOfferExperiment.offer} value={offer} onChange={e=>setOffer(e.target.value)} className={inp} style={inpStyle} /></div>
+          <div className="grid gap-2">
+            {items.map((it, i)=>(
+              <div key={i} className="grid grid-cols-[1fr_130px] gap-2">
+                <input aria-label={`عنصر سلة ${i+1} — الاسم`} value={it.name} onChange={e=>setItems(items.map((x,j)=> j===i ? {...x, name:e.target.value} : x))} className={inp} style={inpStyle} placeholder="اسم المنتج" />
+                <input aria-label={`عنصر سلة ${i+1} — السعر بالجنيه`} type="number" min={0} step="any" value={it.price || ""} onChange={e=>setItems(items.map((x,j)=> j===i ? {...x, price:Number(e.target.value)} : x))} className={inp} style={inpStyle} placeholder="السعر ج" />
+              </div>
+            ))}
+            <button type="button" onClick={()=>setItems([...items, {name:"", price:0}])} aria-label="إضافة عنصر سلة آخر" className="text-xs font-normal px-3 py-2 rounded-full justify-self-start" style={{border:"1px solid var(--border)"}}>＋ عنصر آخر</button>
+          </div>
+          <p className="text-sm font-normal">مجموع السلة الحالي: {egp(total)} — {total >= threshold ? "شحن مجاني ✅" : `تحت العتبة بـ ${egp(threshold-total)}`}</p>
+          <button type="submit" aria-label="حفظ تجربة العرض" className="px-5 py-2.5 rounded-full font-normal justify-self-start" style={{background:"var(--accent)",color:"#FFFFFF"}}>حفظ التجربة كمسودة</button>
+        </form>
+      </div>
+    </section>
+  );
+}
+
+/* ================= Agency layer: Department delivery board (لوحة التسليمات) ================= */
+function DeliveriesTab({ deliveries, inv }: { deliveries: any[]; inv: ()=>void }) {
+  const seed = useMutation({ mutationFn: async()=> await api.seedDeliveries({}), onSuccess: inv });
+  const upd = useMutation({ mutationFn: async(v:any)=> await api.updateDelivery(v), onSuccess: inv });
+  const del = useMutation({ mutationFn: async(id:number)=> await api.deleteDelivery({id}), onSuccess: inv });
+  const [f, setF] = useState({ department:"", output:"", cadence:"أسبوعي" });
+  const [err, setErr] = useState("");
+  const create = useMutation({ mutationFn: async()=> await api.createDelivery({ department: f.department.trim(), output: f.output, cadence: f.cadence, lastDelivery:"", nextDelivery:"", status:"في الموعد", notes:"" }), onSuccess: ()=>{ setF({ department:"", output:"", cadence:"أسبوعي" }); setErr(""); inv(); }, onError:(e:any)=> setErr(e?.message ?? "تعذر الحفظ") });
+  const pillFor = (s:string)=> s==="في الموعد" ? "pill pill-live" : s==="متأخر" ? "pill pill-danger" : "pill pill-draft";
+  return (
+    <section className="grid gap-4">
+      <div className="sec-band"><span className="sec-icon"><Svg><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9.5h18M8 2.5V6M16 2.5V6"/><path d="m9 15.5 2 2 4-4.5"/></Svg></span><div><h2>لوحة تسليمات الأقسام التسعة</h2><p>كل قسم في الوكالة: مخرَجه الدوري وإيقاعه وآخر تسليم واللي جاي — الحالة بتتحدّث يدوياً هنا وبتتقاطع مع سجلات النشاط والكرونات.</p></div></div>
+      <div className="rounded-2xl p-4" style={card}>
+        <div className="flex items-center justify-between gap-3 flex-wrap">
+          <p className="text-sm font-normal">{deliveries.length} قسم على اللوحة · {deliveries.filter((d:any)=>d.status==="متأخر").length} متأخر · {deliveries.filter((d:any)=>d.status==="بانتظار مالك").length} بانتظار مالك</p>
+          <button onClick={()=>seed.mutate()} disabled={seed.isPending} aria-label="زرع أقسام الوكالة التسعة" className="px-4 py-2 rounded-full font-normal text-sm" style={{background:"var(--accent)",color:"#FFFFFF"}}>{seed.isPending ? "جاري الزرع…" : "زرع الأقسام التسعة"}</button>
+        </div>
+        {seed.data && <p className="text-xs mt-2" style={{color:"var(--dim)"}}>آخر زرع: اتضاف {seed.data.inserted} قسم (الأقسام الموجودة بتتخطى — الزرع ما بيكتبش فوق تحديثاتك).</p>}
+      </div>
+      <div className="grid gap-2.5">
+        {deliveries.length===0 && <Empty title="لوحة التسليمات فاضية" hint="ازرع الأقسام التسعة من نموذج تشغيل الوكالة من الزر فوق." />}
+        {deliveries.map((d:any)=>(
+          <article key={d.id} className="rounded-2xl p-4 lift" style={card}>
+            <div className="flex items-start justify-between gap-2 flex-wrap">
+              <div className="min-w-0">
+                <p className="font-normal">{d.department} <span className="text-xs font-normal px-2 py-0.5 rounded-full" style={{background:"var(--surface2)",border:"1px solid var(--border)"}}>{d.cadence}</span></p>
+                <p className="text-sm mt-1">{d.output}</p>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className={pillFor(d.status)}>{d.status}</span>
+                <DelBtn label={`حذف قسم ${d.department}`} onClick={()=>del.mutate(d.id)} />
+              </div>
+            </div>
+            {d.notes && <p className="text-sm mt-2" style={{color:"var(--dim)"}}>{d.notes}</p>}
+            <div className="grid sm:grid-cols-3 gap-3 mt-3">
+              <div><label htmlFor={`dl-last-${d.id}`} className="text-xs font-normal block mb-1">آخر تسليم</label><input id={`dl-last-${d.id}`} type="date" defaultValue={d.lastDelivery} onBlur={e=>{ if(e.target.value!==d.lastDelivery) upd.mutate({id:d.id, lastDelivery:e.target.value}); }} className={inp} style={inpStyle} /></div>
+              <div><label htmlFor={`dl-next-${d.id}`} className="text-xs font-normal block mb-1">التسليم الجاي</label><input id={`dl-next-${d.id}`} type="date" defaultValue={d.nextDelivery} onBlur={e=>{ if(e.target.value!==d.nextDelivery) upd.mutate({id:d.id, nextDelivery:e.target.value}); }} className={inp} style={inpStyle} /></div>
+              <div><label htmlFor={`dl-status-${d.id}`} className="text-xs font-normal block mb-1">الحالة</label><select id={`dl-status-${d.id}`} aria-label={`حالة تسليم ${d.department}`} value={d.status} onChange={e=>upd.mutate({id:d.id, status:e.target.value})} className={inp} style={inpStyle}>{["في الموعد","متأخر","بانتظار مالك"].map(s=>(<option key={s}>{s}</option>))}</select></div>
+            </div>
+          </article>
+        ))}
+      </div>
+      <div className="rounded-2xl p-4" style={card}>
+        <h3 className="font-bold">إضافة قسم/تسليمة</h3>
+        <form className="grid gap-3 mt-3" onSubmit={(e)=>{e.preventDefault(); if(!f.department.trim()){setErr("اسم القسم مطلوب");return;} setErr(""); create.mutate();}}>
+          <div className="grid sm:grid-cols-3 gap-3">
+            <div><label htmlFor="dl-dept" className="text-sm font-normal block mb-1">القسم *</label><input id="dl-dept" {...FIELDS.createDelivery.department} value={f.department} onChange={e=>setF({...f,department:e.target.value})} className={inp} style={inpStyle} />{err && <p className="text-xs mt-1" style={{color:"var(--danger)"}}>{err}</p>}</div>
+            <div><label htmlFor="dl-out" className="text-sm font-normal block mb-1">المخرَج الدوري</label><input id="dl-out" {...FIELDS.createDelivery.output} value={f.output} onChange={e=>setF({...f,output:e.target.value})} className={inp} style={inpStyle} /></div>
+            <div><label htmlFor="dl-cad" className="text-sm font-normal block mb-1">الإيقاع</label><select id="dl-cad" value={f.cadence} onChange={e=>setF({...f,cadence:e.target.value})} className={inp} style={inpStyle}>{["يومي","أسبوعي","شهري"].map(s=>(<option key={s}>{s}</option>))}</select></div>
+          </div>
+          <button type="submit" aria-label="إضافة القسم للوحة التسليمات" className="px-5 py-2.5 rounded-full font-normal justify-self-start" style={{background:"var(--accent)",color:"#FFFFFF"}}>＋ إضافة</button>
+        </form>
+      </div>
+    </section>
+  );
+}
+
+/* ================= Agency layer: Retention flows (فلوهات الاحتفاظ) ================= */
+function RetentionFlowsTab({ flows, inv }: { flows: any[]; inv: ()=>void }) {
+  const seed = useMutation({ mutationFn: async()=> await api.seedRetentionFlows({}), onSuccess: inv });
+  const upd = useMutation({ mutationFn: async(v:any)=> await api.updateRetentionFlow(v), onSuccess: inv });
+  const del = useMutation({ mutationFn: async(id:number)=> await api.deleteRetentionFlow({id}), onSuccess: inv });
+  const pillFor = (s:string)=> s==="معتمد" ? "pill pill-live" : s==="مسودة" ? "pill pill-draft" : "pill pill-locked";
+  return (
+    <section className="grid gap-4">
+      <div className="sec-band"><span className="sec-icon"><Svg><path d="M21 12a9 9 0 1 1-2.6-6.3"/><path d="M21 3v6h-6"/></Svg></span><div><h2>فلوهات الاحتفاظ — واتساب لايف سايكل</h2><p>الترحيب، ما بعد الشراء، والتجديد على دورة 30–45 يوم. كرون الاحتفاظ الأسبوعي بيملأ المسودات هنا — والإرسال الفعلي باعتمادك بس.</p></div></div>
+      <div className="rounded-2xl p-4" style={card}>
+        <div className="flex items-center justify-between gap-3 flex-wrap">
+          <p className="text-sm font-normal">{flows.length} فلو مسجل · {flows.filter((x:any)=>x.status==="معتمد").length} معتمد · {flows.filter((x:any)=>x.status==="غير مكتوب").length} لسه مش مكتوب</p>
+          <button onClick={()=>seed.mutate()} disabled={seed.isPending} aria-label="زرع الفلوهات الأساسية الثلاثة" className="px-4 py-2 rounded-full font-normal text-sm" style={{background:"var(--accent)",color:"#FFFFFF"}}>{seed.isPending ? "جاري الزرع…" : "زرع الفلوهات الأساسية (ترحيب / يوم 3 / يوم 35)"}</button>
+        </div>
+        {seed.data && <p className="text-xs mt-2" style={{color:"var(--dim)"}}>آخر زرع: اتضاف {seed.data.inserted} فلو (الموجود بيتخطى — الزرع ما بيمسحش مسودة مكتوبة).</p>}
+      </div>
+      <div className="grid gap-2.5">
+        {flows.length===0 && <Empty title="لسه مفيش فلوهات" hint="ازرع الفلوهات الأساسية الثلاثة من الزر فوق — هيبدأوا بحالة «غير مكتوب» وكرون الاحتفاظ هيملأ مسوداتهم." />}
+        {flows.map((fl:any)=>(
+          <article key={fl.id} className="rounded-2xl p-4 lift" style={card}>
+            <div className="flex items-start justify-between gap-2 flex-wrap">
+              <p className="font-normal flex-1 min-w-[200px]">{fl.name}</p>
+              <div className="flex items-center gap-2">
+                <span className={pillFor(fl.status)}>{fl.status}</span>
+                <DelBtn label={`حذف فلو ${fl.name}`} onClick={()=>del.mutate(fl.id)} />
+              </div>
+            </div>
+            {fl.triggerNote && <p className="text-sm mt-1" style={{color:"var(--dim)"}}>التشغيل: {fl.triggerNote}</p>}
+            {fl.notes && <p className="text-sm mt-1" style={{color:"var(--dim)"}}>{fl.notes}</p>}
+            <label htmlFor={`fl-text-${fl.id}`} className="text-xs font-normal block mt-3 mb-1">نص المسودة (بيملاه كرون الاحتفاظ أو إنت يدوياً)</label>
+            <textarea id={`fl-text-${fl.id}`} {...FIELDS.updateRetentionFlow.draftText} defaultValue={fl.draftText} onBlur={e=>{ if(e.target.value!==fl.draftText) upd.mutate({id:fl.id, draftText:e.target.value, status: fl.status==="غير مكتوب" && e.target.value.trim() ? "مسودة" : undefined}); }} rows={4} className={inp} style={inpStyle} placeholder="لسه مش مكتوب — كرون الاحتفاظ الأسبوعي هيدرافت المسودة هنا" />
+            <div className="flex items-center gap-2 mt-3 flex-wrap">
+              <label htmlFor={`fl-status-${fl.id}`} className="text-xs font-normal">الحالة:</label>
+              <select id={`fl-status-${fl.id}`} aria-label={`حالة فلو ${fl.name}`} value={fl.status} onChange={e=>upd.mutate({id:fl.id, status:e.target.value})} className="rounded-xl px-2 py-1.5 border text-xs" style={inpStyle}>{["غير مكتوب","مسودة","معتمد"].map(s=>(<option key={s}>{s}</option>))}</select>
+              <span className="text-xs" style={{color:"var(--dim)"}}>الاعتماد هنا بيجهّز الفلو للإرسال اليدوي — مفيش إرسال تلقائي.</span>
+            </div>
+          </article>
+        ))}
       </div>
     </section>
   );

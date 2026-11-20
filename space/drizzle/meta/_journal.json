@@ -78,6 +78,34 @@
       "when": 1795038741418,
       "tag": "0011_thinking_plans_and_analyses",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "6",
+      "when": 1795063874258,
+      "tag": "0012_creative_image_uploads",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "6",
+      "when": 1795096643036,
+      "tag": "0013_angles_library",
+      "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "6",
+      "when": 1795096990933,
+      "tag": "0014_agency_layer_creators_deliveries_replies_retention",
+      "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "6",
+      "when": 1795097743996,
+      "tag": "0015_video_analyses_and_competitor_video_fields",
+      "breakpoints": true
     }
   ]
 }

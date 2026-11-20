@@ -100,6 +100,7 @@ export const creatives = sqliteTable("creatives", {
   ordersDelivered: integer("orders_delivered").notNull().default(0),
   whyNote: text("why_note").notNull().default(""),
   notes: text("notes").notNull().default(""),
+  imageBlobKey: text("image_blob_key").notNull().default(""),
   createdAt: integer("created_at", { mode: "timestamp_ms" }).notNull().$defaultFn(() => new Date()),
   updatedAt: integer("updated_at", { mode: "timestamp_ms" }).notNull().$defaultFn(() => new Date()),
 });
@@ -189,6 +190,7 @@ export const experiments = sqliteTable("experiments", {
   sampleSize: text("sample_size").notNull().default(""),
   attribution: text("attribution").notNull().default(""),
   profitability: text("profitability").notNull().default(""),
+  basketJson: text("basket_json").notNull().default(""),
   verdict: text("verdict").notNull().default("Running"),
   createdAt: integer("created_at", { mode: "timestamp_ms" }).notNull().$defaultFn(() => new Date()),
   updatedAt: integer("updated_at", { mode: "timestamp_ms" }).notNull().$defaultFn(() => new Date()),
@@ -476,6 +478,12 @@ export const creativeAnalyses = sqliteTable("creative_analyses", {
   sampleNote: text("sample_note").notNull().default(""),
   confidence: integer("confidence").notNull().default(50),
   remix: text("remix").notNull().default(""),
+  visualRead: text("visual_read").notNull().default(""),
+  ocrText: text("ocr_text").notNull().default(""),
+  scoresJson: text("scores_json").notNull().default(""),
+  compliance: text("compliance").notNull().default(""),
+  strengths: text("strengths").notNull().default(""),
+  weaknesses: text("weaknesses").notNull().default(""),
   createdAt: integer("created_at", { mode: "timestamp_ms" }).notNull().$defaultFn(() => new Date()),
 });
 
@@ -491,7 +499,109 @@ export const competitorAdAnalyses = sqliteTable("competitor_ad_analyses", {
   whyWorking: text("why_working").notNull().default(""),
   weakness: text("weakness").notNull().default(""),
   lessons: text("lessons").notNull().default(""),
+  videoHookType: text("video_hook_type").notNull().default(""),
+  videoFirst3Sec: text("video_first3_sec").notNull().default(""),
+  videoHookText: text("video_hook_text").notNull().default(""),
+  videoDuration: text("video_duration").notNull().default(""),
   createdAt: integer("created_at", { mode: "timestamp_ms" }).notNull().$defaultFn(() => new Date()),
+});
+
+export const videoAnalyses = sqliteTable("video_analyses", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  title: text("title").notNull(),
+  videoRef: text("video_ref").notNull().default(""),
+  product: text("product").notNull().default(""),
+  duration: text("duration").notNull().default(""),
+  contentType: text("content_type").notNull().default("UGC"),
+  firstFrameDesc: text("first_frame_desc").notNull().default(""),
+  clueRating: text("clue_rating").notNull().default(""),
+  productEarlyRating: text("product_early_rating").notNull().default(""),
+  hookTextRating: text("hook_text_rating").notNull().default(""),
+  transcript: text("transcript").notNull().default(""),
+  hookClass: text("hook_class").notNull().default(""),
+  proofMoments: text("proof_moments").notNull().default(""),
+  patternInterrupts: text("pattern_interrupts").notNull().default(""),
+  ctaTiming: text("cta_timing").notNull().default(""),
+  bannedClaimsNote: text("banned_claims_note").notNull().default(""),
+  retinolWarning: text("retinol_warning").notNull().default("لا ينطبق"),
+  cisHook: text("cis_hook").notNull().default(""),
+  cisFormat: text("cis_format").notNull().default(""),
+  cisAngle: text("cis_angle").notNull().default(""),
+  cisLever: text("cis_lever").notNull().default(""),
+  whyWonLost: text("why_won_lost").notNull().default(""),
+  hookScore: integer("hook_score").notNull().default(0),
+  scoreBreakdownJson: text("score_breakdown_json").notNull().default(""),
+  notes: text("notes").notNull().default(""),
+  createdAt: integer("created_at", { mode: "timestamp_ms" }).notNull().$defaultFn(() => new Date()),
+  updatedAt: integer("updated_at", { mode: "timestamp_ms" }).notNull().$defaultFn(() => new Date()),
+});
+
+export const angles = sqliteTable("angles", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  title: text("title").notNull(),
+  hook: text("hook").notNull().default(""),
+  product: text("product").notNull().default(""),
+  segment: text("segment").notNull().default(""),
+  source: text("source").notNull().default("مالك"),
+  kind: text("kind").notNull().default("Static"),
+  status: text("status").notNull().default("جديدة"),
+  ugcStage: text("ugc_stage").notNull().default(""),
+  notes: text("notes").notNull().default(""),
+  createdAt: integer("created_at", { mode: "timestamp_ms" }).notNull().$defaultFn(() => new Date()),
+  updatedAt: integer("updated_at", { mode: "timestamp_ms" }).notNull().$defaultFn(() => new Date()),
+});
+
+export const creators = sqliteTable("creators", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  name: text("name").notNull(),
+  handle: text("handle").notNull().default(""),
+  platform: text("platform").notNull().default("Instagram"),
+  profileUrl: text("profile_url").notNull().default(""),
+  followers: text("followers").notNull().default(""),
+  segmentFit: text("segment_fit").notNull().default(""),
+  conceptCode: text("concept_code").notNull().default(""),
+  status: text("status").notNull().default("مرشحة"),
+  usageRights: text("usage_rights").notNull().default(""),
+  contactRoute: text("contact_route").notNull().default(""),
+  expertFlag: integer("expert_flag").notNull().default(0),
+  notes: text("notes").notNull().default(""),
+  createdAt: integer("created_at", { mode: "timestamp_ms" }).notNull().$defaultFn(() => new Date()),
+  updatedAt: integer("updated_at", { mode: "timestamp_ms" }).notNull().$defaultFn(() => new Date()),
+});
+
+export const deliveries = sqliteTable("deliveries", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  department: text("department").notNull(),
+  output: text("output").notNull().default(""),
+  cadence: text("cadence").notNull().default("أسبوعي"),
+  lastDelivery: text("last_delivery").notNull().default(""),
+  nextDelivery: text("next_delivery").notNull().default(""),
+  status: text("status").notNull().default("في الموعد"),
+  notes: text("notes").notNull().default(""),
+  createdAt: integer("created_at", { mode: "timestamp_ms" }).notNull().$defaultFn(() => new Date()),
+  updatedAt: integer("updated_at", { mode: "timestamp_ms" }).notNull().$defaultFn(() => new Date()),
+});
+
+export const replyDrafts = sqliteTable("reply_drafts", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  topic: text("topic").notNull(),
+  draftText: text("draft_text").notNull().default(""),
+  source: text("source").notNull().default("صوت العميل"),
+  status: text("status").notNull().default("مسودة"),
+  notes: text("notes").notNull().default(""),
+  createdAt: integer("created_at", { mode: "timestamp_ms" }).notNull().$defaultFn(() => new Date()),
+  updatedAt: integer("updated_at", { mode: "timestamp_ms" }).notNull().$defaultFn(() => new Date()),
+});
+
+export const retentionFlows = sqliteTable("retention_flows", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  name: text("name").notNull(),
+  triggerNote: text("trigger_note").notNull().default(""),
+  status: text("status").notNull().default("غير مكتوب"),
+  draftText: text("draft_text").notNull().default(""),
+  notes: text("notes").notNull().default(""),
+  createdAt: integer("created_at", { mode: "timestamp_ms" }).notNull().$defaultFn(() => new Date()),
+  updatedAt: integer("updated_at", { mode: "timestamp_ms" }).notNull().$defaultFn(() => new Date()),
 });
 
 export const auditItems = sqliteTable("audit_items", {
