@@ -9,3 +9,4 @@ Every page under `~/memory/people/`, closest to the user first. Rendered by the 
 - **Sherif Saad** — `~/memory/people/sherif-saad.md` — Egyptian creative-research writer behind the 'Behind The Creative' series, whose creative-research method Ahmed sent on 2026-11-20 and adopted into Zyra's concept prioritisation and testing.
 - **Ibrahim Mostafa** — `~/memory/people/ibrahim-mostafa.md` — Egyptian performance-marketing author whose 'Funnel Diagnostics & Scale Calculator' sheet Ahmed sent on 2026-11-20 and had adapted into Zyra's early-warning ATC/IC ceilings.
 - **The D2C Guy** — `~/memory/people/the-d2c-guy.md` — Instagram educator whose '7 Meta Ads Strategies' guide Ahmed sent on 2026-11-20 and had judged against Zyra's testing and scaling rules.
+- **Simon Robert** — `~/memory/people/adswithsimon.md` — Instagram creator @adswithsimon whose 'The 5 Ads Everybody Should Run' carousel Ahmed sent on 2026-11-20 and had studied for Zyra's portfolio audit.
