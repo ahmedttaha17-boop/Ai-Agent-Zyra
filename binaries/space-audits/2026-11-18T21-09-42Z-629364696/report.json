@@ -1,0 +1,383 @@
+{
+  "ok": true,
+  "url": "https://artifact-capture.invalid/spaces/v2/hatch-audit-b42127e5-3c12-486a-886a-680d80733cda/",
+  "duration_ms": 5782.769181,
+  "output_dir": "/home/hatch/workspace/ts-spaces/zyra-marketing-intelligence-agent/audits/2026-11-18T21-09-42Z-629364696",
+  "nav_status": 200,
+  "viewports": {
+    "desktop": {
+      "width": 1440,
+      "height": 900,
+      "screenshot_path": "/home/hatch/workspace/ts-spaces/zyra-marketing-intelligence-agent/audits/2026-11-18T21-09-42Z-629364696/screenshot.png",
+      "fullpage_screenshot_path": "/home/hatch/workspace/ts-spaces/zyra-marketing-intelligence-agent/audits/2026-11-18T21-09-42Z-629364696/screenshot-full.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "screenshot_path": "/home/hatch/workspace/ts-spaces/zyra-marketing-intelligence-agent/audits/2026-11-18T21-09-42Z-629364696/screenshot-mobile.png"
+    }
+  },
+  "targets": null,
+  "mobile_layout": {
+    "viewport_width": 390,
+    "scroll_width": 390,
+    "overflow_px": 0,
+    "widest_selector": null,
+    "verdict": "pass"
+  },
+  "horizontal_scrollers": [],
+  "unreachable_controls": {
+    "desktop": [],
+    "mobile": []
+  },
+  "clipped": {
+    "desktop": [],
+    "mobile": [
+      {
+        "tag": "p",
+        "text": "ZYRA OS v3.3",
+        "kind": "past_viewport",
+        "overflow_px": 206,
+        "bbox": [
+          493,
+          23,
+          103,
+          21
+        ]
+      },
+      {
+        "tag": "span",
+        "text": "OS",
+        "kind": "past_viewport",
+        "overflow_px": 178,
+        "bbox": [
+          543,
+          24,
+          25,
+          19
+        ]
+      },
+      {
+        "tag": "span",
+        "text": "v3.3",
+        "kind": "past_viewport",
+        "overflow_px": 206,
+        "bbox": [
+          573,
+          28,
+          23,
+          14
+        ]
+      },
+      {
+        "tag": "p",
+        "text": "قسم الذكاء التسويقي",
+        "kind": "past_viewport",
+        "overflow_px": 206,
+        "bbox": [
+          493,
+          46,
+          103,
+          17
+        ]
+      },
+      {
+        "tag": "button",
+        "text": "✕",
+        "kind": "past_viewport",
+        "overflow_px": 48,
+        "bbox": [
+          406,
+          25,
+          32,
+          36
+        ]
+      },
+      {
+        "tag": "p",
+        "text": "وكيل ذكاء التسويق — AI يفسّر • الكود يحسب • إنت تقرر",
+        "kind": "past_viewport",
+        "overflow_px": 272,
+        "bbox": [
+          406,
+          80,
+          256,
+          17
+        ]
+      },
+      {
+        "tag": "span",
+        "text": "لوحة القيادة",
+        "kind": "past_viewport",
+        "overflow_px": 220,
+        "bbox": [
+          541,
+          126,
+          69,
+          21
+        ]
+      },
+      {
+        "tag": "span",
+        "text": "الريلونش",
+        "kind": "past_viewport",
+        "overflow_px": 220,
+        "bbox": [
+          557,
+          180,
+          53,
+          21
+        ]
+      },
+      {
+        "tag": "span",
+        "text": "الحملات والميديا باير",
+        "kind": "past_viewport",
+        "overflow_px": 220,
+        "bbox": [
+          493,
+          234,
+          117,
+          21
+        ]
+      },
+      {
+        "tag": "span",
+        "text": "المحتوى والكرييتف",
+        "kind": "past_viewport",
+        "overflow_px": 220,
+        "bbox": [
+          501,
+          288,
+          109,
+          21
+        ]
+      },
+      {
+        "tag": "span",
+        "text": "الأورجانيك",
+        "kind": "past_viewport",
+        "overflow_px": 220,
+        "bbox": [
+          552,
+          342,
+          58,
+          21
+        ]
+      },
+      {
+        "tag": "span",
+        "text": "السوق والمنافسين",
+        "kind": "past_viewport",
+        "overflow_px": 220,
+        "bbox": [
+          502,
+          396,
+          108,
+          21
+        ]
+      },
+      {
+        "tag": "span",
+        "text": "التشغيل والتعلّم",
+        "kind": "past_viewport",
+        "overflow_px": 220,
+        "bbox": [
+          520,
+          450,
+          90,
+          21
+        ]
+      },
+      {
+        "tag": "span",
+        "text": "المالية والتدقيق",
+        "kind": "past_viewport",
+        "overflow_px": 220,
+        "bbox": [
+          521,
+          504,
+          89,
+          21
+        ]
+      },
+      {
+        "tag": "span",
+        "text": "اسأل زيرا الذكية",
+        "kind": "past_viewport",
+        "overflow_px": 231,
+        "bbox": [
+          527,
+          591,
+          94,
+          20
+        ]
+      },
+      {
+        "tag": "span",
+        "text": "حلل، ابحث، اقترح، ونفّذ بعد موافقتك",
+        "kind": "past_viewport",
+        "overflow_px": 257,
+        "bbox": [
+          421,
+          615,
+          226,
+          17
+        ]
+      },
+      {
+        "tag": "span",
+        "text": "النظام والإعدادات",
+        "kind": "past_viewport",
+        "overflow_px": 220,
+        "bbox": [
+          508,
+          668,
+          102,
+          21
+        ]
+      },
+      {
+        "tag": "p",
+        "text": "حالة النظام",
+        "kind": "past_viewport",
+        "overflow_px": 259,
+        "bbox": [
+          419,
+          727,
+          230,
+          16
+        ]
+      },
+      {
+        "tag": "p",
+        "text": "آخر فحص مصادر: ١٨‏/١١‏/٢٠٢٦",
+        "kind": "past_viewport",
+        "overflow_px": 259,
+        "bbox": [
+          419,
+          749,
+          230,
+          16
+        ]
+      },
+      {
+        "tag": "p",
+        "text": "الويبسايت متزامن · حديثة (< ساعة)",
+        "kind": "past_viewport",
+        "overflow_px": 259,
+        "bbox": [
+          419,
+          767,
+          230,
+          16
+        ]
+      }
+    ]
+  },
+  "images": {
+    "total": 2,
+    "broken": [],
+    "duplicate": [
+      {
+        "src": "https://artifact-capture.invalid/spaces/v2/hatch-audit-b42127e5-3c12-486a-886a-680d80733cda/assets/zyra-logo-7ywvdqqq.png",
+        "count": 2
+      }
+    ],
+    "unstable": [],
+    "failed_requests": [],
+    "external_blocked": {
+      "count": 0,
+      "sample": []
+    },
+    "sample_urls": [
+      "https://artifact-capture.invalid/spaces/v2/hatch-audit-b42127e5-3c12-486a-886a-680d80733cda/assets/zyra-logo-7ywvdqqq.png"
+    ],
+    "verdict": "pass"
+  },
+  "text_issues": [],
+  "console_errors": [],
+  "console_warnings": [],
+  "external_fetch_failures": 2,
+  "external_fetch_failure_samples": [
+    "console.error: Failed to load resource: net::ERR_SOCKS_CONNECTION_FAILED (https://fonts.googleapis.com/css2?family=Alexandria:wght@500;600;700;800&family=Cairo:wght@600;700;800;900&family=Tajawal:wght@400;500;700;800&display=swap)",
+    "console.error: Failed to load resource: net::ERR_SOCKS_CONNECTION_FAILED (https://fonts.googleapis.com/css2?family=Alexandria:wght@500;600;700;800&family=Cairo:wght@600;700;800;900&family=Tajawal:wght@400;500;700;800&display=swap)"
+  ],
+  "blocked_requests": [],
+  "external_requests": [
+    {
+      "url": "https://fonts.googleapis.com/css2?family=Alexandria:wght@500;600;700;800&family=Cairo:wght@600;700;800;900&family=Tajawal:wght@400;500;700;800&display=swap",
+      "method": "GET",
+      "resource_type": "stylesheet"
+    }
+  ],
+  "external_requests_dropped": 0,
+  "external_requests_dropped_data_bearing": 0,
+  "transport_ledger_active": true,
+  "egress_lockdown": true,
+  "transport_connections": [
+    {
+      "host": "artifact-capture.invalid",
+      "port": 443,
+      "connects": 2,
+      "bytes_up": 3932,
+      "bytes_down": 2488
+    },
+    {
+      "host": "fonts.googleapis.com",
+      "port": 443,
+      "connects": 2,
+      "bytes_up": 0,
+      "bytes_down": 0,
+      "policy_denied": true
+    }
+  ],
+  "transport_udp_attempts": 0,
+  "transport_overflow": 0,
+  "unexplained_transport_hosts": [],
+  "broken_assets": [],
+  "blocked_affordances": [],
+  "interactive_nodes": 26,
+  "aria_snapshot": "- complementary:\n  - img \"ZYRA — Seeds of Beauty\"\n  - paragraph: ZYRA OS v3.3\n  - paragraph: قسم الذكاء التسويقي\n  - paragraph: وكيل ذكاء التسويق — AI يفسّر • الكود يحسب • إنت تقرر\n  - navigation \"أقسام النظام\":\n    - button \"Dashboard\": لوحة القيادة\n    - button \"Relaunch\": الريلونش\n    - button \"Campaigns & Media Buyer\": الحملات والميديا باير\n    - button \"Content & Creative\": المحتوى والكرييتف\n    - button \"Organic — Social Media\": الأورجانيك\n    - button \"Market & Competitors\": السوق والمنافسين\n    - button \"Operations & Learning\": التشغيل والتعلّم\n    - button \"Finance & Audit\": المالية والتدقيق\n  - button \"اسأل زيرا الذكية\": اسأل زيرا الذكية حلل، ابحث، اقترح، ونفّذ بعد موافقتك\n  - button \"System & Settings\": النظام والإعدادات\n  - paragraph: حالة النظام\n  - paragraph: \"آخر فحص مصادر: ١٨‏/١١‏/٢٠٢٦\"\n  - paragraph: الويبسايت متزامن · حديثة (< ساعة)\n  - paragraph: \"Meta Ads: Pending connection\"\n  - paragraph: AI يفسّر — الكود يحسب. AI يقترح — الإنسان يقرر. الكود يفرض — AI لا يتجاوز.\n  - button \"تشغيل الفحص اليومي\": ↻ فحص يومي للمصادر\n  - button \"طي القائمة الجانبية\": طي القائمة\n- text: \"🚀 وضع التشغيل الحالي: RELAUNCH PHASE — Dual Hero (سيلوليت 799 + جلد الوزة 799) Payday Cycle — يوم 18: Pre-Payday Dip (15–24) — CAUTION\"\n- button \"اكتمال المدخلات الأساسية\":\n  - img \"50%\"\n  - text: \"اكتمال المدخلات الأساسية: 6/12\"\n- text: \"Net COD Rate: UNKNOWN — غير مُدخلة آخر فحص مصادر: ١٨‏/١١‏/٢٠٢٦، ٨:٤٣:٢٢ م\"\n- button \"قراءة ومزامنة بيانات الويبسايت\": ⇩ اقرأ/زامن من zyra-care.com\n- text: \"🟢 آخر قراءة ويبسايت: ١٨‏/١١‏/٢٠٢٦، ٨:٤٣:٣٦ م (حديثة (< ساعة)) 🧭 Master Growth OS يسري هنا وفي كل قسم:\"\n- button \"مرحلة 1 تأسيس وفهم\": 1. تأسيس وفهم\n- button \"مرحلة 2 أوديت 8 ركائز\": 2. أوديت 8 ركائز\n- button \"مرحلة 3 نفسية عميل وهندسة عروض وكرييتيف\": 3. نفسية عميل وهندسة عروض وكرييتيف\n- button \"مرحلة 4 إنتاج وصفحة هبوط\": 4. إنتاج وصفحة هبوط\n- button \"مرحلة 5 فحص ما قبل الإطلاق وتستينج منظم\": 5. فحص ما قبل الإطلاق وتستينج منظم\n- button \"مرحلة 6 نقد وفحص حتمي\": 6. نقد وفحص حتمي\n- button \"مرحلة 7 تدقيق مغلق وسكيل وتعلم\": 7. تدقيق مغلق وسكيل وتعلم\n- text: \"كل مهمة كحد أدنى: Stage 1 وسوم أدلة + Stage 6 نقد وفحص حتمي. AI يفسّر — الكود يحسب. AI يقترح — الإنسان يقرر. الكود يفرض — AI لا يتجاوز. المدخلات الأساسية: يدخلها المالك Website: مصدر عام للمنتجات والعروض والسياسات Meta Ads Library: إعلانات منافسين عامة فقط TikTok Ads Library: أنماط كرييتيف عامة فقط لا يوجد أي اتصال حي بحساب إعلانات خاص — كل قرار Kill/Scale مقترح يروح Approvals\"\n- main:\n  - paragraph: ☀️ مساء الخير، مالك زيرا\n  - heading \"إليك ما اكتشفه فريق زيرا الذكي اليوم\" [level=2]\n  - paragraph: يبحث • يحلل • يكتشف الفرص • يقترح الحلول • بانتظار قراراتك\n  - text: 📅 آخر 7 أيام\n  - button \"التنبيهات والاعتمادات المعلقة\"\n  - text: A مالك زيرا [EST] تقديري 0 الطلبات المسلمة\n  - paragraph: \"آخر لقطة: Dual Hero — اقتصاديات وحدة محسوبة [EST] · Relaunch — قبل الإطلاق · 🟡 متوسطة الحداثة (1–6 ساعات)\"\n  - text: \"[EST] تقديري 381 جنيه المساهمة لكل طلب مُسلّم\"\n  - paragraph: \"آخر لقطة: Dual Hero — اقتصاديات وحدة محسوبة [EST] · Relaunch — قبل الإطلاق · 🟡 متوسطة الحداثة (1–6 ساعات)\"\n  - text: \"[EST] تقديري 0 جنيه المساهمة لكل طلب موضوع\"\n  - paragraph: \"آخر لقطة: Dual Hero — اقتصاديات وحدة محسوبة [EST] · Relaunch — قبل الإطلاق · 🟡 متوسطة الحداثة (1–6 ساعات)\"\n  - text: \"[EST] تقديري 0 جنيه صافي مساهمة اللقطة\"\n  - paragraph: \"آخر لقطة: Dual Hero — اقتصاديات وحدة محسوبة [EST] · Relaunch — قبل الإطلاق · 🟡 متوسطة الحداثة (1–6 ساعات)\"\n  - paragraph: \"مقارنة بآخر 7 أيام: خط الأساس بيبدأ من أيام الـ Relaunch — لسه مفيش فترة سابقة كاملة، فمفيش نسب تغيّر معروضة لحد ما تتكوّن بيانات حقيقية. أرقام اللقطة الحالية تقديرية [EST] بافتراضات تشغيلية — رسوم Bosta الفعلية لسه غير مؤكدة.\"\n  - heading \"اتجاه الأداء\" [level=3]\n  - tablist \"مقاييس الاتجاه\":\n    - tab \"الطلبات المسلمة\" [selected]\n    - tab \"المساهمة / مُسلّم\"\n    - tab \"المساهمة / طلب\"\n    - tab \"Break-even ROAS\"\n  - img \"مخطط اتجاه الأداء من اللقطات المالية المسجلة\": 1 0 Relaunch — قبل 0\n  - paragraph: نقطة بيانات واحدة حتى الآن (آخر لقطة مالية) — خط الاتجاه بيترسم من لقطتين فأكثر، وكل نقطة هنا لقطة حقيقية مسجلة.\n  - heading \"✦ أهم اكتشافات زيرا الذكية\" [level=3]\n  - button \"عرض التفاصيل ←\"\n  - 'button \"اكتشاف عرض/تغيّر منافس: سوق اليوريا الصيدلي (Hayah/Skinova/Melano/Alejon) أربعة منافسين صيدليين يبيعون منتجات يوريا لجلد الوزة بتركيزات 10–20% وأسعار 199–439 EGP — راجع تنبيه التمييز: ZYRA عندها 25% بـ 360 EGP.\"'\n  - button \"المدخلات الأساسية مكتملة 50% بس أي قرار قبل الاكتمال يفضل Provisional — أكمل الناقص\"\n  - heading \"قائمة المهام الذكية (14 عنصر)\" [level=3]\n  - button \"عرض القائمة كاملة ←\"\n  - button \"اكتشافات جديدة\": 1 اكتشافات جديدة\n  - button \"جاهزة للمراجعة\": 0 جاهزة للمراجعة\n  - button \"قيد التنفيذ\": 0 قيد التنفيذ\n  - button \"مراجعة النتائج\": 0 مراجعة النتائج\n  - 'button \"خطة الربع التالي Task C: استمرار أو تصحيح بناءً على التعلم الموثق ابدأ بمرحلة UNDERSTAND وحدّث التقدم هنا · تقدم 0% أولوية متوسطة جديدة\"'\n  - 'button \"تقييم أول 30 يوم: أهداف Relaunch مقابل الفعلي + Outcome Review ابدأ بمرحلة UNDERSTAND وحدّث التقدم هنا · تقدم 0% أولوية عالية جديدة\"'\n  - 'button \"مراجعة أسبوعية Task B: تحديث Proven Wrappers وDead Angle Graveyard ابدأ بمرحلة UNDERSTAND وحدّث التقدم هنا · تقدم 0% أولوية متوسطة جديدة\"'\n  - button \"أول قرار Task D (KILL/ITERATE/SCALE) بعد 7 أيام بيانات نظيفة ابدأ بمرحلة UNDERSTAND وحدّث التقدم هنا · تقدم 0% أولوية عالية جديدة\"\n  - heading \"التنفيذات بانتظار التنفيذ (0)\" [level=3]\n  - paragraph: لا تنفيذات معلّقة — أي إجراء خارجي مقترح (نشر/ميزانية/سعر/إيقاف) هيظهر هنا بقرارك المباشر.\n  - heading \"ابدأ منين؟ — مسار الشغل في 5 خطوات\" [level=3]\n  - text: \"RELAUNCH — Dual Hero: سيلوليت 799 + جلد الوزة 799\"\n  - 'button \"خطوة 1: املأ المدخلات الأساسية\"':\n    - text: 1 جارية\n    - paragraph: املأ المدخلات الأساسية\n  - 'button \"خطوة 2: ادرس السوق والمنافسين\"':\n    - text: ✓ اكتملت\n    - paragraph: ادرس السوق والمنافسين\n  - 'button \"خطوة 3: جهّز الكرييتيف وافحصه\"':\n    - text: 3 لم تبدأ\n    - paragraph: جهّز الكرييتيف وافحصه\n  - 'button \"خطوة 4: ابنِ الحملة وقرّر\"':\n    - text: 4 لم تبدأ\n    - paragraph: ابنِ الحملة وقرّر\n  - 'button \"خطوة 5: تابع وقرّر Kill/Scale وتعلّم\"':\n    - text: 5 لم تبدأ\n    - paragraph: تابع وقرّر Kill/Scale وتعلّم\n  - paragraph: \"COGS الهيروين مثبت من المالك (350 جنيه لكل روتين) وBreak-even المحسوب ≈275 جنيه [EST]. الناقص قبل إطلاق فعلي: نسب تأكيد واتساب والتسليم الفعلية + رسوم Bosta الحقيقية — من غيرهم أرقام الـ COD تفضل تقديرية.\"\n  - text: 1. دراسة المنافسين (Website + Meta Library + TikTok Library) 2. تحقق السوق والمنتج (Validation Triad) 3. استخراج الزوايا والهوكات 4. إنتاج الكرييتيف + فحص Validator 5. بناء وهيكلة الحملة (3:2:2 / Tiers) 6. الإطلاق كقرار معتمد من المالك 7. متابعة الأداء + تشخيص Funnel 8. قرار KILL / ITERATE / SCALE (Task D) 9. تسجيل النتيجة والتعلم 1. UNDERSTAND 2. RETRIEVE 3. PLAN 4. EXECUTE 5. CRITIQUE 6. VALIDATE 7. REVISE 8. DELIVER & LEARN\n  - article:\n    - heading \"🚨 أزمة COD / انهيار التسليم\" [level=3]\n    - paragraph: أوقف أي SCALE فوراً، راجع WhatsApp Confirmation % وDelivery % من المدخلات الأساسية، شخّص RTO حسب المنطقة، واعرض خطة على المالك قبل أي تغيير ميزانية.\n  - article:\n    - heading \"🚨 تعليق حساب إعلاني\" [level=3]\n    - paragraph: لا تحاول الالتفاف. وثّق سبب التعليق، راجع الـ Validator على آخر كرييتيف، وجهّز ملف الاستئناف — التنفيذ الخارجي بموافقة المالك فقط.\n  - article:\n    - heading \"🚨 نفاد مخزون منتج Hero\" [level=3]\n    - paragraph: علّم المنتج في المدخلات الأساسية، أوقف مقترحات SCALE الخاصة به عبر Approvals، وحوّل الميزانية المقترحة لمنتج بديل موثق فقط بعد اعتماد.\n  - article:\n    - heading \"🚨 حرب أسعار منافسين\" [level=3]\n    - paragraph: سجّل ملاحظة سوق بمصدر وتاريخ من Ads Library/الويبسايت، لا ترد بسعر أو خصم بدون طلب اعتماد Discount صريح من المالك.\n  - heading \"حراسة التنفيذ — Human Control\" [level=3]\n  - paragraph:\n    - text: \"ممنوع أي تنفيذ خارجي بدون موافقة المالك الصريحة: لا نشر، لا رسائل عملاء، لا تغيير ميزانيات أو أسعار أو خصومات، لا إيقاف أو إطلاق حملات. كل إجراء خارجي يمر أولاً على\"\n    - button \"صندوق الاعتمادات\"\n    - text: ويتسجل في سجل التنفيذ بقيم Before/After.\n  - heading \"أداء اليوم مقابل الهدف\" [level=3]\n  - img \"50%\"\n  - paragraph: اكتمال المدخلات الأساسية\n  - paragraph: لسه مفيش هدف يومي مسجل — أول هدف Relaunch هيتحط هنا تلقائياً.\n  - button \"حدّد أهداف الريلونش ←\"\n  - heading \"حالة التكاملات\" [level=3]\n  - button \"✓ Shopify — قراءة الويبسايت آخر مزامنة حديثة (< ساعة) متصل\"\n  - button \"• Bosta — الشحن لا يوجد ربط متاح بعد — الرسوم إدخال يدوي أو [EST] غير متصل\"\n  - button \"• Meta — قراءة الإعلانات بانتظار ربط الحساب الإعلاني بتصريح المالك Pending\"\n  - button \"• Meta — التنفيذ الكتابة في Meta مقفولة بقرار المالك مقفول عن قصد\"\n  - heading \"التنفيذات اليوم\" [level=3]\n  - paragraph: لا تنفيذات جارية الآن — المهام المعتمدة بتظهر هنا أثناء تنفيذها بتقدمها الحقيقي.\n  - heading \"القادم\" [level=3]\n  - button \"عناصر مستحقة مراجعة نتائج 0\"\n  - button \"خطط مقترحة بانتظار الاعتماد 1\"\n  - button \"مهام جاهزة للمراجعة 0\"\n  - heading \"صحة النظام\" [level=3]\n  - text: يعمل\n  - paragraph: آخر فحص مصادر ١٨‏/١١‏/٢٠٢٦\n  - paragraph: حداثة بيانات الويبسايت حديثة (< ساعة)\n  - paragraph: سقوف/أسعار تحت المراجعة أي تعديل يروح الاعتمادات\n  - button \"تشغيل الفحص اليومي\": ↻ فحص يومي للمصادر",
+  "document_text": {
+    "path": "/home/hatch/workspace/ts-spaces/zyra-marketing-intelligence-agent/audits/2026-11-18T21-09-42Z-629364696/document-text.txt",
+    "chars": 7205,
+    "truncated": false
+  },
+  "audit_session_id": "055931e7-a866-4d41-a802-7862ccf4fca6",
+  "readiness": {
+    "desktop": {
+      "settled": true,
+      "settle_ms": 2242,
+      "in_flight": 0,
+      "network_idle": true,
+      "retried": false
+    },
+    "mobile": {
+      "settled": true,
+      "settle_ms": 2173,
+      "in_flight": 0,
+      "network_idle": true,
+      "retried": false
+    }
+  },
+  "color_scheme": {
+    "declared": "light",
+    "media_dependent": null,
+    "dark_frame": false
+  },
+  "mobile_ms": 3927.6675459999997,
+  "cold_launch_ms": 870.8805659999999,
+  "desktop_ms": 4152.1583,
+  "browser_launches": 1,
+  "audit_path": "shared-concurrent",
+  "diagnostics": {
+    "audit_path": "shared-concurrent",
+    "concurrent_ran": true,
+    "concurrent_desktop_retry": false,
+    "concurrent_mobile_retry": false,
+    "shared_launch_failed": false,
+    "nav_retries": 0,
+    "settle_retries": 0
+  }
+}

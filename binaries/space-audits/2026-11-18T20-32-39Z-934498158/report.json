@@ -1,0 +1,141 @@
+{
+  "ok": true,
+  "url": "https://artifact-capture.invalid/spaces/v2/hatch-audit-8774eed3-5aec-4ea1-a0af-e569df0099c4/",
+  "duration_ms": 5478.072677,
+  "output_dir": "/home/hatch/workspace/ts-spaces/zyra-marketing-intelligence-agent/audits/2026-11-18T20-32-39Z-934498158",
+  "nav_status": 200,
+  "viewports": {
+    "desktop": {
+      "width": 1440,
+      "height": 900,
+      "screenshot_path": "/home/hatch/workspace/ts-spaces/zyra-marketing-intelligence-agent/audits/2026-11-18T20-32-39Z-934498158/screenshot.png",
+      "fullpage_screenshot_path": "/home/hatch/workspace/ts-spaces/zyra-marketing-intelligence-agent/audits/2026-11-18T20-32-39Z-934498158/screenshot-full.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "screenshot_path": "/home/hatch/workspace/ts-spaces/zyra-marketing-intelligence-agent/audits/2026-11-18T20-32-39Z-934498158/screenshot-mobile.png"
+    }
+  },
+  "targets": null,
+  "mobile_layout": {
+    "viewport_width": 390,
+    "scroll_width": 390,
+    "overflow_px": 0,
+    "widest_selector": null,
+    "verdict": "pass"
+  },
+  "horizontal_scrollers": [
+    {
+      "selector": "div.min-h-screen.lg:flex > aside.lg:w-64.lg:shrink-0 > nav.flex.lg:flex-col",
+      "scroll_width": 2466,
+      "client_width": 358
+    }
+  ],
+  "unreachable_controls": {
+    "desktop": [],
+    "mobile": []
+  },
+  "clipped": {
+    "desktop": [],
+    "mobile": []
+  },
+  "images": {
+    "total": 0,
+    "broken": [],
+    "duplicate": [],
+    "unstable": [],
+    "failed_requests": [],
+    "external_blocked": {
+      "count": 0,
+      "sample": []
+    },
+    "sample_urls": [],
+    "verdict": "pass"
+  },
+  "text_issues": [],
+  "console_errors": [],
+  "console_warnings": [],
+  "external_fetch_failures": 2,
+  "external_fetch_failure_samples": [
+    "console.error: Failed to load resource: net::ERR_SOCKS_CONNECTION_FAILED (https://fonts.googleapis.com/css2?family=Alexandria:wght@500;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap)",
+    "console.error: Failed to load resource: net::ERR_SOCKS_CONNECTION_FAILED (https://fonts.googleapis.com/css2?family=Alexandria:wght@500;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap)"
+  ],
+  "blocked_requests": [],
+  "external_requests": [
+    {
+      "url": "https://fonts.googleapis.com/css2?family=Alexandria:wght@500;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap",
+      "method": "GET",
+      "resource_type": "stylesheet"
+    }
+  ],
+  "external_requests_dropped": 0,
+  "external_requests_dropped_data_bearing": 0,
+  "transport_ledger_active": true,
+  "egress_lockdown": true,
+  "transport_connections": [
+    {
+      "host": "artifact-capture.invalid",
+      "port": 443,
+      "connects": 2,
+      "bytes_up": 3900,
+      "bytes_down": 2483
+    },
+    {
+      "host": "fonts.googleapis.com",
+      "port": 443,
+      "connects": 2,
+      "bytes_up": 0,
+      "bytes_down": 0,
+      "policy_denied": true
+    }
+  ],
+  "transport_udp_attempts": 0,
+  "transport_overflow": 0,
+  "unexplained_transport_hosts": [],
+  "broken_assets": [],
+  "blocked_affordances": [],
+  "interactive_nodes": 43,
+  "aria_snapshot": "- complementary:\n  - paragraph: ZYRA CARE — EGYPT · EGP\n  - heading \"وكيل ذكاء التسويق\" [level=1]\n  - paragraph: \"Marketing Intelligence Agent — نظام متكامل مستقل: THINK → ACT → CRITIQUE → VALIDATE\"\n  - paragraph: Priority Hierarchy — الحاكم لكل قرار\n  - paragraph: 1) COD Math ‏(GPT<0 ⇒ DO NOT LAUNCH) ← 2) AEO Compliance ‏(FAIL ⇒ DO NOT SHIP) ← 3) Brand Rules ← 4) Creative Frameworks\n  - paragraph: \"مبدأ الحوكمة: AI يفسّر — الكود يحسب. AI يقترح — الإنسان يقرر. الكود يفرض — AI لا يتجاوز.\"\n  - navigation \"أقسام النظام\":\n    - button \"Command Center\": مركز القيادة\n    - button \"Relaunch Plan\": خطة Relaunch\n    - button \"Core Inputs\": ١ · المدخلات الأساسية\n    - button \"Research & Customer\": ٢ · السوق والعملاء\n    - button \"Market Watch\": ٢ · متابعة السوق\n    - button \"Creative Studio\": ٣ · الكرييتيف\n    - button \"Media Buyer\": ٤ · الميديا باير\n    - button \"Content\": المحتوى\n    - button \"Work Tracking\": ٥ · متابعة الشغل\n    - button \"Financial\": الماليات وCOD\n    - button \"AI Tasks\": مهام A–G\n    - button \"Experiments & Learning\": التجارب والتعلم\n    - button \"Approvals & Execution\": الاعتمادات والتنفيذ\n    - button \"Integrations Hub\": الربط والمزامنة\n    - button \"Business & Account Audit\": الأوديت الشامل\n    - button \"Ops & Learning Loop\": التشغيل والتعلّم الآلي\n    - button \"Rules & Frameworks\": القواعد والفريموركس\n  - button \"تشغيل الفحص اليومي\": ↻ فحص يومي للمصادر\n- text: \"🚀 وضع التشغيل الحالي: RELAUNCH PHASE — Dual Hero (سيلوليت 799 + جلد الوزة 799) Payday Cycle — يوم 18: Pre-Payday Dip (15–24) — CAUTION\"\n- button \"اكتمال المدخلات الأساسية\": \"اكتمال المدخلات الأساسية: 50% (6/12)\"\n- text: \"Net COD Rate: UNKNOWN — غير مُدخلة لسه مفيش فحص مصادر مسجل\"\n- button \"قراءة ومزامنة بيانات الويبسايت\": ⇩ اقرأ/زامن من zyra-care.com\n- text: \"🟢 آخر قراءة ويبسايت: ١٨‏/١١‏/٢٠٢٦، ٨:٠٤:١٣ م (حديثة (< ساعة)) 🧭 Master Growth OS يسري هنا وفي كل قسم:\"\n- button \"مرحلة 1 تأسيس وفهم\": 1. تأسيس وفهم\n- button \"مرحلة 2 أوديت 8 ركائز\": 2. أوديت 8 ركائز\n- button \"مرحلة 3 نفسية عميل وهندسة عروض وكرييتيف\": 3. نفسية عميل وهندسة عروض وكرييتيف\n- button \"مرحلة 4 إنتاج وصفحة هبوط\": 4. إنتاج وصفحة هبوط\n- button \"مرحلة 5 فحص ما قبل الإطلاق وتستينج منظم\": 5. فحص ما قبل الإطلاق وتستينج منظم\n- button \"مرحلة 6 نقد وفحص حتمي\": 6. نقد وفحص حتمي\n- button \"مرحلة 7 تدقيق مغلق وسكيل وتعلم\": 7. تدقيق مغلق وسكيل وتعلم\n- text: \"كل مهمة كحد أدنى: Stage 1 وسوم أدلة + Stage 6 نقد وفحص حتمي. AI يفسّر — الكود يحسب. AI يقترح — الإنسان يقرر. الكود يفرض — AI لا يتجاوز. المدخلات الأساسية: يدخلها المالك Website: مصدر عام للمنتجات والعروض والسياسات Meta Ads Library: إعلانات منافسين عامة فقط TikTok Ads Library: أنماط كرييتيف عامة فقط لا يوجد أي اتصال حي بحساب إعلانات خاص — كل قرار Kill/Scale مقترح يروح Approvals\"\n- main:\n  - heading \"ابدأ منين؟ — مسار الشغل في 5 خطوات\" [level=2]\n  - paragraph: \"إحنا في مرحلة Relaunch بهيرو مزدوج: روتين السيلوليت (799 جنيه) + روتين جلد الوزة/الفراولة (799 جنيه) — حملتان منفصلتان، وكل خطوة تحت بحالتها الحقيقية من بيانات النظام.\"\n  - button \"فتح خطة Relaunch\": افتح خطة الـ Relaunch ←\n  - 'button \"خطوة 1: املأ المدخلات الأساسية\"':\n    - text: 1 جارية\n    - paragraph: املأ المدخلات الأساسية\n  - 'button \"خطوة 2: ادرس السوق والمنافسين\"':\n    - text: 2 جارية\n    - paragraph: ادرس السوق والمنافسين\n  - 'button \"خطوة 3: جهّز الكرييتيف وافحصه\"':\n    - text: 3 لم تبدأ\n    - paragraph: جهّز الكرييتيف وافحصه\n  - 'button \"خطوة 4: ابنِ الحملة وقرّر\"':\n    - text: 4 لم تبدأ\n    - paragraph: ابنِ الحملة وقرّر\n  - 'button \"خطوة 5: تابع وقرّر Kill/Scale وتعلّم\"':\n    - text: 5 لم تبدأ\n    - paragraph: تابع وقرّر Kill/Scale وتعلّم\n  - paragraph: \"COGS الهيروين اتثبت من المالك (350 جنيه لكل روتين) وBreak-even المحسوب ≈275 جنيه [EST]. اللي ناقص قبل إطلاق فعلي: نسب تأكيد واتساب والتسليم الفعلية + رسوم Bosta الحقيقية + ميزانية اختبار أسبوعية — من غيرهم أرقام الـ COD تفضل تقديرية.\"\n  - heading \"سير النمو الموحد — Master Growth OS (7 مراحل تحكم أي شغل)\" [level=3]\n  - 'button \"مرحلة نمو 1: تأسيس وفهم\"': 1. تأسيس وفهم\n  - 'button \"مرحلة نمو 2: أوديت 8 ركائز\"': 2. أوديت 8 ركائز\n  - 'button \"مرحلة نمو 3: نفسية عميل وهندسة عروض وكرييتيف\"': 3. نفسية عميل وهندسة عروض وكرييتيف\n  - 'button \"مرحلة نمو 4: إنتاج وصفحة هبوط\"': 4. إنتاج وصفحة هبوط\n  - 'button \"مرحلة نمو 5: فحص ما قبل الإطلاق وتستينج منظم\"': 5. فحص ما قبل الإطلاق وتستينج منظم\n  - 'button \"مرحلة نمو 6: نقد وفحص حتمي\"': 6. نقد وفحص حتمي\n  - 'button \"مرحلة نمو 7: تدقيق مغلق وسكيل وتعلم\"': 7. تدقيق مغلق وسكيل وتعلم\n  - paragraph: \"مرّر فوق أي مرحلة لشرحها — والترتيب ملزم: لا صرف جديد قبل أوديت، ولا حكم قبل فحص حتمي، ولا Scale قبل حلقة تعلم مغلقة.\"\n  - button \"AI Tasks (A–G)\": 0 AI Tasks (A–G)\n  - button \"عناصر متابعة الشغل\": 14 عناصر متابعة الشغل\n  - button \"حملات مسجلة\": 0 حملات مسجلة\n  - button \"أصول كرييتيف\": 0 أصول كرييتيف\n  - button \"عناصر محتوى\": 0 عناصر محتوى\n  - button \"تجارب\": 0 تجارب\n  - button \"اعتمادات معلّقة\": 0 اعتمادات معلّقة\n  - button \"عناصر متأخرة (Overdue)\": 0 عناصر متأخرة (Overdue)\n  - heading \"Ask Zyra AI — شريك التخطيط والقرار 🦁\" [level=2]\n  - paragraph: اكتب هدف أو سؤال — هصنّفه لمهمة A–G وأبني لك خطة من 8 خطوات بأقسامها، ماشية على سير النمو الموحد من 7 مراحل (تأسيس ← أوديت ← نفسية وعروض ← إنتاج ← فحص وتستينج ← نقد حتمي ← تدقيق وسكيل وتعلم). ولا خطوة بتتنفذ بره النظام، ولا خطة بتتحول لشغل فعلي إلا باعتمادك. كلامي حازم ومبني على أدلة، واللي مش عارفه هقول إنه مش معروف.\n  - textbox \"هدف أو سؤال للتخطيط\"\n  - button \"بناء خطة\": ابنِ الخطة\n  - paragraph: \"📋 خطة مقترحة (C): خطة Relaunch: إعادة إطلاق Zyra Care من قراءة الويبسايت والسوق لحد أول قرار Kill/Scale\"\n  - 'button \"اعتماد خطة خطة Relaunch: إعادة إطلاق Zyra Care من قراءة الويبسايت والسوق لحد أول قرار Kill/Scale وتحويلها لعناصر شغل\"': اعتماد ← عناصر شغل\n  - 'button \"رفض خطة خطة Relaunch: إعادة إطلاق Zyra Care من قراءة الويبسايت والسوق لحد أول قرار Kill/Scale\"': رفض\n  - heading \"AI Alerts — تنبيهات تحتاج انتباهك\" [level=2]\n  - paragraph:\n    - text: 🧩 المدخلات الأساسية ناقصة (50%) — أي تحليل أو قرار Kill/Scale قبل اكتمالها يبقى Provisional.\n    - button \"أكمل المدخلات\"\n  - paragraph:\n    - text: \"📡 تنبيه منافس — سوق اليوريا الصيدلي (Hayah/Skinova/Melano/Alejon): أربعة منافسين صيدليين يبيعون منتجات يوريا لجلد الوزة بتركيزات 10–20% وأسعار 199–439 EGP — راجع تنبيه التمييز: ZYRA عندها 25% بـ 360 EGP.\"\n    - button \"افتح متابعة السوق\"\n  - heading \"خط الشغل الكامل — من المنافس لحد Kill/Scale\" [level=2]\n  - text: 1. دراسة المنافسين (Website + Meta Library + TikTok Library) 2. تحقق السوق والمنتج (Validation Triad) 3. استخراج الزوايا والهوكات 4. إنتاج الكرييتيف + فحص Validator 5. بناء وهيكلة الحملة (3:2:2 / Tiers) 6. الإطلاق كقرار معتمد من المالك 7. متابعة الأداء + تشخيص Funnel 8. قرار KILL / ITERATE / SCALE (Task D) 9. تسجيل النتيجة والتعلم\n  - heading \"دورة العمل الإلزامية — 8 مراحل لكل مهمة\" [level=2]\n  - text: 1. UNDERSTAND 2. RETRIEVE 3. PLAN 4. EXECUTE 5. CRITIQUE 6. VALIDATE 7. REVISE 8. DELIVER & LEARN\n  - heading \"بروتوكولات الطوارئ — PART 12 Playbooks\" [level=2]\n  - article:\n    - heading \"🚨 أزمة COD / انهيار التسليم\" [level=3]\n    - paragraph: أوقف أي SCALE فوراً، راجع WhatsApp Confirmation % وDelivery % من المدخلات الأساسية، شخّص RTO حسب المنطقة، واعرض خطة على المالك قبل أي تغيير ميزانية.\n  - article:\n    - heading \"🚨 تعليق حساب إعلاني\" [level=3]\n    - paragraph: لا تحاول الالتفاف. وثّق سبب التعليق، راجع الـ Validator على آخر كرييتيف، وجهّز ملف الاستئناف — التنفيذ الخارجي بموافقة المالك فقط.\n  - article:\n    - heading \"🚨 نفاد مخزون منتج Hero\" [level=3]\n    - paragraph: علّم المنتج في المدخلات الأساسية، أوقف مقترحات SCALE الخاصة به عبر Approvals، وحوّل الميزانية المقترحة لمنتج بديل موثق فقط بعد اعتماد.\n  - article:\n    - heading \"🚨 حرب أسعار منافسين\" [level=3]\n    - paragraph: سجّل ملاحظة سوق بمصدر وتاريخ من Ads Library/الويبسايت، لا ترد بسعر أو خصم بدون طلب اعتماد Discount صريح من المالك.\n  - heading \"حراسة التنفيذ — Human Control\" [level=2]\n  - paragraph:\n    - text: \"ممنوع أي تنفيذ خارجي بدون موافقة المالك الصريحة: لا نشر، لا رسائل عملاء، لا تغيير ميزانيات أو أسعار أو خصومات، لا إيقاف أو إطلاق حملات. كل إجراء خارجي يمر أولاً على\"\n    - button \"صندوق الاعتمادات\"\n    - text: ويتسجل في سجل التنفيذ بقيم Before/After.\n  - text: VERIFIED ZYRA PROVEN HYPOTHESIS ESTIMATED UNKNOWN OUTDATED",
+  "document_text": {
+    "path": "/home/hatch/workspace/ts-spaces/zyra-marketing-intelligence-agent/audits/2026-11-18T20-32-39Z-934498158/document-text.txt",
+    "chars": 5820,
+    "truncated": false
+  },
+  "audit_session_id": "4e27d8e8-d539-4ec6-a9ac-54f538d92658",
+  "readiness": {
+    "desktop": {
+      "settled": true,
+      "settle_ms": 2147,
+      "in_flight": 0,
+      "network_idle": true,
+      "retried": false
+    },
+    "mobile": {
+      "settled": true,
+      "settle_ms": 2180,
+      "in_flight": 0,
+      "network_idle": true,
+      "retried": false
+    }
+  },
+  "color_scheme": {
+    "declared": "light",
+    "media_dependent": null,
+    "dark_frame": false
+  },
+  "mobile_ms": 3575.434805,
+  "cold_launch_ms": 868.284951,
+  "desktop_ms": 3768.1654689999996,
+  "browser_launches": 1,
+  "audit_path": "shared-concurrent",
+  "diagnostics": {
+    "audit_path": "shared-concurrent",
+    "concurrent_ran": true,
+    "concurrent_desktop_retry": false,
+    "concurrent_mobile_retry": false,
+    "shared_launch_failed": false,
+    "nav_retries": 0,
+    "settle_retries": 0
+  }
+}
