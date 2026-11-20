@@ -13,3 +13,5 @@ _Messages may arrive from 06:30 to 21:30 local time. Timing preferences guide co
 ## How
 
 _Format wishes: one brief line, a card stack, a full page when it needs one, a particular tone._
+
+- Drafts Ahmed forwards to someone else (e.g. to the designer) must be plain natural Egyptian Arabic in his own voice — no markdown formatting at all, no bold/italics markers. Confirmed 2026-11-19 («دا اسلوبي», «مش عايز الكتابه تبقا مايله»).
