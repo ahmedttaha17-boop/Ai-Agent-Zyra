@@ -1,0 +1,299 @@
+{
+ "gates": {
+  "target_cpp": 160,
+  "scale_ceiling": 180,
+  "break_even_cpp": 275,
+  "contribution_per_delivered": 381,
+  "net_delivery": 0.72
+ },
+ "runs": [
+  {
+   "daily_budget": 500,
+   "days": 7,
+   "cpm": 110,
+   "scenarios": {
+    "ضعيف": {
+     "impressions_per_day": 4545,
+     "orders_per_day": 0.7,
+     "placed_cpp": 687,
+     "orders_in_period": 5,
+     "net_contribution_after_ads": -2103,
+     "verdict": "LOSS ZONE"
+    },
+    "متوسط": {
+     "impressions_per_day": 4545,
+     "orders_per_day": 1.9,
+     "placed_cpp": 262,
+     "orders_in_period": 13,
+     "net_contribution_after_ads": 166,
+     "verdict": "ABOVE CEILING, BELOW BREAK-EVEN"
+    },
+    "قوي": {
+     "impressions_per_day": 4545,
+     "orders_per_day": 3.5,
+     "placed_cpp": 145,
+     "orders_in_period": 24,
+     "net_contribution_after_ads": 3134,
+     "verdict": "SCALE ZONE"
+    }
+   },
+   "cpm_band": "CPM عادي ~110"
+  },
+  {
+   "daily_budget": 500,
+   "days": 7,
+   "cpm": 170,
+   "scenarios": {
+    "ضعيف": {
+     "impressions_per_day": 2941,
+     "orders_per_day": 0.5,
+     "placed_cpp": 1062,
+     "orders_in_period": 3,
+     "net_contribution_after_ads": -2596,
+     "verdict": "LOSS ZONE"
+    },
+    "متوسط": {
+     "impressions_per_day": 2941,
+     "orders_per_day": 1.2,
+     "placed_cpp": 405,
+     "orders_in_period": 9,
+     "net_contribution_after_ads": -1128,
+     "verdict": "LOSS ZONE"
+    },
+    "قوي": {
+     "impressions_per_day": 2941,
+     "orders_per_day": 2.2,
+     "placed_cpp": 224,
+     "orders_in_period": 16,
+     "net_contribution_after_ads": 792,
+     "verdict": "ABOVE CEILING, BELOW BREAK-EVEN"
+    }
+   },
+   "cpm_band": "CPM ذروة وايت فرايداي ~170"
+  },
+  {
+   "daily_budget": 500,
+   "days": 7,
+   "cpm": 90,
+   "scenarios": {
+    "ضعيف": {
+     "impressions_per_day": 5556,
+     "orders_per_day": 0.9,
+     "placed_cpp": 562,
+     "orders_in_period": 6,
+     "net_contribution_after_ads": -1793,
+     "verdict": "LOSS ZONE"
+    },
+    "متوسط": {
+     "impressions_per_day": 5556,
+     "orders_per_day": 2.3,
+     "placed_cpp": 214,
+     "orders_in_period": 16,
+     "net_contribution_after_ads": 981,
+     "verdict": "ABOVE CEILING, BELOW BREAK-EVEN"
+    },
+    "قوي": {
+     "impressions_per_day": 5556,
+     "orders_per_day": 4.2,
+     "placed_cpp": 118,
+     "orders_in_period": 30,
+     "net_contribution_after_ads": 4608,
+     "verdict": "SCALE ZONE"
+    }
+   },
+   "cpm_band": "CPM ديسمبر ~90"
+  },
+  {
+   "daily_budget": 1000,
+   "days": 7,
+   "cpm": 110,
+   "scenarios": {
+    "ضعيف": {
+     "impressions_per_day": 9091,
+     "orders_per_day": 1.5,
+     "placed_cpp": 687,
+     "orders_in_period": 10,
+     "net_contribution_after_ads": -4207,
+     "verdict": "LOSS ZONE"
+    },
+    "متوسط": {
+     "impressions_per_day": 9091,
+     "orders_per_day": 3.8,
+     "placed_cpp": 262,
+     "orders_in_period": 27,
+     "net_contribution_after_ads": 332,
+     "verdict": "ABOVE CEILING, BELOW BREAK-EVEN"
+    },
+    "قوي": {
+     "impressions_per_day": 9091,
+     "orders_per_day": 6.9,
+     "placed_cpp": 145,
+     "orders_in_period": 48,
+     "net_contribution_after_ads": 6267,
+     "verdict": "SCALE ZONE"
+    }
+   },
+   "cpm_band": "CPM عادي ~110"
+  },
+  {
+   "daily_budget": 1000,
+   "days": 7,
+   "cpm": 170,
+   "scenarios": {
+    "ضعيف": {
+     "impressions_per_day": 5882,
+     "orders_per_day": 0.9,
+     "placed_cpp": 1062,
+     "orders_in_period": 7,
+     "net_contribution_after_ads": -5193,
+     "verdict": "LOSS ZONE"
+    },
+    "متوسط": {
+     "impressions_per_day": 5882,
+     "orders_per_day": 2.5,
+     "placed_cpp": 405,
+     "orders_in_period": 17,
+     "net_contribution_after_ads": -2256,
+     "verdict": "LOSS ZONE"
+    },
+    "قوي": {
+     "impressions_per_day": 5882,
+     "orders_per_day": 4.5,
+     "placed_cpp": 224,
+     "orders_in_period": 31,
+     "net_contribution_after_ads": 1585,
+     "verdict": "ABOVE CEILING, BELOW BREAK-EVEN"
+    }
+   },
+   "cpm_band": "CPM ذروة وايت فرايداي ~170"
+  },
+  {
+   "daily_budget": 1000,
+   "days": 7,
+   "cpm": 90,
+   "scenarios": {
+    "ضعيف": {
+     "impressions_per_day": 11111,
+     "orders_per_day": 1.8,
+     "placed_cpp": 562,
+     "orders_in_period": 12,
+     "net_contribution_after_ads": -3586,
+     "verdict": "LOSS ZONE"
+    },
+    "متوسط": {
+     "impressions_per_day": 11111,
+     "orders_per_day": 4.7,
+     "placed_cpp": 214,
+     "orders_in_period": 33,
+     "net_contribution_after_ads": 1961,
+     "verdict": "ABOVE CEILING, BELOW BREAK-EVEN"
+    },
+    "قوي": {
+     "impressions_per_day": 11111,
+     "orders_per_day": 8.4,
+     "placed_cpp": 118,
+     "orders_in_period": 59,
+     "net_contribution_after_ads": 9215,
+     "verdict": "SCALE ZONE"
+    }
+   },
+   "cpm_band": "CPM ديسمبر ~90"
+  },
+  {
+   "daily_budget": 2000,
+   "days": 7,
+   "cpm": 110,
+   "scenarios": {
+    "ضعيف": {
+     "impressions_per_day": 18182,
+     "orders_per_day": 2.9,
+     "placed_cpp": 687,
+     "orders_in_period": 20,
+     "net_contribution_after_ads": -8414,
+     "verdict": "LOSS ZONE"
+    },
+    "متوسط": {
+     "impressions_per_day": 18182,
+     "orders_per_day": 7.6,
+     "placed_cpp": 262,
+     "orders_in_period": 53,
+     "net_contribution_after_ads": 664,
+     "verdict": "ABOVE CEILING, BELOW BREAK-EVEN"
+    },
+    "قوي": {
+     "impressions_per_day": 18182,
+     "orders_per_day": 13.8,
+     "placed_cpp": 145,
+     "orders_in_period": 97,
+     "net_contribution_after_ads": 12534,
+     "verdict": "SCALE ZONE"
+    }
+   },
+   "cpm_band": "CPM عادي ~110"
+  },
+  {
+   "daily_budget": 2000,
+   "days": 7,
+   "cpm": 170,
+   "scenarios": {
+    "ضعيف": {
+     "impressions_per_day": 11765,
+     "orders_per_day": 1.9,
+     "placed_cpp": 1062,
+     "orders_in_period": 13,
+     "net_contribution_after_ads": -10385,
+     "verdict": "LOSS ZONE"
+    },
+    "متوسط": {
+     "impressions_per_day": 11765,
+     "orders_per_day": 4.9,
+     "placed_cpp": 405,
+     "orders_in_period": 35,
+     "net_contribution_after_ads": -4512,
+     "verdict": "LOSS ZONE"
+    },
+    "قوي": {
+     "impressions_per_day": 11765,
+     "orders_per_day": 8.9,
+     "placed_cpp": 224,
+     "orders_in_period": 63,
+     "net_contribution_after_ads": 3169,
+     "verdict": "ABOVE CEILING, BELOW BREAK-EVEN"
+    }
+   },
+   "cpm_band": "CPM ذروة وايت فرايداي ~170"
+  },
+  {
+   "daily_budget": 2000,
+   "days": 7,
+   "cpm": 90,
+   "scenarios": {
+    "ضعيف": {
+     "impressions_per_day": 22222,
+     "orders_per_day": 3.6,
+     "placed_cpp": 562,
+     "orders_in_period": 25,
+     "net_contribution_after_ads": -7172,
+     "verdict": "LOSS ZONE"
+    },
+    "متوسط": {
+     "impressions_per_day": 22222,
+     "orders_per_day": 9.3,
+     "placed_cpp": 214,
+     "orders_in_period": 65,
+     "net_contribution_after_ads": 3922,
+     "verdict": "ABOVE CEILING, BELOW BREAK-EVEN"
+    },
+    "قوي": {
+     "impressions_per_day": 22222,
+     "orders_per_day": 16.9,
+     "placed_cpp": 118,
+     "orders_in_period": 118,
+     "net_contribution_after_ads": 18431,
+     "verdict": "SCALE ZONE"
+    }
+   },
+   "cpm_band": "CPM ديسمبر ~90"
+  }
+ ]
+}
