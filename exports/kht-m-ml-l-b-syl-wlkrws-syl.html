@@ -1,0 +1,733 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>خطة معمل الأب سيل والكروس سيل — زيرا كير</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --teal: #013835;
+        --teal-2: #0a4a45;
+        --ivory: #FFF2E9;
+        --paper: #FFF9F4;
+        --card: #FFFFFF;
+        --terra: #E2915A;
+        --terra-dark: #C4743B;
+        --ink: #1E2A28;
+        --ink-soft: #4A5A56;
+        --line: #EBD9C8;
+        --good: #1F7A4D;
+        --good-bg: #E4F3EA;
+        --new: #8A5A12;
+        --new-bg: #FBEDD2;
+        --warn: #B3402A;
+        --warn-bg: #FBE7DF;
+        --shadow: 0 10px 30px rgba(1, 56, 53, .10);
+        --sidebar-w: 300px;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --teal: #0B3D39;
+          --teal-2: #12524C;
+          --ivory: #221812;
+          --paper: #1A1512;
+          --card: #262019;
+          --terra: #E2915A;
+          --terra-dark: #EFA76F;
+          --ink: #F5E9DC;
+          --ink-soft: #C9BBA9;
+          --line: #453729;
+          --good: #7FD6A4;
+          --good-bg: #1E3A2B;
+          --new: #F2C877;
+          --new-bg: #43351B;
+          --warn: #F0A08C;
+          --warn-bg: #46241B;
+          --shadow: 0 10px 30px rgba(0, 0, 0, .35);
+        }
+      }
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      @media (prefers-reduced-motion: reduce) {
+        html { scroll-behavior: auto; }
+        * { transition: none !important; }
+      }
+      body {
+        margin: 0;
+        font-family: "Cairo", "Segoe UI", Tahoma, sans-serif;
+        background: var(--paper);
+        color: var(--ink);
+        line-height: 1.8;
+        font-size: 16px;
+      }
+      button, [role="button"], select, summary, a.btn, input:not([type="checkbox"], [type="radio"]) { min-height: 2.25rem; }
+
+      /* ---------- Sidebar (right, collapsible) ---------- */
+      .sidebar {
+        position: fixed;
+        top: 0; right: 0; bottom: 0;
+        width: var(--sidebar-w);
+        max-width: 86vw;
+        background: var(--teal);
+        color: #F7EDE2;
+        z-index: 60;
+        display: flex;
+        flex-direction: column;
+        padding: 4.6rem 1.1rem 1.2rem;
+        transform: translateX(0);
+        transition: transform .32s ease, visibility 0s;
+        visibility: visible;
+        overflow-y: auto;
+      }
+      .sidebar.closed {
+        transform: translateX(105%);
+        visibility: hidden;
+        pointer-events: none;
+        transition: transform .32s ease, visibility 0s linear .32s;
+      }
+      .sidebar .brand {
+        font-weight: 900;
+        font-size: 1.05rem;
+        color: #fff;
+        line-height: 1.5;
+        padding-bottom: .9rem;
+        border-bottom: 1px solid rgba(255,255,255,.18);
+        margin-bottom: 1rem;
+      }
+      .sidebar .brand small {
+        display: block;
+        font-weight: 600;
+        font-size: .8rem;
+        color: var(--terra);
+      }
+      .sidebar nav { display: flex; flex-direction: column; gap: .3rem; }
+      .sidebar nav a {
+        color: #EFE3D4;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: .95rem;
+        padding: .55rem .7rem;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        gap: .55rem;
+        min-height: 2.5rem;
+      }
+      .sidebar nav a:hover, .sidebar nav a:focus-visible { background: rgba(255,255,255,.10); color: #fff; }
+      .sidebar nav a .n {
+        background: var(--terra);
+        color: #20130A;
+        font-weight: 800;
+        font-size: .78rem;
+        min-width: 1.55rem; height: 1.55rem;
+        border-radius: 50%;
+        display: inline-flex; align-items: center; justify-content: center;
+        flex: none;
+      }
+      .sidebar .side-note {
+        margin-top: auto;
+        padding-top: 1rem;
+        border-top: 1px solid rgba(255,255,255,.18);
+        font-size: .82rem;
+        color: #D8C9B4;
+        line-height: 1.7;
+      }
+      .scrim {
+        position: fixed; inset: 0;
+        background: rgba(10, 20, 18, .45);
+        z-index: 55;
+        opacity: 0; pointer-events: none;
+        transition: opacity .3s ease;
+      }
+      .scrim.on { opacity: 1; pointer-events: auto; }
+
+      /* Toggle button (floating) */
+      .toggle {
+        position: fixed;
+        top: 1rem; right: 1rem;
+        z-index: 70;
+        width: 3rem; height: 3rem;
+        border: none;
+        border-radius: 50%;
+        background: var(--terra);
+        color: #20130A;
+        cursor: pointer;
+        display: flex; align-items: center; justify-content: center;
+        box-shadow: 0 6px 18px rgba(1,56,53,.28);
+      }
+      .toggle svg { width: 1.35rem; height: 1.35rem; }
+      .toggle:focus-visible { outline: 3px solid var(--teal); outline-offset: 2px; }
+
+      /* ---------- Layout ---------- */
+      .wrap {
+        margin-right: var(--sidebar-w);
+        transition: margin .32s ease;
+      }
+      body.sb-closed .wrap { margin-right: 0; }
+      .content {
+        max-width: 920px;
+        margin: 0 auto;
+        padding: 2rem 1.25rem 3.5rem;
+      }
+      @media (max-width: 860px) {
+        .wrap { margin-right: 0 !important; }
+        .content { padding-top: 4.6rem; }
+      }
+      @media (min-width: 861px) {
+        .scrim { display: none; }
+      }
+
+      /* ---------- Hero ---------- */
+      .hero {
+        background: var(--teal);
+        color: #F7EDE2;
+        border-radius: 22px;
+        padding: 2.2rem 1.8rem 2rem;
+        box-shadow: var(--shadow);
+        position: relative;
+        overflow: hidden;
+      }
+      .hero::after {
+        content: "";
+        position: absolute;
+        inset-inline-start: -70px; bottom: -90px;
+        width: 260px; height: 260px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(226,145,90,.45), rgba(226,145,90,0) 70%);
+        pointer-events: none;
+      }
+      .hero h1 {
+        margin: 0 0 .7rem;
+        font-size: clamp(1.7rem, 4.6vw, 2.5rem);
+        font-weight: 900;
+        color: #fff;
+        line-height: 1.35;
+      }
+      .hero .goal {
+        margin: 0;
+        font-size: clamp(1rem, 2.6vw, 1.15rem);
+        font-weight: 600;
+        max-width: 44rem;
+        position: relative; z-index: 1;
+      }
+      .hero .goal b { color: var(--terra); }
+      .hero .meta {
+        margin-top: 1.1rem;
+        display: flex; flex-wrap: wrap; gap: .5rem;
+        position: relative; z-index: 1;
+      }
+      .hero .meta span {
+        background: rgba(255,255,255,.10);
+        border: 1px solid rgba(255,255,255,.22);
+        border-radius: 999px;
+        padding: .3rem .85rem;
+        font-size: .85rem; font-weight: 600;
+      }
+
+      /* ---------- Sections ---------- */
+      section { margin-top: 3rem; scroll-margin-top: 1.5rem; }
+      .sec-head { display: flex; align-items: baseline; gap: .8rem; margin-bottom: 1.1rem; }
+      .sec-head .num {
+        background: var(--terra);
+        color: #20130A;
+        font-weight: 900;
+        width: 2.3rem; height: 2.3rem;
+        border-radius: 12px;
+        display: inline-flex; align-items: center; justify-content: center;
+        font-size: 1.05rem; flex: none;
+        align-self: center;
+      }
+      h2 { margin: 0; font-size: clamp(1.3rem, 3.4vw, 1.65rem); font-weight: 800; color: var(--teal); line-height: 1.45; }
+      @media (prefers-color-scheme: dark) { h2 { color: var(--terra); } }
+      .sec-intro { color: var(--ink-soft); margin: 0 0 1.2rem; font-weight: 500; }
+      h3.group-title {
+        margin: 1.8rem 0 .9rem;
+        font-size: 1.12rem; font-weight: 800;
+        color: var(--ink);
+        display: flex; align-items: center; gap: .6rem;
+      }
+      h3.group-title::before {
+        content: ""; width: .55rem; height: 1.4rem;
+        background: var(--terra); border-radius: 4px; flex: none;
+      }
+      h3.group-title:first-of-type { margin-top: .4rem; }
+
+      .card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 1.2rem 1.3rem;
+        box-shadow: var(--shadow);
+      }
+      .grid { display: grid; gap: 1rem; }
+      .grid.two { grid-template-columns: 1fr 1fr; }
+      @media (max-width: 700px) { .grid.two { grid-template-columns: 1fr; } }
+
+      /* Status pills */
+      .pill {
+        display: inline-block;
+        font-size: .78rem; font-weight: 800;
+        border-radius: 999px;
+        padding: .15rem .7rem;
+        white-space: nowrap;
+      }
+      .pill.live { background: var(--good-bg); color: var(--good); }
+      .pill.new { background: var(--new-bg); color: var(--new); }
+      .pill.top { background: var(--terra); color: #20130A; }
+      .pill.care { background: var(--warn-bg); color: var(--warn); }
+
+      /* Type cards */
+      .type-card h4 {
+        margin: 0 0 .35rem;
+        font-size: 1.05rem; font-weight: 800;
+        display: flex; flex-wrap: wrap; align-items: center; gap: .55rem;
+      }
+      .type-card h4 .t-num {
+        color: var(--terra-dark);
+        font-weight: 900;
+      }
+      .type-card p { margin: .3rem 0; color: var(--ink-soft); font-weight: 500; }
+      .type-card .where {
+        font-size: .85rem; font-weight: 700; color: var(--ink);
+      }
+      .type-card .example {
+        margin-top: .6rem;
+        background: var(--ivory);
+        border-radius: 10px;
+        padding: .65rem .9rem;
+        font-weight: 600;
+        font-size: .95rem;
+      }
+      .type-card .example b { color: var(--terra-dark); }
+
+      /* Status lists */
+      ul.clean { margin: 0; padding: 0; list-style: none; display: grid; gap: .8rem; }
+      ul.clean li {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: .95rem 1.15rem;
+        font-weight: 500;
+        box-shadow: var(--shadow);
+      }
+      ul.clean li b { font-weight: 800; }
+      .missing-num {
+        display: inline-flex; align-items: center; justify-content: center;
+        background: var(--warn-bg); color: var(--warn);
+        font-weight: 900; border-radius: 50%;
+        width: 1.6rem; height: 1.6rem; margin-left: .45rem;
+        font-size: .9rem; vertical-align: middle;
+      }
+
+      /* Method */
+      .cycle {
+        display: flex; flex-wrap: wrap; align-items: center; gap: .5rem;
+        margin-bottom: 1.2rem;
+      }
+      .cycle .step {
+        background: var(--teal); color: #fff;
+        font-weight: 800; font-size: .92rem;
+        border-radius: 999px; padding: .4rem 1rem;
+      }
+      .cycle .arrow { color: var(--terra-dark); font-weight: 900; }
+      ul.rules { margin: 0; padding-right: 1.2rem; display: grid; gap: .55rem; }
+      ul.rules li { font-weight: 500; }
+      ul.rules li b { font-weight: 800; }
+
+      /* Phases */
+      .phase { position: relative; padding-right: 2.2rem; }
+      .phase::before {
+        content: ""; position: absolute;
+        right: .72rem; top: 2.4rem; bottom: -.6rem;
+        width: 2px; background: var(--line);
+      }
+      .phase:last-child::before { display: none; }
+      .phase .dot {
+        position: absolute; right: 0; top: .9rem;
+        width: 1.5rem; height: 1.5rem; border-radius: 50%;
+        background: var(--terra); color: #20130A;
+        font-weight: 900; font-size: .85rem;
+        display: flex; align-items: center; justify-content: center;
+        z-index: 1;
+      }
+      .phase + .phase { margin-top: 1rem; }
+      .phase h4 { margin: 0 0 .4rem; font-size: 1.05rem; font-weight: 800; display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
+      .phase p { margin: .25rem 0; color: var(--ink-soft); font-weight: 500; }
+      .phase p b { color: var(--ink); }
+      .measure {
+        display: inline-block; margin-top: .35rem;
+        background: var(--ivory); border-radius: 8px;
+        padding: .3rem .8rem; font-size: .9rem; font-weight: 700;
+      }
+
+      /* Experiment cards */
+      .exp h4 { margin: 0 0 .5rem; font-size: 1.02rem; font-weight: 800; display: flex; gap: .55rem; align-items: center; flex-wrap: wrap; }
+      .exp h4 .code {
+        background: var(--teal); color: #fff;
+        border-radius: 8px; padding: .1rem .6rem;
+        font-size: .85rem; font-weight: 900;
+      }
+      .exp p { margin: .3rem 0; font-weight: 500; color: var(--ink-soft); }
+      .exp p b { color: var(--ink); }
+      .exp .win { color: var(--good); font-weight: 700; }
+      .exp .kill { color: var(--warn); font-weight: 700; }
+
+      /* Table -> stacked on mobile */
+      table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: 16px; overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--line); }
+      th, td { padding: .85rem 1rem; text-align: right; border-bottom: 1px solid var(--line); font-weight: 600; }
+      th { background: var(--teal); color: #fff; font-weight: 800; }
+      tr:last-child td { border-bottom: none; }
+      td.price { font-weight: 900; white-space: nowrap; }
+      .trap td { background: var(--warn-bg); }
+      .free td { background: var(--good-bg); }
+      .tag { font-size: .8rem; font-weight: 800; }
+      .tag.bad { color: var(--warn); }
+      .tag.ok { color: var(--good); }
+      @media (max-width: 640px) {
+        table, thead, tbody, tr, th, td { display: block; }
+        thead { display: none; }
+        tr { border-bottom: 2px solid var(--line); padding: .5rem 0; }
+        td { border-bottom: none; padding: .35rem 1rem; }
+        td.price { font-size: 1.05rem; }
+      }
+      .fixed-rules {
+        margin-top: 1rem;
+        background: var(--teal); color: #F7EDE2;
+        border-radius: 14px; padding: 1rem 1.2rem;
+        font-weight: 600;
+      }
+      .fixed-rules b { color: var(--terra); }
+
+      footer {
+        margin-top: 3.5rem;
+        padding-top: 1.4rem;
+        border-top: 1px solid var(--line);
+        color: var(--ink-soft);
+        font-size: .9rem; font-weight: 500;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <button class="toggle" id="sbToggle" aria-label="فتح أو قفل القائمة الجانبية" aria-expanded="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true">
+        <path d="M4 7h16M4 12h16M4 17h10" />
+      </svg>
+    </button>
+    <div class="scrim" id="scrim"></div>
+
+    <aside class="sidebar" id="sidebar" aria-label="فهرس الخطة">
+      <div class="brand">
+        معمل الأب سيل والكروس سيل
+        <small>زيرا كير — خطة تنفيذية</small>
+      </div>
+      <nav>
+        <a href="#status"><span class="n">1</span> الوضع الحالي</a>
+        <a href="#types"><span class="n">2</span> أنواع الأب سيل والكروس سيل</a>
+        <a href="#method"><span class="n">3</span> ازاي المعمل بيشتغل</a>
+        <a href="#phases"><span class="n">4</span> خطة التنفيذ بالترتيب</a>
+        <a href="#experiments"><span class="n">5</span> أول 5 تجارب جاهزة</a>
+        <a href="#numbers"><span class="n">6</span> أرقام مرجعية</a>
+      </nav>
+      <div class="side-note">
+        كل جنيه زيادة في قيمة الأوردر بيتجاب من غير جنيه إعلانات زيادة — وبيوسّع مساحة الـ CPP المسموحة قبل كسر التعادل (275 ج).
+      </div>
+    </aside>
+
+    <div class="wrap">
+      <main class="content">
+        <div class="hero">
+          <h1>خطة معمل الأب سيل والكروس سيل — زيرا كير</h1>
+          <p class="goal">الهدف: كل جنيه زيادة في قيمة الأوردر بيتجاب من غير جنيه إعلانات زيادة، وبيوسّع مساحة الـ <b>CPP</b> المسموحة قبل كسر التعادل (<b>275 ج</b>).</p>
+          <div class="meta">
+            <span>أب سيل + كروس سيل + «كمّلي روتينك»</span>
+            <span>10 أنواع في 3 مجموعات</span>
+            <span>4 مراحل تنفيذ</span>
+            <span>5 تجارب جاهزة للانطلاق</span>
+          </div>
+        </div>
+
+        <!-- ===== Section 1 ===== -->
+        <section id="status">
+          <div class="sec-head"><span class="num">1</span><h2>الوضع الحالي</h2></div>
+          <p class="sec-intro">بعد تصحيح المالك — 19 نوفمبر 2026.</p>
+          <div class="card" style="margin-bottom:1rem;">
+            <p style="margin:0; font-weight:600;">
+              <span class="pill live">موجود وشغال</span>
+              &nbsp;على الموقع دلوقتي: أب سيل + كروس سيل + «كمّلي روتينك» على <b>صفحة المنتج</b>.
+            </p>
+          </div>
+          <p style="font-weight:800; margin:0 0 .8rem;">الغائب — 3 حاجات:</p>
+          <ul class="clean">
+            <li><span class="missing-num">1</span><b>الكارت:</b> مفيش أي أب سيل أو كروس سيل أو شريط عتبة جواه.</li>
+            <li><span class="missing-num">2</span><b>ما بعد الطلب:</b> التأكيد وصفحة الشكر مش مستغلين بيعيًا.</li>
+            <li><span class="missing-num">3</span><b>القياس:</b> لسه مفيش تتبع لمعدل الإضافة (Attach Rate) ولا طلب شراء تجريبي اتعمل.</li>
+          </ul>
+        </section>
+
+        <!-- ===== Section 2 ===== -->
+        <section id="types">
+          <div class="sec-head"><span class="num">2</span><h2>أنواع الأب سيل والكروس سيل عندنا</h2></div>
+          <p class="sec-intro">10 أنواع في 3 مجموعات — كل نوع بتعريفه ومكانه ومثال حقيقي من أسعار زيرا وحالته دلوقتي.</p>
+
+          <h3 class="group-title">المجموعة أ — على الموقع قبل الشراء</h3>
+          <div class="grid two">
+            <div class="card type-card">
+              <h4><span class="t-num">1</span> كروس سيل «كمّلي روتينك» <span class="pill live">موجود</span></h4>
+              <p class="where">المكان: صفحة المنتج</p>
+              <p>اقتراح القطع المكملة للروتين أو المنتج اللي العميلة بتتفرج عليه.</p>
+              <div class="example">الحالة: <b>شغال على الموقع</b> — وهو الأساس اللي هنبني عليه باقي الأنواع.</div>
+            </div>
+            <div class="card type-card">
+              <h4><span class="t-num">2</span> أب سيل الترقية للروتين الكامل <span class="pill new">جديد</span></h4>
+              <p class="where">المكان: صفحة السينجل</p>
+              <p>اللي على صفحة سينجل يتشجع يكمل للروتين الكامل بدل ما يشتري قطعة لوحدها.</p>
+              <div class="example">سكراب جلد الوزة <b>440 ج</b> أو كريم السيلوليت <b>350 ج</b> ← الروتين الكامل <b>799 ج</b>: «القطعة لوحدها خطوة.. الروتين الكامل هو اللي بيكمل النتيجة».</div>
+            </div>
+            <div class="card type-card">
+              <h4><span class="t-num">3</span> كروس سيل الروتين التاني <span class="pill new">جديد</span></h4>
+              <p class="where">المكان: صفحة المنتج + صفحة الشكر</p>
+              <p>مشترية روتين تتشجع تضيف الروتين التاني.</p>
+              <div class="example">السلتين مع بعض <b>1,598 ج</b> والشحن مجاني.</div>
+            </div>
+            <div class="card type-card">
+              <h4><span class="t-num">4</span> أب سيل عتبة الشحن المجاني <span class="pill top">الأولوية القصوى</span></h4>
+              <p class="where">المكان: داخل الكارت</p>
+              <p>شريط تقدم «فاضلك X ج وتاخدي الشحن مجاني» + إضافات مهندسة بسعر حقيقي.</p>
+              <div class="example">بادي سبلاش <b>240 ج</b> (799+240=<b>1,039</b>) أو زبدة الشيا <b>250 ج</b> (799+250=<b>1,049</b>). وبيعالج فخ السلة 799 + مخمرية 199 = <b>998 ج</b> (تحت العتبة بـ 2 ج).</div>
+            </div>
+          </div>
+
+          <h3 class="group-title">المجموعة ب — في الكارت وعند الدفع</h3>
+          <div class="grid two">
+            <div class="card type-card">
+              <h4><span class="t-num">5</span> كروس سيل الكارت <span class="pill new">جديد</span></h4>
+              <p class="where">المكان: داخل الكارت — اقتراح واحد بس</p>
+              <p>اقتراح واحد فقط مناسب لمحتوى السلة، من غير زحمة.</p>
+              <div class="example">سلة فيها روتين سيلوليت ← إضافة مناسبة؛ سلة سينجل ← الترقية للروتين.</div>
+            </div>
+            <div class="card type-card">
+              <h4><span class="t-num">6</span> أب سيل ما بعد الشراء <span class="pill new">جديد</span></h4>
+              <p class="where">المكان: صفحة الشكر وقبل الشحن</p>
+              <p>إضافة واحدة بسعرها الحقيقي تُدمج في نفس الأوردر قبل ما يتشحن، من غير ما العميلة تعمل أوردر جديد.</p>
+              <div class="example">عرض واحد بس بعد إتمام الطلب — يُضاف لنفس الشحنة.</div>
+            </div>
+          </div>
+
+          <h3 class="group-title">المجموعة ج — بعد الطلب (ميزة زيرا الخاصة)</h3>
+          <div class="grid two">
+            <div class="card type-card">
+              <h4><span class="t-num">7</span> أب سيل التأكيد قبل الشحن <span class="pill top">مميز لزيرا</span></h4>
+              <p class="where">المكان: واتساب / مكالمة التأكيد</p>
+              <p>خطوة التأكيد اللي عندنا أصلًا قبل الشحن تتحول لنقطة بيع ناعمة.</p>
+              <div class="example">عرض إضافة <b>واحدة بس</b> بسعرها الحقيقي، محاولة واحدة، من غير أي ضغط، وبسكربت مكتوب مسبقًا.</div>
+            </div>
+            <div class="card type-card">
+              <h4><span class="t-num">8</span> داون سيل إنقاذ السلة المتروكة <span class="pill new">جديد</span></h4>
+              <p class="where">المكان: متابعة واتساب</p>
+              <p>سلة روتين اتسابت ← متابعة تعرض السينجل البطل كبداية أخف، بصدق ومن غير خصومات وهمية.</p>
+              <div class="example">لوشن يوريا 25% <b>360 ج</b> لجلد الوزة / كريم السيلوليت <b>350 ج</b>.</div>
+            </div>
+            <div class="card type-card">
+              <h4><span class="t-num">9</span> أب سيل الكمية للاستهلاكيات <span class="pill care">جديد بحذر</span></h4>
+              <p class="where">المكان: صفحة المنتج / الكارت</p>
+              <p>للقطع الاستهلاكية: قطعة تانية للبيت أو هدية — يشتغل بس لما يكون منطقي استهلاكيًا.</p>
+              <div class="example">الصابون <b>175 ج</b>، زبدة الشيا <b>250 ج</b>.</div>
+            </div>
+            <div class="card type-card">
+              <h4><span class="t-num">10</span> أب سيل الولاء وإعادة الطلب <span class="pill new">جديد</span></h4>
+              <p class="where">المكان: بعد التسليم</p>
+              <p>تفعيل «الشحن مجاني من تاني أوردر» + تذكير إعادة طلب الروتين حوالين يوم 35، لأن الروتين استهلاكي وبيخلص.</p>
+              <div class="example">الولاء هنا مش شعار — هو عرض إعادة الطلب نفسه.</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== Section 3 ===== -->
+        <section id="method">
+          <div class="sec-head"><span class="num">3</span><h2>ازاي المعمل بيشتغل</h2></div>
+          <p class="sec-intro">المنهجية — دورة ثابتة لكل تجربة، من الفرضية لحد التوثيق.</p>
+          <div class="cycle" aria-label="دورة التجربة">
+            <span class="step">فرضية</span><span class="arrow">←</span>
+            <span class="step">بطاقة تجربة</span><span class="arrow">←</span>
+            <span class="step">تنفيذ</span><span class="arrow">←</span>
+            <span class="step">قياس</span><span class="arrow">←</span>
+            <span class="step">قرار: اعتماد / تعديل / قتل</span><span class="arrow">←</span>
+            <span class="step">توثيق في بنك الأنماط</span>
+          </div>
+          <div class="card">
+            <ul class="rules">
+              <li><b>بطاقة التجربة فيها:</b> النوع والمكان، العرض بالظبط، الشريحة، المقياس الأساسي (معدل الإضافة Attach Rate وقيمة الأوردر AOV)، والحراس.</li>
+              <li><b>تجربة واحدة بس على كل سطح في نفس الوقت</b> — الكارت تجربة، وصفحة المنتج تجربة.</li>
+              <li><b>حراس ميتكسرش:</b> معدل التحويل الأساسي ميقلش، ونسبة تأكيد وتسليم الـ COD متتضررش — أب سيل يرفع AOV ويكسر التسليم = خسارة مش مكسب.</li>
+              <li><b>صدق كامل:</b> أسعار الإضافات هي أسعارها الحقيقية، مفيش خصومات أو ندرة وهمية أبدًا.</li>
+              <li><b>ملحوظة الحجم:</b> حجم أوردرات الإطلاق صغير (ميزانية اختبار 600 ج/يوم)، فالتجارب الأولى بتتقاس تسلسلي قبل/بعد باتجاه واضح، والتقسيم النصفي الصارم ييجي لما الحجم يكبر.</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- ===== Section 4 ===== -->
+        <section id="phases">
+          <div class="sec-head"><span class="num">4</span><h2>خطة التنفيذ بالترتيب</h2></div>
+          <p class="sec-intro">4 مراحل — كل مرحلة: هنعمل ايه، ومين المسؤول، وهنقيس ايه.</p>
+
+          <div class="phase">
+            <span class="dot">0</span>
+            <div class="card">
+              <h4>مرحلة 0 — قبل إطلاق الأحد</h4>
+              <p><b>هنعمل:</b> طلب شراء تجريبي (إثبات قياس البكسل والـ UTM) + تفعيل شريط عتبة الشحن وإضافات العتبة في الكارت.</p>
+              <p><b>المسؤول:</b> أحمد (إعدادات شوبيفاي/الثيم) وأنا (النصوص والقواعد).</p>
+              <span class="measure">القياس: خط أساس AOV قبل أي تجربة</span>
+            </div>
+          </div>
+
+          <div class="phase">
+            <span class="dot">1</span>
+            <div class="card">
+              <h4>مرحلة 1 — أسبوع الإطلاق</h4>
+              <p><b>هنعمل:</b> توجيه صفحة المنتج للسلال المهندسة (1,039 / 1,049) + أب سيل ترقية السينجل للروتين.</p>
+              <span class="measure">القياس: Attach Rate وأوامر فوق العتبة كنسبة من الكل</span>
+            </div>
+          </div>
+
+          <div class="phase">
+            <span class="dot">2</span>
+            <div class="card">
+              <h4>مرحلة 2 — بعد أول 30–50 أوردر</h4>
+              <p><b>هنعمل:</b> سكربت أب سيل التأكيد (بينضاف لبنك الردود وسكربتات التأكيد) + كروس سيل الروتين التاني.</p>
+              <span class="measure">القياس: نسبة قبول الإضافة في التأكيد من غير ما نسبة التأكيد نفسها تنزل</span>
+            </div>
+          </div>
+
+          <div class="phase">
+            <span class="dot">3</span>
+            <div class="card">
+              <h4>مرحلة 3 — ديسمبر</h4>
+              <p><b>هنعمل:</b> ما بعد الشراء في صفحة الشكر + داون سيل التخلي + فلو الولاء وإعادة الطلب (يوم 35).</p>
+              <span class="measure">القياس: إيراد إضافي لكل 100 أوردر ونسبة إعادة الطلب</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== Section 5 ===== -->
+        <section id="experiments">
+          <div class="sec-head"><span class="num">5</span><h2>أول 5 تجارب جاهزة</h2></div>
+          <p class="sec-intro">بطاقات مختصرة — فرضية، وشرط نجاح، وشرط قتل واضح لكل تجربة.</p>
+          <div class="grid two">
+            <div class="card exp">
+              <h4><span class="code">U1</span> عتبة الكارت</h4>
+              <p><b>الفرضية:</b> شريط التقدم + إضافتين مهندستين هيرفعوا نسبة الأوردرات اللي بتعدي 1,000 ج.</p>
+              <p class="win">النجاح: ارتفاع واضح في نسبة الأوردرات فوق العتبة وAOV.</p>
+              <p class="kill">القتل: لو معدل إتمام الشراء نزل.</p>
+            </div>
+            <div class="card exp">
+              <h4><span class="code">U2</span> توجيه صفحة المنتج</h4>
+              <p><b>الفرضية:</b> إبراز سلة «روتين + سبلاش = 1,039 وشحن مجاني» هيرفع الـ Attach.</p>
+              <p class="win">النجاح: Attach Rate بيتحرك من الصفر تقريبًا لأي نسبة ثابتة قابلة للقياس.</p>
+            </div>
+            <div class="card exp">
+              <h4><span class="code">U3</span> ترقية السينجل</h4>
+              <p><b>الفرضية:</b> عرض الروتين الكامل في صفحة السينجل هيحول جزء من مشتريات القطعة الواحدة لروتين.</p>
+              <p class="win">النجاح: نسبة من مبيعات السينجل بتتحول لروتينات.</p>
+            </div>
+            <div class="card exp">
+              <h4><span class="code">U4</span> أب سيل التأكيد</h4>
+              <p><b>الفرضية:</b> عرض إضافة واحدة في التأكيد بيتقبل بنسبة معقولة من غير ما يضر التأكيد.</p>
+              <p class="win">النجاح: قبول إضافات من غير أي نزول في نسبة التأكيد/التسليم.</p>
+            </div>
+            <div class="card exp">
+              <h4><span class="code">U5</span> الروتين التاني</h4>
+              <p><b>الفرضية:</b> مشترية الروتين الأول هي أدفى جمهور للروتين التاني (سلة 1,598).</p>
+              <p class="win">النجاح: أوردرات روتينين بتظهر وبتتكرر.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== Section 6 ===== -->
+        <section id="numbers">
+          <div class="sec-head"><span class="num">6</span><h2>أرقام مرجعية — جدول السلال</h2></div>
+          <p class="sec-intro">السلال المهندسة حوالين عتبة الشحن المجاني (1,000 ج).</p>
+          <table>
+            <thead>
+              <tr><th>السلة</th><th>الإجمالي</th><th>الشحن</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>روتين لوحده</td>
+                <td class="price">799 ج</td>
+                <td>+ شحن 75 = <b>874 ج</b></td>
+              </tr>
+              <tr class="trap">
+                <td>روتين + مخمرية</td>
+                <td class="price">998 ج</td>
+                <td><span class="tag bad">فخ: تحت العتبة بـ 2 ج — الشحن بيضيع</span></td>
+              </tr>
+              <tr class="free">
+                <td>روتين + سبلاش</td>
+                <td class="price">1,039 ج</td>
+                <td><span class="tag ok">شحن مجاني</span></td>
+              </tr>
+              <tr class="free">
+                <td>روتين + شيا</td>
+                <td class="price">1,049 ج</td>
+                <td><span class="tag ok">شحن مجاني</span></td>
+              </tr>
+              <tr class="free">
+                <td>الروتينين مع بعض</td>
+                <td class="price">1,598 ج</td>
+                <td><span class="tag ok">شحن مجاني</span></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="fixed-rules">
+            قواعد ثابتة: الشحن <b>75 ج</b> ومجاني من <b>1,000 ج</b> — والشحن مجاني من <b>تاني أوردر</b> كسياسة ولاء.
+          </div>
+        </section>
+
+        <footer>
+          خطة تنفيذية — زيرا كير — اتعملت 19 نوفمبر 2026، والتجارب هتتسجل في معمل العروض بالمساحة وتتقاس على بيانات حقيقية بعد الإطلاق.
+        </footer>
+      </main>
+    </div>
+
+    <script>
+      (function () {
+        var sidebar = document.getElementById('sidebar');
+        var toggle = document.getElementById('sbToggle');
+        var scrim = document.getElementById('scrim');
+        var isMobile = function () { return window.innerWidth <= 860; };
+
+        function setOpen(open) {
+          sidebar.classList.toggle('closed', !open);
+          document.body.classList.toggle('sb-closed', !open);
+          toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+          if (isMobile()) scrim.classList.toggle('on', open);
+          else scrim.classList.remove('on');
+        }
+        // Start: open on desktop, closed on mobile.
+        setOpen(!isMobile());
+
+        toggle.addEventListener('click', function () {
+          setOpen(sidebar.classList.contains('closed'));
+        });
+        scrim.addEventListener('click', function () { setOpen(false); });
+        sidebar.querySelectorAll('nav a').forEach(function (a) {
+          a.addEventListener('click', function () { if (isMobile()) setOpen(false); });
+        });
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape' && isMobile()) setOpen(false);
+        });
+        var lastMobile = isMobile();
+        window.addEventListener('resize', function () {
+          var nowMobile = isMobile();
+          if (nowMobile !== lastMobile) { lastMobile = nowMobile; setOpen(!nowMobile); }
+        });
+      })();
+    </script>
+  </body>
+</html>

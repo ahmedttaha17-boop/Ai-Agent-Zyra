@@ -1,0 +1,587 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="light dark" />
+<link rel="icon" href="data:," />
+<title>دروس الفيديوهين — كورس زيرا</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --teal:#013835;
+  --teal-2:#0a4a46;
+  --ivory:#FFF2E9;
+  --ivory-2:#FFE8D6;
+  --terra:#E2915A;
+  --terra-d:#CF7F45;
+  --ink:#1a2422;
+  --muted:#5c6b68;
+  --card:#ffffff;
+  --line:#ecd9c8;
+  --soft:#fdf6ef;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --ivory:#0d2220;
+    --ivory-2:#12302d;
+    --card:#14312e;
+    --soft:#102825;
+    --ink:#f3e9df;
+    --muted:#b9c6c2;
+    --line:#2a4a46;
+    color-scheme: dark;
+  }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:'Cairo',system-ui,sans-serif;background:var(--ivory);color:var(--ink);line-height:1.75}
+a{color:inherit}
+button,[role="button"]{min-height:2.25rem}
+
+/* sidebar */
+:root{--sbw:min(300px,78vw)}
+.page{transition:margin .3s ease}
+@media (min-width:861px){
+  html.sb-open .page{margin-inline-start:var(--sbw)}
+}
+.sb-toggle{position:fixed;top:14px;inset-inline-start:14px;z-index:80;width:48px;height:48px;border-radius:14px;border:none;background:var(--terra-d);color:#fff;cursor:pointer;display:grid;place-items:center;box-shadow:0 8px 20px rgba(0,0,0,.28);transition:inset-inline-start .3s ease}
+@media (min-width:861px){html.sb-open .sb-toggle{inset-inline-start:calc(var(--sbw) + 14px)}}
+@media (max-width:860px){html.sb-open .sb-toggle{inset-inline-start:calc(var(--sbw) + 10px)}}
+.sb-toggle svg{width:24px;height:24px;display:block}
+.sb-toggle .ic-close{display:none}
+html.sb-open .sb-toggle .ic-close{display:block}
+html.sb-open .sb-toggle .ic-menu{display:none}
+.sb-backdrop{position:fixed;inset:0;background:rgba(8,18,16,.52);z-index:65;opacity:0;pointer-events:none;transition:opacity .3s ease}
+@media (max-width:860px){html.sb-open .sb-backdrop{opacity:1;pointer-events:auto}}
+.sidebar{position:fixed;top:0;inset-inline-start:0;width:var(--sbw);height:100dvh;background:var(--teal);color:#fff;z-index:70;transform:translateX(110%);visibility:hidden;pointer-events:none;transition:transform .3s ease,visibility 0s .3s;display:flex;flex-direction:column;box-shadow:0 0 32px rgba(1,56,53,.35)}
+html.sb-open .sidebar{transform:translateX(0);visibility:visible;pointer-events:auto;transition:transform .3s ease,visibility 0s 0s}
+.sidebar.sb-gone{display:none}
+.sb-head{padding:20px 18px 14px;border-bottom:1px solid rgba(255,255,255,.14)}
+.sb-brand{font-weight:900;font-size:16.5px;display:flex;align-items:center;gap:8px;line-height:1.5}
+.brand-dot{width:10px;height:10px;border-radius:50%;background:var(--terra);display:inline-block;flex:0 0 auto}
+.sb-sub{font-size:13px;color:#cfe0dc;margin-top:5px}
+.sb-progress{padding:14px 18px 16px;border-bottom:1px solid rgba(255,255,255,.14)}
+.sb-progress-label{display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:800;color:#ffd9b8;margin-bottom:8px}
+.sb-track{height:8px;border-radius:99px;background:rgba(255,255,255,.15);overflow:hidden}
+#sbBar{height:100%;width:0%;background:linear-gradient(90deg,var(--terra),var(--terra-d));transition:width .15s linear}
+.sb-nav{overflow-y:auto;padding:12px 12px 26px;flex:1}
+.sb-nav a{text-decoration:none;display:block;border-radius:10px}
+.sb-unit{font-weight:800;font-size:14.5px;padding:9px 10px;margin-top:12px;background:rgba(255,255,255,.07);color:#fff}
+.sb-unit:first-child{margin-top:0}
+.sb-unit:hover{background:rgba(255,255,255,.15)}
+.sb-unit.active{background:var(--terra);color:#1a1208}
+.sb-lesson{font-size:13.5px;color:#d7e6e3;padding:6px 12px;margin-top:2px;line-height:1.6}
+.sb-lesson:hover{background:rgba(255,255,255,.1)}
+.sb-lesson.active{background:rgba(226,145,90,.3);color:#ffd9b8;font-weight:700}
+
+/* hero */
+.hero{background:var(--teal);color:#fff;padding:80px 16px 0;overflow:hidden}
+.hero-in{max-width:1080px;margin:0 auto}
+.hero-kicker{display:inline-flex;align-items:center;gap:8px;background:rgba(226,145,90,.18);border:1px solid rgba(226,145,90,.5);color:#ffd9b8;font-weight:800;font-size:13px;padding:6px 14px;border-radius:999px}
+.hero h1{font-size:clamp(30px,6vw,52px);line-height:1.25;font-weight:900;margin:18px 0 10px}
+.hero h1 em{font-style:normal;color:var(--terra)}
+.hero-sub{font-size:clamp(16px,2.6vw,19px);color:#d7e6e3;max-width:720px;margin:0}
+.hero-meta{display:flex;gap:10px;flex-wrap:wrap;margin:22px 0 28px}
+.meta-chip{background:#fff;color:var(--teal);border-radius:14px;padding:10px 16px;min-width:110px}
+.meta-chip b{display:block;font-size:22px;line-height:1.1}
+.meta-chip span{font-size:13px;color:#4a5d5a;font-weight:700}
+.src-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding-bottom:34px}
+.src-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:18px;padding:18px}
+.src-card .num{font-size:12px;font-weight:900;color:var(--terra);letter-spacing:.5px}
+.src-card h3{margin:6px 0 6px;font-size:17px;line-height:1.5}
+.src-card p{margin:0;color:#c8d8d5;font-size:14px}
+.src-card a{display:inline-flex;margin-top:12px;min-height:38px;align-items:center;padding:6px 14px;border-radius:999px;background:var(--terra);color:#201305;text-decoration:none;font-weight:800;font-size:14px}
+.note-strip{background:#7a3f1d;color:#ffe9d6;border-radius:12px;padding:10px 14px;font-size:13.5px;margin-top:14px;grid-column:1/-1}
+
+/* layout */
+.wrap{max-width:1080px;margin:0 auto;padding:28px 16px 20px}
+.toc{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px;margin-top:-6px}
+.toc h2{margin:0 0 4px;font-size:19px}
+.toc p{margin:0 0 14px;color:var(--muted);font-size:14px}
+.toc-list{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.toc-item{text-decoration:none;border:1.5px solid var(--line);border-radius:14px;padding:12px;background:var(--soft);display:block}
+.toc-item b{display:block;font-size:15px}
+.toc-item span{font-size:12.5px;color:var(--muted);font-weight:700}
+.toc-item:hover{border-color:var(--terra)}
+
+/* units */
+.unit{margin-top:44px;scroll-margin-top:16px}
+.unit-head{display:flex;gap:16px;align-items:flex-start;background:var(--teal);color:#fff;border-radius:20px;padding:22px}
+.unit-no{flex:0 0 auto;width:56px;height:56px;border-radius:16px;background:var(--terra);color:#221305;display:grid;place-items:center;font-weight:900;font-size:24px}
+.unit-head h2{margin:0;font-size:clamp(21px,3.5vw,27px);line-height:1.4}
+.unit-head p{margin:4px 0 0;color:#cfe0dc;font-size:14.5px}
+.unit-head .from{margin-inline-start:auto;flex:0 0 auto;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);font-size:12.5px;font-weight:800;padding:6px 12px;border-radius:999px;white-space:nowrap}
+
+.lesson{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px;margin-top:14px;scroll-margin-top:16px}
+.lesson-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;border-bottom:2px dashed var(--line);padding-bottom:14px;margin-bottom:16px}
+.lesson-num{background:var(--teal);color:#fff;font-weight:900;font-size:14px;padding:5px 13px;border-radius:999px}
+.lesson h3{margin:0;font-size:20px;line-height:1.5}
+.lesson-grid{display:grid;grid-template-columns:1.15fr 1fr 1fr;gap:14px}
+.part{border-radius:14px;padding:16px}
+.part h4{margin:0 0 8px;font-size:14px;font-weight:900;display:flex;align-items:center;gap:7px}
+.part p{margin:0;font-size:15px}
+.part p + p{margin-top:8px}
+.part.lesson-part{background:var(--soft);border:1px solid var(--line)}
+.part.why{background:#eef6f3;border:1px solid #cfe3dc}
+@media (prefers-color-scheme: dark){.part.why{background:#163a36;border-color:#2a4a46}}
+.part.zyra{background:#fdf0e2;border:1.5px solid var(--terra)}
+.part.zyra h4{color:#8a4a1e}
+@media (prefers-color-scheme: dark){.part.zyra h4{color:var(--terra)}}
+.ico{width:26px;height:26px;border-radius:8px;display:inline-grid;place-items:center;font-size:14px;flex:0 0 auto}
+.lesson-part .ico{background:var(--teal);color:#fff}
+.why .ico{background:#2f7a6e;color:#fff}
+.zyra .ico{background:var(--terra-d);color:#fff}
+
+.takeaway{margin-top:14px;background:var(--teal);color:#fff;border-radius:20px;padding:22px;display:flex;gap:16px}
+.takeaway .badge{flex:0 0 auto;background:var(--terra);color:#221305;font-weight:900;border-radius:12px;padding:8px 14px;height:fit-content;font-size:14px}
+.takeaway h3{margin:0 0 6px;font-size:18px}
+.takeaway p{margin:0;color:#d9e7e4;font-size:15px}
+.takeaway ul{margin:8px 0 0;padding-inline-start:20px;color:#d9e7e4;font-size:15px}
+
+/* rejected */
+.reject-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+.reject-card{background:var(--card);border:1px solid var(--line);border-top:5px solid #b3402e;border-radius:16px;padding:18px}
+.reject-card h3{margin:0 0 6px;font-size:17px}
+.reject-card p{margin:0;color:var(--muted);font-size:14.5px}
+.important-note{margin-top:14px;background:#fdf0e2;border:1.5px dashed var(--terra-d);border-radius:16px;padding:18px;font-size:15px}
+.important-note b{color:#8a4a1e}
+@media (prefers-color-scheme: dark){.important-note b{color:var(--terra)}}
+
+/* checklist */
+.checklist{background:var(--card);border:2px solid var(--teal);border-radius:20px;padding:22px;margin-top:14px}
+.check-item{display:flex;gap:14px;align-items:flex-start;padding:13px 4px;border-bottom:1px solid var(--line)}
+.check-item:last-child{border-bottom:none}
+.check-box{flex:0 0 auto;width:30px;height:30px;border-radius:9px;background:var(--teal);color:#fff;display:grid;place-items:center;font-weight:900;font-size:16px;margin-top:2px}
+.check-item b{display:block;font-size:16px}
+.check-item span{color:var(--muted);font-size:14px}
+
+footer{margin-top:44px;background:var(--teal);color:#cfe0dc;padding:28px 16px 40px;text-align:center;font-size:14px}
+footer b{color:#fff}
+.to-top{position:fixed;bottom:18px;inset-inline-start:18px;z-index:55;width:48px;height:48px;border-radius:50%;border:none;background:var(--terra-d);color:#fff;font-size:20px;cursor:pointer;box-shadow:0 8px 20px rgba(0,0,0,.25);display:none;align-items:center;justify-content:center}
+.to-top.show{display:flex}
+
+@media (max-width:820px){
+  .src-grid{grid-template-columns:1fr}
+  .toc-list{grid-template-columns:1fr 1fr}
+  .lesson-grid{grid-template-columns:1fr}
+  .reject-grid{grid-template-columns:1fr}
+  .unit-head{flex-wrap:wrap}
+  .unit-head .from{margin-inline-start:0}
+}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}.sidebar,.page,.sb-toggle,.sb-backdrop{transition:none}}
+</style>
+<script>if(window.innerWidth>860){document.documentElement.classList.add('sb-open')}</script>
+</head>
+<body>
+<button class="sb-toggle" id="sbToggle" aria-label="فتح أو قفل القائمة الجانبية" aria-expanded="false" aria-controls="sidebar">
+  <svg class="ic-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+  <svg class="ic-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+</button>
+<div class="sb-backdrop" id="sbBackdrop"></div>
+
+<aside class="sidebar" id="sidebar" aria-label="فهرس الكورس">
+  <div class="sb-head">
+    <div class="sb-brand"><span class="brand-dot"></span> كورس زيرا · دروس الفيديوهين</div>
+    <div class="sb-sub">Fraser Cottrell — Fraggell · ٥ وحدات · ١٧ درسًا</div>
+  </div>
+  <div class="sb-progress">
+    <div class="sb-progress-label"><span>تقدم القراءة</span><span id="sbPct">٠٪</span></div>
+    <div class="sb-track"><div id="sbBar"></div></div>
+  </div>
+  <nav class="sb-nav" id="sbNav">
+    <a class="sb-unit" href="#top">بداية الكورس</a>
+    <a class="sb-unit" href="#unit1">الوحدة ١ · عقلية الاستاتيك</a>
+    <a class="sb-lesson" href="#lesson1">١ · الاستاتيك أسرع وأرخص اختبار رسائل</a>
+    <a class="sb-lesson" href="#lesson2">٢ · الكرييتف هو اللي بيستهدف</a>
+    <a class="sb-lesson" href="#lesson3">٣ · قاعدة نصف الثانية واختبار التمرير</a>
+    <a class="sb-lesson" href="#lesson4">٤ · هرمية العين من فوق لتحت</a>
+    <a class="sb-lesson" href="#lesson5">٥ · الرسالة أهم من الصورة</a>
+    <a class="sb-unit" href="#unit2">الوحدة ٢ · البحث والكوبي</a>
+    <a class="sb-lesson" href="#lesson6">٦ · مكدس البحث قبل أي كوبي</a>
+    <a class="sb-lesson" href="#lesson7">٧ · اتكلم بلغة العميلة — مش لغة البراند</a>
+    <a class="sb-lesson" href="#lesson8">٨ · انسخ الصيغ — مش المنافسين</a>
+    <a class="sb-lesson" href="#lesson9">٩ · كل إعلان يعدي على عين بشرية</a>
+    <a class="sb-unit" href="#unit3">الوحدة ٣ · القياس والأخطاء</a>
+    <a class="sb-lesson" href="#lesson10">١٠ · CTR هو المؤشر الأول للاستاتيك</a>
+    <a class="sb-lesson" href="#lesson11">١١ · الأخطاء القاتلة الثلاثة</a>
+    <a class="sb-unit" href="#unit4">الوحدة ٤ · الفيديوهات الفائزة</a>
+    <a class="sb-lesson" href="#lesson12">١٢ · الكاستينج هو الهوك المرآة</a>
+    <a class="sb-lesson" href="#lesson13">١٣ · صيغة «٥ أسباب»</a>
+    <a class="sb-lesson" href="#lesson14">١٤ · إعلان المؤسس محرك ثقة</a>
+    <a class="sb-lesson" href="#lesson15">١٥ · الـ Mini VSL التعليمي</a>
+    <a class="sb-lesson" href="#lesson16">١٦ · قواسم كل الفائزين</a>
+    <a class="sb-unit" href="#unit5">الوحدة ٥ · التفاعل بصدق</a>
+    <a class="sb-lesson" href="#lesson17">١٧ · الكومنتات وقود توزيع</a>
+    <a class="sb-unit" href="#rejected">اللي قررنا مناخدوش — وليه</a>
+    <a class="sb-unit" href="#checklist">قائمة الفحص الأخيرة</a>
+  </nav>
+</aside>
+
+<div class="page" id="top">
+
+<section class="hero">
+  <div class="hero-in">
+    <span class="hero-kicker">📚 كورس داخلي — زيرا كير</span>
+    <h1>دروس الفيديوهين<br>اللي <em>غيّرت طريقة شغلنا</em></h1>
+    <p class="hero-sub">كل اللي اتعلمناه من فيديوهين Fraser Cottrell (وكالة Fraggell) — مرتب ككورس: الدرس نفسه، وليه بيشتغل، وإحنا هنطبقه إزاي في زيرا. عشان تاخد بالك منها وانت بتراجع أي بريف أو إعلان.</p>
+    <div class="hero-meta">
+      <div class="meta-chip"><b>٥</b><span>وحدات</span></div>
+      <div class="meta-chip"><b>١٧</b><span>درسًا مرقمًا</span></div>
+      <div class="meta-chip"><b>٥٤</b><span>دقيقة فيديو مدروسة</span></div>
+      <div class="meta-chip"><b>٨</b><span>بنود فحص أخيرة</span></div>
+    </div>
+    <div class="src-grid">
+      <article class="src-card">
+        <div class="num">الفيديو الأول · ٩ نوفمبر ٢٠٢٦ · ٣٤:٤٧ دقيقة</div>
+        <h3>Static Ads Masterclass: My Complete Process for 2027</h3>
+        <p>نظامه الكامل لصناعة الاستاتيكس: من البحث والكوبي لحد القياس والأخطاء القاتلة. مصدر الوحدات ١ و٢ و٣.</p>
+        <a href="https://www.youtube.com/watch?v=MIC7ZAvqjnE" target="_blank" rel="noopener">شاهد على يوتيوب ↗</a>
+      </article>
+      <article class="src-card">
+        <div class="num">الفيديو الثاني · ١٤ نوفمبر ٢٠٢٦ · ١٩:١٣ دقيقة</div>
+        <h3>The Most Valuable Ad Creative Training You'll Ever Watch</h3>
+        <p>تشريح إعلانات فيديو فائزة حقيقية: الكاستينج، صيغة «٥ أسباب»، إعلان المؤسس، والـ Mini VSL. مصدر الوحدتين ٤ و٥.</p>
+        <a href="https://www.youtube.com/watch?v=zEuzTJI-lSI" target="_blank" rel="noopener">شاهد على يوتيوب ↗</a>
+      </article>
+      <div class="note-strip">⚠️ <b>ملحوظة مصدر:</b> الفيديو الأول مدعوم إعلانيًا بأداة Poppy AI — الدروس والعملية صالحة ومدروسة، لكن توصية الأداة نفسها تجارية ومش معتمدة عندنا (التفاصيل في قسم «اللي قررنا مناخدوش»).</div>
+    </div>
+  </div>
+</section>
+
+<main class="wrap">
+
+  <section class="toc" aria-label="خريطة الكورس">
+    <h2>خريطة الكورس</h2>
+    <p>اضغط على أي وحدة تنط ليها على طول. وشريط التقدم في القائمة الجانبية بيوريك وصلت لفين في القراءة.</p>
+    <div class="toc-list">
+      <a class="toc-item" href="#unit1"><b>الوحدة ١</b><span>عقلية الاستاتيك · دروس ١–٥</span></a>
+      <a class="toc-item" href="#unit2"><b>الوحدة ٢</b><span>البحث والكوبي · دروس ٦–٩</span></a>
+      <a class="toc-item" href="#unit3"><b>الوحدة ٣</b><span>القياس والأخطاء · دروس ١٠–١١</span></a>
+      <a class="toc-item" href="#unit4"><b>الوحدة ٤</b><span>الفيديوهات الفائزة · دروس ١٢–١٦</span></a>
+      <a class="toc-item" href="#unit5"><b>الوحدة ٥</b><span>التفاعل بصدق · درس ١٧</span></a>
+    </div>
+  </section>
+
+  <!-- ============ UNIT 1 ============ -->
+  <section class="unit" id="unit1">
+    <div class="unit-head">
+      <div class="unit-no">١</div>
+      <div><h2>عقلية الاستاتيك</h2><p>ليه الاستاتيك هو نقطة البداية، وإزاي بيوقف السكرول في نصف ثانية.</p></div>
+      <span class="from">من الفيديو الأول</span>
+    </div>
+
+    <article class="lesson" id="lesson1">
+      <div class="lesson-top"><span class="lesson-num">درس ١</span><h3>الاستاتيك أسرع وأرخص اختبار رسائل</h3></div>
+      <div class="lesson-grid">
+        <div class="part lesson-part"><h4><span class="ico">◆</span> الدرس</h4><p>فيديو UGC واحد قد يأخذ أسابيع: كتابة وتمثيل وشحن وتصوير ومونتاج. في نفس المدة تقدر تنتج عشرات الاستاتيكس وتختبر بيها رسائل كتير. الرسالة اللي تكسب في الاستاتيك هي اللي تستاهل تتحول بعدها لفيديو.</p></div>
+        <div class="part why"><h4><span class="ico">؟</span> ليه بيشتغل</h4><p>لأنك بتفصل «الرسالة» عن «الإنتاج»: بتختبر الفكرة والزاوية بأرخص شكل ممكن قبل ما تصرف وقت وفلوس على الشكل الغالي. الفشل في الاستاتيك رخيص، والفشل في الفيديو غالي.</p></div>
+        <div class="part zyra"><h4><span class="ico">★</span> عندنا في زيرا</h4><p>اختبار رسائل جلد الوزة (KP) بالاستاتيكس أولًا، ومفيش رسالة بتتصعد لفيديو إلا لو أثبتت نفسها استاتيك.</p></div>
+      </div>
+    </article>
+
+    <article class="lesson" id="lesson2">
+      <div class="lesson-top"><span class="lesson-num">درس ٢</span><h3>الكرييتف هو اللي بيستهدف — مش إعدادات الحساب</h3></div>
+      <div class="lesson-grid">
+        <div class="part lesson-part"><h4><span class="ico">◆</span> الدرس</h4><p>الإعلان نفسه هو اللي بيحدد مين هيشوفه ويتفاعل معاه: الهوك والكلام والصورة بيجذبوا الشريحة الصح وبيبعدوا غيرها، أكتر من أي إعدادات استهداف جوه الحساب.</p></div>
+        <div class="part why"><h4><span class="ico">؟</span> ليه بيشتغل</h4><p>الخوارزمية بتتعلم من مين وقف وتفاعل وكمل: لو الإعلان بيكلم شريحة واضحة بمشكلتها، الخوارزمية بتلاقي شبهها. الإعلان العام بيوصل لجمهور عام.</p></div>
+        <div class="part zyra"><h4><span class="ico">★</span> عندنا في زيرا</h4><p>حملة برود واحدة لكل روتين، وكل التأهيل والاستهداف محمّل على الهوك والزاوية — مش على تقسيم أد سيتس.</p></div>
+      </div>
+    </article>
+
+    <article class="lesson" id="lesson3">
+      <div class="lesson-top"><span class="lesson-num">درس ٣</span><h3>قاعدة نصف الثانية واختبار التمرير</h3></div>
+      <div class="lesson-grid">
+        <div class="part lesson-part"><h4><span class="ico">◆</span> الدرس</h4><p>عندك نصف ثانية بس توقف إبهام العميلة وهي بتسكرول. أسباب الوقوف تلاتة: عنوان يعكس شخصيتها هي، أو صورة غريبة تثير فضول، أو شكل نيتيف كأنه منشور من صديقة مش إعلان.</p></div>
+        <div class="part why"><h4><span class="ico">؟</span> ليه بيشتغل</h4><p>القرار بيحصل قبل القراءة أصلًا — في اللمحة. لو المشكلة والمنتج متعرفوش في اللمحة دي، الإعلان خسر قبل ما يبدأ، مهما كان الكوبي اللي تحت حلو.</p></div>
+        <div class="part zyra"><h4><span class="ico">★</span> عندنا في زيرا</h4><p>اختبار نصف الثانية بقى بند رسمي في بوابة البريف: التصميم يتشاف بحجم موبايل كأنه في فيد، ولو المشكلة والمنتج متعرفوش في لمحة — يترفض قبل الإنتاج.</p></div>
+      </div>
+    </article>
+
+    <article class="lesson" id="lesson4">
+      <div class="lesson-top"><span class="lesson-num">درس ٤</span><h3>هرمية العين من فوق لتحت</h3></div>
+      <div class="lesson-grid">
+        <div class="part lesson-part"><h4><span class="ico">◆</span> الدرس</h4><p>رتّب الاستاتيك زي ما العين بتمشي: المعلومة الثقيلة (الهوك أو العرض) فوق، المنتج في النص، والـ CTA — ومعاه فايدة واضحة — في الآخر تحت.</p></div>
+        <div class="part why"><h4><span class="ico">؟</span> ليه بيشتغل</h4><p>العين بتقرأ بترتيب ثابت وسريع. لو أهم معلومة مدفونة تحت أو الـ CTA من غير فايدة، العميلة بتوصل لآخر التصميم من غير ما تكون فهمت ليه تكمل أو تدوس.</p></div>
+        <div class="part zyra"><h4><span class="ico">★</span> عندنا في زيرا</h4><p>الهرمية دي هي هيكل بريفاتنا: هوك المشكلة كبير فوق، المنتجات واضحة في النص، وتحت سطر واحد بس — السعر والـ CTA من غير زحمة.</p></div>
+      </div>
+    </article>
+
+    <article class="lesson" id="lesson5">
+      <div class="lesson-top"><span class="lesson-num">درس ٥</span><h3>الرسالة أهم من الصورة</h3></div>
+      <div class="lesson-grid">
+        <div class="part lesson-part"><h4><span class="ico">◆</span> الدرس</h4><p>إعلانات نيتيف رخيصة الشكل بتكسب إعلانات مصقولة وغالية، لأن القصة والرسالة بييجوا أولًا — الصورة خادمة للرسالة مش العكس.</p></div>
+        <div class="part why"><h4><span class="ico">؟</span> ليه بيشتغل</h4><p>العميلة بتوقف عشان «ده بيكلمني أنا» مش عشان التصميم حلو. والشكل النيتيف بيعدي دفاع «ده إعلان» اللي بيخلي الناس تكمل سكرول.</p></div>
+        <div class="part zyra"><h4><span class="ico">★</span> عندنا في زيرا</h4><p>عشان كده الهوك عندنا دايمًا صورة مشكلة حقيقية أو موقف من حياة العميلة — مش منتج لامع على خلفية نضيفة وخلاص.</p></div>
+      </div>
+    </article>
+
+    <div class="takeaway"><span class="badge">الخلاصة</span><div><h3>خلاصة الوحدة ١</h3><p>الاستاتيك هو مختبر الرسائل الرخيص والسريع. الإعلان بيستهدف بهوكه، وبيتحاسب في نصف ثانية، وبيترتب من فوق لتحت — والرسالة دايمًا قبل الشكل.</p></div></div>
+  </section>
+
+  <!-- ============ UNIT 2 ============ -->
+  <section class="unit" id="unit2">
+    <div class="unit-head">
+      <div class="unit-no">٢</div>
+      <div><h2>البحث والكوبي</h2><p>الكوبي الفائز مش بيتكتب من دماغك — بيتحصد من كلام العملاء نفسه.</p></div>
+      <span class="from">من الفيديو الأول</span>
+    </div>
+
+    <article class="lesson" id="lesson6">
+      <div class="lesson-top"><span class="lesson-num">درس ٦</span><h3>مكدس البحث قبل أي كوبي</h3></div>
+      <div class="lesson-grid">
+        <div class="part lesson-part"><h4><span class="ico">◆</span> الدرس</h4><p>قبل ما تكتب سطر واحد، اجمع أربع طبقات: كتاب البراند، بحث السوق، بحث العميل، وتصدير ريفيوهات العملاء كاملة. الريفيوهات كنز: منها بتطلع الشخصيات والاعتراضات والعبارات اللي العملاء بيحبوها وبيرددوها.</p></div>
+        <div class="part why"><h4><span class="ico">؟</span> ليه بيشتغل</h4><p>لأن الاعتراض الحقيقي والعبارات الحقيقية موجودة أصلًا عند العملاء — دورك تحصدها مش تخترعها. كوبي مبني على بحث بيجاوب أسئلة العميلة قبل ما تسألها.</p></div>
+        <div class="part zyra"><h4><span class="ico">★</span> عندنا في زيرا</h4><p>المساحة عندنا هي كتاب البراند والبحث مجمّعين: بنك زوايا، وبيانات منافسين، ونظام لغة بحث — والبريف ممنوع يطلع من غير ما يرجع ليهم.</p></div>
+      </div>
+    </article>
+
+    <article class="lesson" id="lesson7">
+      <div class="lesson-top"><span class="lesson-num">درس ٧</span><h3>اتكلم بلغة العميلة — مش لغة البراند</h3></div>
+      <div class="lesson-grid">
+        <div class="part lesson-part"><h4><span class="ico">◆</span> الدرس</h4><p>الكوبي الناجح بيردد كلام العملاء نفسه زي ما قالوه. لغة البراند الرسمية والمصطلحات التسويقية بتخسر — لأن العميلة مش بتتكلم كده ولا بتفكر كده.</p></div>
+        <div class="part why"><h4><span class="ico">؟</span> ليه بيشتغل</h4><p>لما العميلة تقرأ كلامها هي، بتحس إن الإعلان فاهمها من جوه. ولما تقرأ لغة شركة، بتحس إن حد بيبيع لها من بره.</p></div>
+        <div class="part zyra"><h4><span class="ico">★</span> عندنا في زيرا</h4><p>المقابل المحلي عندنا هو نظام لغة البحث: عبارات جوجل مصر الحقيقية اللي العميلات بيكتبوها بنفسهم، زائد حصاد أسبوعي من الكومنتات والرسائل والريفيوهات بعد الإطلاق يتحول لعناوين مرشحة.</p></div>
+      </div>
+    </article>
+
+    <article class="lesson" id="lesson8">
+      <div class="lesson-top"><span class="lesson-num">درس ٨</span><h3>انسخ الصيغ — مش المنافسين</h3></div>
+      <div class="lesson-grid">
+        <div class="part lesson-part"><h4><span class="ico">◆</span> الدرس</h4><p>ابنِ ملف صيغ (Swipe File) بأنواع مجربة: العنوان الكبير، إحنا × هما، الريفيو، سؤال/جواب ستوري إنستجرام بشكل نيتيف، رسالة المؤسس، الكولاج، المقتطف الصحفي، قبل/بعد، نداء الفئة، الأرقام والإثبات. الصيغة قابلة لإعادة الاستخدام — إعلان المنافس نفسه لأ.</p></div>
+        <div class="part why"><h4><span class="ico">؟</span> ليه بيشتغل</h4><p>نسخ إعلان منافس بعينه بيخلي العميلة تشوف نفس الإعلان مرتين فتزهق من الاتنين. أما الصيغة فهي هيكل أثبت إنه بيشد الانتباه، والمحتوى اللي جواه بتاعك انت.</p></div>
+        <div class="part zyra"><h4><span class="ico">★</span> عندنا في زيرا</h4><p>بقى عندنا مكتبة صيغ كاملة (حوالي ٥٥ صيغة مرصودة ومخرّطة على روتينينا) وملف ريفرنسز فيه كارت لكل صيغة — وأي بريف صيغة لازم يرجع لكارتها عشان يطلع زيها.</p></div>
+      </div>
+    </article>
+
+    <article class="lesson" id="lesson9">
+      <div class="lesson-top"><span class="lesson-num">درس ٩</span><h3>كل إعلان يعدي على عين بشرية</h3></div>
+      <div class="lesson-grid">
+        <div class="part lesson-part"><h4><span class="ico">◆</span> الدرس</h4><p>مخرجات الـ AI نقطة بداية: تتحرر وتتراجع (امتثال وبراند وصحة معلومات) قبل ما توصل للحساب. مفيش إعلان بيتنشر زي ما طلع من الأداة على طول.</p></div>
+        <div class="part why"><h4><span class="ico">؟</span> ليه بيشتغل</h4><p>لأن أخطاء الـ AI صغيرة وشكلها مقنع: نسبة غلط، ادعاء ممنوع، كلمة مش من لغة البراند. العين البشرية هي آخر خط دفاع قبل ما الخطأ يبقى إعلان مدفوع شايفاه آلاف.</p></div>
+        <div class="part zyra"><h4><span class="ico">★</span> عندنا في زيرا</h4><p>دي بوابة البريف عندنا كأمر دائم: مفيش بريف يطلع إلا متراجع ومتحدد بدقة وفكرته واحدة واضحة — والتصميم النهائي شغل مصمم بشري.</p></div>
+      </div>
+    </article>
+
+    <div class="takeaway"><span class="badge">الخلاصة</span><div><h3>خلاصة الوحدة ٢</h3><p>مفيش كوبي من فراغ: بحث الأول (براند + سوق + عميل + ريفيوهات)، كلام العميلة هو المادة الخام، الصيغ من المكتبة، والمراجعة البشرية قبل أي نشر.</p></div></div>
+  </section>
+
+  <!-- ============ UNIT 3 ============ -->
+  <section class="unit" id="unit3">
+    <div class="unit-head">
+      <div class="unit-no">٣</div>
+      <div><h2>قياس الاستاتيك وأخطاؤه</h2><p>إزاي تقرأ أرقام الاستاتيك صح، وإيه التلات غلطات اللي بتقتله.</p></div>
+      <span class="from">من الفيديو الأول</span>
+    </div>
+
+    <article class="lesson" id="lesson10">
+      <div class="lesson-top"><span class="lesson-num">درس ١٠</span><h3>CTR هو المؤشر الأول للاستاتيك</h3></div>
+      <div class="lesson-grid">
+        <div class="part lesson-part"><h4><span class="ico">◆</span> الدرس</h4><p>وظيفة الاستاتيك إنه ينقل الترافيك للموقع، فمؤشره الأول هو CTR. بعده CPM (إشارة ملاءمة الرسالة والجمهور)، وبعده CPA. التشخيص: CTR ضعيف = جرّب CTA أو عرض أقوى. CPM عالي = راجع الرسالة والاستهداف.</p></div>
+        <div class="part why"><h4><span class="ico">؟</span> ليه بيشتغل</h4><p>لأن كل رقم بيحاسب مرحلة مختلفة: الـ CTR بيحاسب الإعلان نفسه، والـ CPM بيحاسب السوق والتوقيت. لو خلطتهم، هتصلح الكرييتيف وهو سليم، أو تلوم السوق والمشكلة في رسالتك.</p></div>
+        <div class="part zyra"><h4><span class="ico">★</span> عندنا في زيرا</h4><p>بنقرأ CTR الأول في تحليل الإطلاق وبعده CPP على بواباتنا المعروفة: هدف ١٥٠–١٦٠ جنيه، سقف ١٨٠، وكسر التعادل ٢٧٥. وCPM عالي مع CTR كويس في أسبوع الذروة = سوق وتوقيت، مش كرييتيف.</p></div>
+      </div>
+    </article>
+
+    <article class="lesson" id="lesson11">
+      <div class="lesson-top"><span class="lesson-num">درس ١١</span><h3>الأخطاء القاتلة الثلاثة</h3></div>
+      <div class="lesson-grid">
+        <div class="part lesson-part"><h4><span class="ico">◆</span> الدرس</h4><p>تلات غلطات بتقتل أي استاتيك: (١) تقول كل حاجة في إعلان واحد — والحل رسالة واحدة لكل إعلان. (٢) نص صغير وهرمية ضعيفة على الموبايل. (٣) لغة براند بدل لغة عميلة.</p></div>
+        <div class="part why"><h4><span class="ico">؟</span> ليه بيشتغل</h4><p>التلاتة بيضربوا نفس النقطة: انتباه العميلة محدود. إعلان بيقول كل حاجة مش بيقول حاجة، ونص مش بيتقري على الموبايل كأنه مش موجود، ولغة مش لغتها بتخليها تحس إن الكلام مش ليها.</p></div>
+        <div class="part zyra"><h4><span class="ico">★</span> عندنا في زيرا</h4><p>الغلطة الأولى هي «قاعدة الواحد» المقفولة عندنا أصلًا: مشكلة واحدة، زاوية واحدة، رسالة واحدة لكل إعلان — والتانية والتالتة بنود فحص في بوابة البريف.</p></div>
+      </div>
+    </article>
+
+    <div class="takeaway"><span class="badge">الخلاصة</span><div><h3>خلاصة الوحدة ٣</h3><p>شخّص بالترتيب: CTR للإعلان، CPM للسوق، وبعدين CPP للنتيجة. وابتعد عن التلاتة القاتلة: زحمة الرسائل، هرمية ضعيفة، ولغة براند.</p></div></div>
+  </section>
+
+  <!-- ============ UNIT 4 ============ -->
+  <section class="unit" id="unit4">
+    <div class="unit-head">
+      <div class="unit-no">٤</div>
+      <div><h2>الفيديوهات الفائزة</h2><p>تشريح إعلانات فيديو كسبت فعلًا: إيه المشترك بينها، وإيه القوالب الجاهزة منها.</p></div>
+      <span class="from">من الفيديو الثاني</span>
+    </div>
+
+    <article class="lesson" id="lesson12">
+      <div class="lesson-top"><span class="lesson-num">درس ١٢</span><h3>الكاستينج هو الهوك المرآة (Mirror Hook)</h3></div>
+      <div class="lesson-grid">
+        <div class="part lesson-part"><h4><span class="ico">◆</span> الدرس</h4><p>الكرييتور لازم تشبه العميلة المستهدفة شكلًا وصوتًا وبيئة. اختيار الشخصية الصح بيصنع الإعلان الفائز أو بيكسره — قبل الكلام وقبل التصوير.</p></div>
+        <div class="part why"><h4><span class="ico">؟</span> ليه بيشتغل</h4><p>العميلة بتوقف لما تشوف «واحدة زيي». الشبه بيختصر الثقة: لو اللي بتتكلم من عالمها، كلامها بيتسمع كتجربة مش كإعلان.</p></div>
+        <div class="part zyra"><h4><span class="ico">★</span> عندنا في زيرا</h4><p>بقى بند فحص صريح في سجل الكرييتورز — «كاستينج المرآة»: الكرييتور هي الشريحة نفسها (عروسة لزاوية العروسة، أم لزاوية الأم، طالبة لزاوية الطالبة) شكلًا ولهجة وبيئة تصوير.</p></div>
+      </div>
+    </article>
+
+    <article class="lesson" id="lesson13">
+      <div class="lesson-top"><span class="lesson-num">درس ١٣</span><h3>صيغة «٥ أسباب»</h3></div>
+      <div class="lesson-grid">
+        <div class="part lesson-part"><h4><span class="ico">◆</span> الدرس</h4><p>هيكل فيديو جاهز: نداء صريح للفئة في الأول، وبعدين ٥ أسباب. كل سبب مربوط بميزة منتج ومشهد مألوف من حياة العميلة، والاعتراضات الشائعة من الكومنتات تتجاوب جوه الإعلان نفسه وجهًا لوجه. والسبب الأخير = ميزة المؤسس أو البراند اللي محدش يقدر ينسخها.</p></div>
+        <div class="part why"><h4><span class="ico">؟</span> ليه بيشتغل</h4><p>النداء بيأهّل المشاهدة من أول ثانية، والأسباب المرقمة بتخليها تكمل عشان تعرف اللي بعده، والاعتراضات المتجاوبة بتشيل أسباب «مش هشتري» قبل ما تظهر، والسبب الأخير بيقفل الباب على المنافسين.</p></div>
+        <div class="part zyra"><h4><span class="ico">★</span> عندنا في زيرا</h4><p>القالب دخل بريفات الكرييتورز: كل سبب = خطوة من الروتين + مشهد مألوف + اعتراض حقيقي (هيقعد قد إيه؟ جربت قبل كده ومانفعش؟). والسبب الخامس جاهز ومحدش ينسخه: روتين كامل ٣ خطوات + شحن مجاني من تاني أوردر + دفع عند الاستلام بتأكيد قبل الشحن.</p></div>
+      </div>
+    </article>
+
+    <article class="lesson" id="lesson14">
+      <div class="lesson-top"><span class="lesson-num">درس ١٤</span><h3>إعلان المؤسس محرك ثقة</h3></div>
+      <div class="lesson-grid">
+        <div class="part lesson-part"><h4><span class="ico">◆</span> الدرس</h4><p>بنيته: قصة مشكلة المؤسس نفسه، لحظة اكتشاف الحل أو الآلية، مقاطع UGC من عميلات كإثبات اجتماعي، وإثبات منتج حقيقي (فتح علبة واستخدام). وهو أقوى في منتصف القمع: عند اللي عارفة المشكلة والحل ومترددة.</p></div>
+        <div class="part why"><h4><span class="ico">؟</span> ليه بيشتغل</h4><p>لأن المترددة مش ناقصها معلومة — ناقصها ثقة. قصة المؤسس بتدي سبب «ليه البراند دي بالذات»، والإثبات الاجتماعي والمنتج بيحولوا السبب ده لاطمئنان.</p></div>
+        <div class="part zyra"><h4><span class="ico">★</span> عندنا في زيرا</h4><p>الدرس ده بيدعم مسار EGC عندنا وصوت أحمد نفسه في الفويس أوفر، وفيديو «ليه روتين السيلوليت ٣ قطع؟» اللي في الخطة أصلًا — صوت المالك عندنا عملة ثقة في سوق الدفع عند الاستلام.</p></div>
+      </div>
+    </article>
+
+    <article class="lesson" id="lesson15">
+      <div class="lesson-top"><span class="lesson-num">درس ١٥</span><h3>الـ Mini VSL التعليمي</h3></div>
+      <div class="lesson-grid">
+        <div class="part lesson-part"><h4><span class="ico">◆</span> الدرس</h4><p>فيديو تعليمي قصير: تعليم أولًا والبيع نتيجة. الهوك ثلاثي (مسموع + مرئي + نص على الشاشة)، السيناريو مبني من كلام العملاء الحقيقي، أعمدة مشاكل بتتبني الأول وبعدين المنتج يحلها كلها في الآخر، وحلقات فضول تتفتح في الهوك وتتقفل في النهاية. وممنوع فوتيج ستوك أو AI عام — العميل بيلاحظه.</p></div>
+        <div class="part why"><h4><span class="ico">؟</span> ليه بيشتغل</h4><p>الهوك الثلاثي بيضمن إن الرسالة توصل مهما كانت المشاهدة (بصوت أو من غير). وبناء المشاكل قبل الحل بيخلي المنتج يظهر كإجابة طبيعية مش كقطع إعلاني. والحلقات المفتوحة بتمسك المشاهدة لحد الآخر.</p></div>
+        <div class="part zyra"><h4><span class="ico">★</span> عندنا في زيرا</h4><p>نسخة جلد الوزة جاهزة كاتجاه: ٦٠–٩٠ ثانية، سيناريو من لغة البحث («بخبي دراعي طول الصيف»)، ٣ أعمدة مشاكل (حبوب واحمرار وجفاف) والروتين يحلها — وبي-رول حقيقي بس، يتماشى مع معيار الطبيعية عندنا.</p></div>
+      </div>
+    </article>
+
+    <article class="lesson" id="lesson16">
+      <div class="lesson-top"><span class="lesson-num">درس ١٦</span><h3>قواسم كل الفائزين</h3></div>
+      <div class="lesson-grid">
+        <div class="part lesson-part"><h4><span class="ico">◆</span> الدرس</h4><p>كل الإعلانات الفائزة اللي اتشرحت اشتركت في تلاتة: شخصية عميلة معروفة بالضبط قبل الكتابة، الهوك هو اللي بيستهدف (نداء الفئة + إظهارها + إظهار مشكلتها)، وكل إعلان فكرة جديدة صافية (Net New). تكرار الفارييشنز من نفس الفكرة بيصنع إرهاق حساب.</p></div>
+        <div class="part why"><h4><span class="ico">؟</span> ليه بيشتغل</h4><p>المنصة والجمهور بيزهقوا من نفس الفكرة بأشكال مختلفة أسرع ما بيزهقوا من أفكار جديدة فعلًا. الفكرة الجديدة بتدي الخوارزمية جمهورًا جديدًا تكتشفه، والفارييشن بيعيد تدوير نفس الجمهور لحد ما يطفش.</p></div>
+        <div class="part zyra"><h4><span class="ico">★</span> عندنا في زيرا</h4><p>ده أساس قاعدة التنويع الحقيقي عندنا على مستوى التكوين: التنويع أفكار وتكوينات جديدة صافية، مش نفس القالب بألوان مختلفة — وهو نفس درسنا من تجربة الاستاتيكس المنتَجة.</p></div>
+      </div>
+    </article>
+
+    <div class="takeaway"><span class="badge">الخلاصة</span><div><h3>خلاصة الوحدة ٤</h3><p>الفيديو الفائز بيبدأ من الشخصية الصح (مرآة)، وبيتبني بقوالب مجربة (٥ أسباب / مؤسس / Mini VSL)، وكل فيديو فكرة جديدة — مش نسخة من اللي قبله.</p></div></div>
+  </section>
+
+  <!-- ============ UNIT 5 ============ -->
+  <section class="unit" id="unit5">
+    <div class="unit-head">
+      <div class="unit-no">٥</div>
+      <div><h2>التفاعل بصدق</h2><p>الكومنتات وقود توزيع حقيقي — بس عندنا بيتجاب بصدق مش بتلاعب.</p></div>
+      <span class="from">من الفيديو الثاني + موقف زيرا</span>
+    </div>
+
+    <article class="lesson" id="lesson17">
+      <div class="lesson-top"><span class="lesson-num">درس ١٧</span><h3>الكومنتات وقود توزيع</h3></div>
+      <div class="lesson-grid">
+        <div class="part lesson-part"><h4><span class="ico">◆</span> الدرس</h4><p>الإعلانات اللي بتخلي الناس تتكلم بتنتشر أرخص وأوسع. مثالهم في الفيديو: إعلان استخدم خطأ متعمدًا في طريقة استخدام المنتج، فالناس دخلت تصححه في الكومنتات، والتفاعل رفع التوزيع.</p></div>
+        <div class="part why"><h4><span class="ico">؟</span> ليه بيشتغل</h4><p>لأن المنصة بتقرأ الكومنتات كإشارة إن المحتوى يستاهل ينتشر. الإعلان المصمم أصلًا عشان يفتح كلام بياخد توزيع إضافي مدفوع من التفاعل نفسه.</p></div>
+        <div class="part zyra"><h4><span class="ico">★</span> عندنا في زيرا</h4><p>المبدأ معتمد والتلاعب مرفوض: الخطأ المتعمد بره عندنا لأنه بيضرب صدق البراند وقاعدة «من غير مبالغة». بديلنا الصادق جاهز: محتوى قابل للنقاش بجد — تصنيف عادات، خرافة × حقيقة، وأسئلة حقيقية من لغة بحث العميلات.</p></div>
+      </div>
+    </article>
+
+    <div class="takeaway"><span class="badge">الخلاصة</span><div><h3>خلاصة الوحدة ٥</h3><p>صمّم الإعلان عشان يفتح كلام — بس كلام حقيقي عن حاجة حقيقية. التفاعل اللي بيتبني على خدعة بيكسب مرة وبيخسر البراند على طول.</p></div></div>
+  </section>
+
+  <!-- ============ REJECTED ============ -->
+  <section class="unit" id="rejected">
+    <div class="unit-head" style="background:#5c2317">
+      <div class="unit-no" style="background:#e8b4a0;color:#4a1c10">✕</div>
+      <div><h2>اللي قررنا مناخدوش — وليه</h2><p>مش كل اللي في الفيديوهين يناسبنا. دول الأربعة اللي اترفضوا بأسباب واضحة ومتسجلة.</p></div>
+    </div>
+    <div class="reject-grid">
+      <article class="reject-card"><h3>١ · أداة Poppy AI</h3><p>الفيديو الأول إعلان مدعوم ليها أصلًا. الدروس صالحة، لكن الأداة نفسها توصية تجارية — ونظامنا (المساحة + بنك الزوايا) زائد المصمم البشري بيقوموا بالدور ده.</p></article>
+      <article class="reject-card"><h3>٢ · توليد الاستاتيك النهائي بـ AI</h3><p>التصميم النهائي عندنا شغل مصمم بشري بقرار مالك. الـ AI عندنا للزوايا والكوبي والموك أب الموسوم بس — مش للمنتج النهائي اللي بينزل للناس.</p></article>
+      <article class="reject-card"><h3>٣ · الخطأ المتعمد لإثارة الكومنتات</h3><p>بيجيب تفاعل فعلًا، بس بيضرب ركن الصدق في البراند. البديل الصادق موجود وجاهز في درس ١٧: نقاش حقيقي حوالين عادات وخرافات وأسئلة حقيقية.</p></article>
+      <article class="reject-card"><h3>٤ · ادعاء «إعلانات الشراكة أرخص CPM»</h3><p>ملاحظة شخصية غير موثقة في الفيديو. عندنا: تتختبر لاحقًا لو كرييتور نشر من حسابه — وممنوع تتبني عليها خطة أو ميزانية قبل ما تتقاس عندنا إحنا.</p></article>
+    </div>
+    <div class="important-note">📌 <b>ملحوظة مهمة:</b> صيغ حساسة زي «قبل/بعد» و«متشتريش ده» اتعتمدت عندنا <b>بعد</b> الدراسة دي وبقرار مالك، بحدود صارمة مكتوبة (صور وريفيوهات حقيقية فقط وبموافقة، وقبل/بعد ممنوعة على TikTok نهائيًا). دي قرارات زيرا اللاحقة — مش ضمن دروس الفيديوهين نفسها.</div>
+  </section>
+
+  <!-- ============ CHECKLIST ============ -->
+  <section class="unit" id="checklist">
+    <div class="unit-head">
+      <div class="unit-no">✓</div>
+      <div><h2>قبل ما أي إعلان يطلع</h2><p>قائمة الفحص الأخيرة — تمانية أسئلة، ولو إجابة أي واحد «لأ» الإعلان يرجع يتصلح.</p></div>
+    </div>
+    <div class="checklist">
+      <div class="check-item"><span class="check-box">١</span><div><b>رسالة واحدة؟</b><span>مشكلة واحدة وزاوية واحدة وحل واحد — قاعدة الواحد (درس ١١).</span></div></div>
+      <div class="check-item"><span class="check-box">٢</span><div><b>يعدي اختبار نصف الثانية؟</b><span>بحجم موبايل في فيد: المشكلة والمنتج بيتعرفوا في لمحة (درس ٣).</span></div></div>
+      <div class="check-item"><span class="check-box">٣</span><div><b>بلغة العميلة؟</b><span>كلامها هي من البحث والريفيوهات والكومنتات — مش لغة براند (درس ٧).</span></div></div>
+      <div class="check-item"><span class="check-box">٤</span><div><b>الصيغة من المكتبة وبريفرنسها؟</b><span>الصيغة مسجلة في مكتبة الصيغ والبريف راجع لكارت ريفرنسها (درس ٨).</span></div></div>
+      <div class="check-item"><span class="check-box">٥</span><div><b>فكرة جديدة مش فارييشن؟</b><span>تنويع حقيقي على مستوى الفكرة والتكوين — Net New (درس ١٦).</span></div></div>
+      <div class="check-item"><span class="check-box">٦</span><div><b>الكاستينج مرآة للشريحة؟</b><span>الكرييتور هي الشريحة نفسها شكلًا ولهجة وبيئة (درس ١٢).</span></div></div>
+      <div class="check-item"><span class="check-box">٧</span><div><b>مراجعة بشرية وامتثال؟</b><span>عين بشرية راجعت: ادعاءات محظورة، أسعار صح، وتحذير الريتينول ظاهر لو الإعلان سيلوليت (درس ٩).</span></div></div>
+      <div class="check-item"><span class="check-box">٨</span><div><b>خطة قياس جاهزة؟</b><span>هنقرأ CTR الأول وبعده CPP على البوابات: هدف ١٥٠–١٦٠، سقف ١٨٠، كسر تعادل ٢٧٥ (درس ١٠).</span></div></div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <b>دروس الفيديوهين — كورس زيرا كير</b><br>
+  اتعملت من دراسة كاملة للفيديوهين بالنصوص — ١٩ نوفمبر ٢٠٢٦ · Fraser Cottrell — Fraggell<br>
+  <span style="font-size:13px">اللي اتوافق عليه من الدروس دي دخل بوابة البريف وقواعد القياس وبنك الصيغ — واللي اترفض متسجل بأسبابه فوق.</span>
+</footer>
+</div>
+
+<button class="to-top" id="toTop" aria-label="ارجع لفوق">↑</button>
+
+<script>
+(function(){
+  var root=document.documentElement;
+  var toggle=document.getElementById('sbToggle');
+  var backdrop=document.getElementById('sbBackdrop');
+  var bar=document.getElementById('sbBar');
+  var pct=document.getElementById('sbPct');
+  var toTop=document.getElementById('toTop');
+  var AR='٠١٢٣٤٥٦٧٨٩';
+  function arNum(n){return String(n).replace(/\d/g,function(d){return AR[d]})}
+  var sidebar=document.getElementById('sidebar');
+  var hideTimer=null;
+  function isOpen(){return root.classList.contains('sb-open')}
+  function syncToggle(){toggle.setAttribute('aria-expanded',isOpen()?'true':'false')}
+  function openSb(){
+    if(hideTimer){clearTimeout(hideTimer);hideTimer=null}
+    sidebar.classList.remove('sb-gone');
+    void sidebar.offsetWidth;
+    root.classList.add('sb-open');syncToggle();
+  }
+  function closeSb(){
+    root.classList.remove('sb-open');syncToggle();
+    if(hideTimer)clearTimeout(hideTimer);
+    hideTimer=setTimeout(function(){if(!isOpen())sidebar.classList.add('sb-gone')},380);
+  }
+  if(window.innerWidth<=860){root.classList.remove('sb-open')}
+  if(!isOpen()){sidebar.classList.add('sb-gone')}
+  syncToggle();
+  toggle.addEventListener('click',function(){isOpen()?closeSb():openSb()});
+  backdrop.addEventListener('click',closeSb);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')closeSb()});
+  document.querySelectorAll('#sbNav a').forEach(function(a){
+    a.addEventListener('click',function(){if(window.innerWidth<=860)closeSb()});
+  });
+
+  function onScroll(){
+    var h=document.documentElement;
+    var max=h.scrollHeight-h.clientHeight;
+    var p=max>0?(h.scrollTop/max)*100:0;
+    bar.style.width=p+'%';
+    pct.textContent=arNum(Math.round(p))+'٪';
+    if(h.scrollTop>600){toTop.classList.add('show')}else{toTop.classList.remove('show')}
+  }
+  window.addEventListener('scroll',onScroll,{passive:true});
+  onScroll();
+  toTop.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'})});
+
+  var navLinks=document.querySelectorAll('#sbNav a[href^="#"]');
+  var map={};
+  navLinks.forEach(function(a){map[a.getAttribute('href').slice(1)]=a});
+  var obs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        navLinks.forEach(function(a){a.classList.remove('active')});
+        var a=map[e.target.id];
+        if(a)a.classList.add('active');
+      }
+    });
+  },{rootMargin:'-25% 0px -65% 0px'});
+  Object.keys(map).forEach(function(id){
+    var el=document.getElementById(id);
+    if(el)obs.observe(el);
+  });
+})();
+</script>
+</body>
+</html>
