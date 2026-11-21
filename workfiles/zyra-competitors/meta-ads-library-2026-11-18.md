@@ -85,3 +85,10 @@
 - Market round: **Meta Ads Library squeeze — 2026-11-18** (id 4)
 - Observations: Alejon activity (id 5), Soralone (id 6), Mazora (id 4), Centevia (id 7), zero-ads group (id 8), Alejon site record (id 9)
 - Alerts: Hepta KP longevity (id 3), «سيلوليت» open lane (id 2), Tetavara dark (id 4), Alejon KP weakness analysis (id 5)
+
+## تصحيح 2026-11-20 ~06:33 (تحقق حي — مكتبة الإعلانات + متجر ehepta.com)
+- باندل هيبتا Black Friday الحقيقي: **4 عبوات Carbamide Body Lotion ‏120ml (يوريا 10% + سيراميد 2) بـ575 بدل 780 (−26%)** — إعلان Library ID 1786562002431082 بدأ 10 Nov 2026 (نسخة مكررة من 7 Nov).
+- رقم **546/700** الوارد في ملاحظة التحليل #24 كان **خاطئًا** ويُستبدل بـ575/780. السلم السعري المصحح: 145 ← 500 ← **575** ← 799.
+- الباندل عرض تخزين لمنتج واحد لعملاء حاليين، ليس روتينًا منافسًا ولا كريم اليوريا 20%.
+- الشحن يُحسب عند إتمام الشراء؛ لا عتبة شحن مجاني ولا COD معلنين على صفحة المنتج؛ التوصيل 3–5 أيام عمل؛ لا تاريخ انتهاء معلن («قبل نفاذ الكمية»).
+- باندلات أخرى شغالة: Carbamide Family (4 منتجات)، Strawberry Skin (4 منتجات)، Heels 4-pack بـ380، Pink Lady بـ310.

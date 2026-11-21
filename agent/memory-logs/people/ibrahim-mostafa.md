@@ -3,7 +3,7 @@ display_name: "Ibrahim Mostafa"
 first_name: "Ibrahim"
 last_name: "Mostafa"
 summary: "Egyptian performance-marketing author whose 'Funnel Diagnostics & Scale Calculator' sheet Ahmed sent on 2026-11-20 and had adapted into Zyra's early-warning ATC/IC ceilings."
-rank: "6"
+rank: 6
 updated: "2026-11-20"
 ---
 
@@ -22,6 +22,7 @@ updated: "2026-11-20"
 - 2026-11-20: Three things from it were adopted in Zyra's own form: the ATC and IC ceilings as early-warning indicators, translated to Zyra's numbers (target CPP 150–160 EGP: ATC safe to about 18–19 EGP, warning at 23–24; IC safe to 68–72, warning at 83–88); the five-step decision ladder as a display format over Zyra's own CPP gates (target 150–160, ceiling 180, breakeven 275); and judging a bundle by absolute margin per order, not by margin percentage.
 - 2026-11-20: Its limits were recorded: all of its calculations are on "placed" revenue, with no confirmation, delivery or returns, so Zyra's COD cohort math is more precise for Zyra; the IC warning ceiling is shown but not actually used in any formula; and the cost differs between its two tabs for the same product.
 - 2026-11-20: Ahmed corrected the delivery-rate reading in his own words (message:b903a678, 2026-11-20T00:55:56Z): the Egyptian market's quoted 75% confirmation/delivery rate is the TOTAL end-to-end net rate, not a second stage multiplied after confirmation. Muse accepted the correction (assistant-msg, 2026-11-20T00:56:20Z); the CPP gates stand unadjusted — breakeven 275 EGP, ceiling 180, target 150–160.
+- 2026-11-20: In Ahmed's filtered synthesis adopted that morning, the scale ladder was re-adopted as Zyra doctrine effective from 1 Dec 2026, on Zyra numbers (COGS 350, target CPP 150–160): Target CPA = AOV ÷ ROAS, ATC gate 12%, IC gate 45%, with the ladder actions SCALE +20–40% / PUSH / HOLD 24h / OPTIMIZE / PULL BACK. Before December, no ad is judged before 48h AND 2× target CPP spend.
 
 ## The relationship
 - Ahmed has not named the relationship, and there is no evidenced personal contact; Ibrahim Mostafa is a published author whose funnel calculator Ahmed deliberately had studied and adapted for Zyra.

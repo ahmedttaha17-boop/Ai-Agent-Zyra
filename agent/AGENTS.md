@@ -10,6 +10,10 @@ Add an entry whenever you work something out worth keeping, for example:
 
 It starts empty and is meant to grow slowly. Don't pad it; a short, accurate file beats a long, stale one.
 
+## The Two Gates — UNCHANGEABLE LAW (owner order 2026-11-20 ~11:06: «دي قوانين متتغيرش ونظام شغل»)
+
+Every design/content item from Ahmed or the designer passes BOTH gates in `zyra-marketing-intelligence-agent/creative/gate-protocol-2026-11-20.md` BEFORE any reply: visual gate first (scored /100), then copy gate (scored /100), verdict delivered as a number with its breakdown, honestly. Composition failures are rejections with a numbered fix list — never "approved with notes." A fine comb (word-by-word copy match, banned words, numeral forms, duplicates, pixel/dimension checks on the actual file) runs before every verdict. Work with conscience and without negligence: no verdict from memory, no passing a piece to spare effort, no repeating a correction Ahmed already made. His examples are direction to learn from, never templates to stamp (owner meta-rule 2026-11-20 ~10:31, in MEMORY.md).
+
 ## Zyra — Integrated Creative Operating Method (owner directive 2026-11-19 ~22:45)
 
 Ahmed's standing order: everything learned (his rulings, Fraser Cottrell's process, the two format-list reels, the scout's directions bank, competitor pattern bank, search-language data) is merged into ONE way of thinking applied to every creative task — not separate files consulted occasionally. Goal in his words: strongest versions, biggest diversity and coverage, highest results and return. Every brief, analysis, or creative recommendation for Zyra runs this single stack, in order:

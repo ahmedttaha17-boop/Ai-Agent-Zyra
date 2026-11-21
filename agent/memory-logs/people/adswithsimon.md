@@ -3,7 +3,7 @@ display_name: "Simon Robert"
 first_name: "Simon"
 last_name: "Robert"
 summary: "Instagram creator @adswithsimon whose 'The 5 Ads Everybody Should Run' carousel Ahmed sent on 2026-11-20 and had studied for Zyra's portfolio audit."
-rank: "8"
+rank: 8
 updated: "2026-11-20"
 ---
 

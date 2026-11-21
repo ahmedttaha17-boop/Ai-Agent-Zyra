@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Google Egypt autocomplete scan for Zyra tracked keywords (09:29 EET run).
 Fetches suggestqueries.google.com/complete/search?client=firefox&hl=ar&gl=eg
-for each keyword, diffs vs the 09:10 EET snapshot (scan-2026-11-19-0910.json,
-same method, 10 items), writes scan JSON into the goal
-hidden_files/search-language/ directory."""
+for each keyword, diffs vs the 09:10 EET snapshot
+(search-language-scans/scan-2026-11-20-0910.json, same method, 10 items),
+writes scan JSON into the goal hidden_files/search-language-scans/ directory."""
 import json, urllib.request, urllib.parse
 from datetime import datetime, timezone
 from zoneinfo import ZoneInfo
@@ -15,7 +15,7 @@ KEYWORDS = [
     "زبدة الشيا", "مخمرية", "ملح سيوة",
 ]
 DIR = "/home/hatch/workspace/goals/zyra-care-relaunch-and-marketing-intelligence-agent/hidden_files"
-PREV = f"{DIR}/search-language/scan-2026-11-19-0910.json"
+PREV = f"{DIR}/search-language-scans/scan-2026-11-20-0910.json"
 
 now_utc = datetime.now(timezone.utc)
 now_eet = now_utc.astimezone(ZoneInfo("Africa/Cairo"))
@@ -67,12 +67,12 @@ out = {
     "fetched_at_eet": now_eet.strftime("%Y-%m-%d %H:%M EET"),
     "fetched_at_utc": now_utc.strftime("%Y-%m-%dT%H:%MZ"),
     "source": "suggestqueries.google.com/complete/search?client=firefox&hl=ar&gl=eg",
-    "previous_snapshot": "search-language/scan-2026-11-19-0910.json",
+    "previous_snapshot": "search-language-scans/scan-2026-11-20-0910.json",
     "results": results,
     "errors": errors,
     "diff_vs_previous": diff,
 }
-path = f"{DIR}/search-language/scan-{stamp}.json"
+path = f"{DIR}/search-language-scans/scan-{stamp}.json"
 with open(path, "w", encoding="utf-8") as f:
     json.dump(out, f, ensure_ascii=False, indent=1)
 print("WROTE", path)

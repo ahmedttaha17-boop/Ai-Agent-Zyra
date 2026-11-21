@@ -3,7 +3,7 @@ display_name: "Sherif Saad"
 first_name: "Sherif"
 last_name: "Saad"
 summary: "Egyptian creative-research writer behind the 'Behind The Creative' series, whose creative-research method Ahmed sent on 2026-11-20 and adopted into Zyra's concept prioritisation and testing."
-rank: "5"
+rank: 5
 updated: "2026-11-20"
 ---
 
